@@ -16,4 +16,10 @@ interface MainView {
     fun openYouTube(uri: Uri)
 
     fun setAdapter(adapter: FlightAdapter)
+
+    fun showToast(message: Int)
+
+    fun showButtonTryAgain()
+
+    fun hideButtonTryAgain()
 }

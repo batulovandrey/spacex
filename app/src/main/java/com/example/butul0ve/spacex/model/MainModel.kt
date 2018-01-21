@@ -39,4 +39,16 @@ class MainModel(private val mMainPresenter: MainPresenter) : ExecutionThread.Cus
     override fun hideProgressBar() {
         mMainPresenter.hideProgressBar()
     }
+
+    override fun showToast(message: Int) {
+        mMainPresenter.showToast(message)
+    }
+
+    override fun showButtonTryAgain() {
+        mMainPresenter.showButtonTryAgain()
+    }
+
+    override fun hideButtonTryAgain() {
+        mMainPresenter.hideButtonTryAgain()
+    }
 }

@@ -18,4 +18,10 @@ interface MainPresenter {
     fun getData()
 
     fun setAdapter(adapter: FlightAdapter)
+
+    fun showToast(message: Int)
+
+    fun showButtonTryAgain()
+
+    fun hideButtonTryAgain()
 }

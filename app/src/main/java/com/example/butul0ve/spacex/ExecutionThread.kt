@@ -9,6 +9,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import java.io.BufferedInputStream
 import java.io.File
+import java.io.IOException
 import java.net.URL
 
 /**
@@ -19,15 +20,21 @@ class ExecutionThread(private val mCustomCallback: CustomCallback) : Thread() {
 
     override fun run() {
         mCustomCallback.showProgressBar()
-        val inputStream = BufferedInputStream(URL(JSON_URL).openStream())
-        val url = URL(JSON_URL)
-        val connection = url.openConnection()
-        connection.connect()
-        inputStream.bufferedReader().use { File(FILE_PATH).writeText(it.readLine()) }
-        val text = File(FILE_PATH).readText()
-        val flightResponse = parseJson(text)
-        val flights = flightResponse?.flights
-        mCustomCallback.setFlights(flights)
+        mCustomCallback.hideButtonTryAgain()
+        try {
+            val inputStream = BufferedInputStream(URL(JSON_URL).openStream())
+            val url = URL(JSON_URL)
+            val connection = url.openConnection()
+            connection.connect()
+            inputStream.bufferedReader().use { File(FILE_PATH).writeText(it.readLine()) }
+            val text = File(FILE_PATH).readText()
+            val flightResponse = parseJson(text)
+            val flights = flightResponse?.flights
+            mCustomCallback.setFlights(flights)
+        } catch (ex : IOException) {
+            mCustomCallback.showToast(R.string.error)
+            mCustomCallback.showButtonTryAgain()
+        }
         mCustomCallback.hideProgressBar()
     }
 
@@ -67,5 +74,11 @@ class ExecutionThread(private val mCustomCallback: CustomCallback) : Thread() {
         fun showProgressBar()
 
         fun hideProgressBar()
+
+        fun showToast(message: Int)
+
+        fun showButtonTryAgain()
+
+        fun hideButtonTryAgain()
     }
 }

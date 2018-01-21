@@ -32,4 +32,16 @@ class MainPresenterImpl(private val mMainView: MainView) : MainPresenter {
     override fun setAdapter(adapter: FlightAdapter) {
         mMainView.setAdapter(adapter)
     }
+
+    override fun showToast(message: Int) {
+        mMainView.showToast(message)
+    }
+
+    override fun showButtonTryAgain() {
+        mMainView.showButtonTryAgain()
+    }
+
+    override fun hideButtonTryAgain() {
+        mMainView.hideButtonTryAgain()
+    }
 }
