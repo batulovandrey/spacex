@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ArticleButton" parent="Base.TextAppearance.AppCompat.Button">
+        <item name="background">@color/button_grey</item>
+    </style>
+
 </resources>
