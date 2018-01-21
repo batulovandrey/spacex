@@ -20,11 +20,12 @@ import android.net.Uri
  * Created by butul0ve on 20.01.18.
  */
 
-class FlightAdapter(private val mFlights: List<Flight>) : RecyclerView.Adapter<FlightAdapter.FlightViewHolder>() {
+class FlightAdapter(private val mFlights: List<Flight>, private val mClickListener: FlightClickListener) :
+        RecyclerView.Adapter<FlightAdapter.FlightViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FlightViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.flight_item, null)
-        return FlightViewHolder(view)
+        return FlightViewHolder(view, mClickListener)
     }
 
     override fun onBindViewHolder(holder: FlightViewHolder, position: Int) {
@@ -51,7 +52,8 @@ class FlightAdapter(private val mFlights: List<Flight>) : RecyclerView.Adapter<F
         return mFlights.size
     }
 
-    class FlightViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class FlightViewHolder(itemView: View, private val mClickListener: FlightClickListener) :
+            RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         var mRocketNameTextView: TextView = itemView.findViewById(R.id.rocket_name_text_view)
         var mFlightNumberTextView: TextView = itemView.findViewById(R.id.flight_number_text_view)
@@ -59,5 +61,13 @@ class FlightAdapter(private val mFlights: List<Flight>) : RecyclerView.Adapter<F
         var mMissionPatchImageView: ImageView = itemView.findViewById(R.id.mission_patch_image_view)
         var mDetailTextView: TextView = itemView.findViewById(R.id.detail_text_view)
         var mArticleButton: Button = itemView.findViewById(R.id.article_button)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(view: View?) {
+            mClickListener.onItemClick(layoutPosition)
+        }
     }
 }
