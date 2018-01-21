@@ -36,6 +36,7 @@ class FlightAdapter(private val mFlights: List<Flight>, private val mClickListen
         val launchDate = SimpleDateFormat("dd MMMM y, HH:mm:ss", Locale.ENGLISH)
         Picasso.with(holder.itemView.context)
                 .load(flight.links.missionPath)
+                .resize(350, 350)
                 .placeholder(R.drawable.nyan_cat)
                 .into(holder.mMissionPatchImageView)
         holder.mLaunchDateTextView.text = launchDate.format(date)
