@@ -40,9 +40,12 @@ class ExecutionThread(private val mCustomCallback: CustomCallback) : Thread() {
                     .map { jsonArray.getJSONObject(it) }
                     .forEach {
                         list.add(Flight(it.optInt("flight_number"),
-                                Rocket(it.optJSONObject("rocket").optString("rocket_id"), it.optJSONObject("rocket").optString("rocket_name")),
+                                Rocket(it.optJSONObject("rocket").optString("rocket_id"),
+                                        it.optJSONObject("rocket").optString("rocket_name")),
                                 it.optString("launch_date_unix"),
-                                Links(it.optJSONObject("links").optString("mission_patch")),
+                                Links(it.optJSONObject("links").optString("mission_patch"),
+                                        it.optJSONObject("links").optString("article_link"),
+                                        it.optJSONObject("links").optString("video_link")),
                                 it.optString("details")))
                     }
             flightResponse = FlightResponse(list)
