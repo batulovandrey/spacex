@@ -45,7 +45,6 @@ class FlightAdapter(private val mFlights: List<Flight>, private val mClickListen
             intent.data = Uri.parse(flight.links.articleLink)
             startActivity(holder.itemView.context, intent, null)
         })
-
     }
 
     override fun getItemCount(): Int {
