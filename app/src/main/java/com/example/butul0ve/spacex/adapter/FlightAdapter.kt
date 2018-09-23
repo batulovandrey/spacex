@@ -34,18 +34,18 @@ class FlightAdapter(private val mFlights: List<Flight>, private val mClickListen
         holder.mFlightNumberTextView.text = flight.flightNumber.toString()
         val date = Date(flight.launchDate.toLong() * 1000)
         val launchDate = SimpleDateFormat("dd MMMM y, HH:mm:ss", Locale.ENGLISH)
-        Picasso.with(holder.itemView.context)
-                .load(flight.links.missionPath)
+        Picasso.get().load(flight.links.missionPath)
                 .resize(350, 350)
                 .placeholder(R.drawable.nyan_cat)
                 .into(holder.mMissionPatchImageView)
         holder.mLaunchDateTextView.text = launchDate.format(date)
         holder.mDetailTextView.text = flight.details
-        holder.mArticleButton.setOnClickListener({
+
+        holder.mArticleButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(flight.links.articleLink)
             startActivity(holder.itemView.context, intent, null)
-        })
+        }
     }
 
     override fun getItemCount(): Int {
