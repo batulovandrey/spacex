@@ -17,9 +17,13 @@ import retrofit2.Response
 
 private val TAG = MainPresenterImpl::class.java.simpleName
 
-class MainPresenterImpl(private val mMainView: MainView) : MainPresenter, FlightClickListener {
+class MainPresenterImpl : MainPresenter, FlightClickListener {
 
     private lateinit var flights: List<Flight>
+    private lateinit var adapter: FlightAdapter
+    private lateinit var mainView: MainView
+
+    private val networkHelper = NetworkHelper()
 
     override fun onItemClick(position: Int) {
         if (::flights.isInitialized) {
@@ -29,69 +33,94 @@ class MainPresenterImpl(private val mMainView: MainView) : MainPresenter, Flight
         }
     }
 
-    private val networkHelper = NetworkHelper()
+    override fun attachView(view: MainView) {
+        mainView = view
+    }
 
     override fun showProgressBar() {
-        mMainView.showProgressBar()
+        if (isViewAttached())
+            mainView.showProgressBar()
     }
 
     override fun hideProgressBar() {
-        mMainView.hideProgressBar()
+        if (isViewAttached())
+            mainView.hideProgressBar()
     }
 
     override fun openYouTube(uri: Uri) {
-        mMainView.openYouTube(uri)
+        if (isViewAttached())
+            mainView.openYouTube(uri)
     }
 
     override fun getData() {
-        val flightsResponse = networkHelper.getFlights()
-        mMainView.showProgressBar()
+        if (isViewAttached()) {
+            val flightsResponse = networkHelper.getFlights()
+            mainView.showProgressBar()
 
-        flightsResponse.enqueue(object : Callback<List<Flight>> {
+            flightsResponse.enqueue(object : Callback<List<Flight>> {
 
-            override fun onResponse(call: Call<List<Flight>>?, response: Response<List<Flight>>?) {
+                override fun onResponse(call: Call<List<Flight>>?, response: Response<List<Flight>>?) {
 
-                if (response?.isSuccessful!!) {
-                    Log.d(TAG, "ok ${response.body()?.size}")
+                    if (response?.isSuccessful!!) {
+                        Log.d(TAG, "ok ${response.body()?.size}")
 
-                    response.body()?.forEach {
-                        Log.d(TAG, it.details)
+                        response.body()?.forEach {
+                            Log.d(TAG, it.details)
+                        }
+
+                        response.body()?.let {
+                            flights = it
+                            adapter = FlightAdapter(flights, this@MainPresenterImpl)
+                            mainView.setAdapter(adapter)
+                        }
+
+                    } else {
+                        Log.e(TAG, "failed")
                     }
 
-                    response.body()?.let {
-                        flights = it
-                        val flightAdapter = FlightAdapter(flights, this@MainPresenterImpl)
-                        mMainView.setAdapter(flightAdapter)
-                    }
-
-                } else {
-                    Log.e(TAG, "failed")
+                    mainView.hideProgressBar()
                 }
 
-                mMainView.hideProgressBar()
-            }
+                override fun onFailure(call: Call<List<Flight>>?, t: Throwable?) {
+                    Log.e(TAG, t?.message)
+                    mainView.hideProgressBar()
+                }
 
-            override fun onFailure(call: Call<List<Flight>>?, t: Throwable?) {
-                Log.e(TAG, t?.message)
-                mMainView.hideProgressBar()
-            }
-
-        })
+            })
+        }
     }
 
     override fun setAdapter(adapter: FlightAdapter) {
-        mMainView.setAdapter(adapter)
+        if (isViewAttached())
+            mainView.setAdapter(adapter)
     }
 
     override fun showToast(message: Int) {
-        mMainView.showToast(message)
+        if (isViewAttached())
+            mainView.showToast(message)
     }
 
     override fun showButtonTryAgain() {
-        mMainView.showButtonTryAgain()
+        if (isViewAttached())
+            mainView.showButtonTryAgain()
     }
 
     override fun hideButtonTryAgain() {
-        mMainView.hideButtonTryAgain()
+        if (isViewAttached())
+            mainView.hideButtonTryAgain()
+    }
+
+    private fun isViewAttached(): Boolean {
+        return ::mainView.isInitialized
+    }
+
+    override fun isDataLoaded(): Boolean {
+        return ::adapter.isInitialized &&
+                ::flights.isInitialized &&
+                flights.isNotEmpty()
+    }
+
+    override fun showData() {
+        mainView.setAdapter(adapter)
     }
 }

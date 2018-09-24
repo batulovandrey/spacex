@@ -2,12 +2,15 @@ package com.example.butul0ve.spacex.presenter
 
 import android.net.Uri
 import com.example.butul0ve.spacex.adapter.FlightAdapter
+import com.example.butul0ve.spacex.view.MainView
 
 /**
  * Created by butul0ve on 21.01.18.
  */
 
 interface MainPresenter {
+
+    fun attachView(view: MainView)
 
     fun showProgressBar()
 
@@ -24,4 +27,8 @@ interface MainPresenter {
     fun showButtonTryAgain()
 
     fun hideButtonTryAgain()
+
+    fun isDataLoaded(): Boolean
+
+    fun showData()
 }
