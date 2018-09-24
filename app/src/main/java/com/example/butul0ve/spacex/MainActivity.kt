@@ -1,13 +1,9 @@
 package com.example.butul0ve.spacex
 
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
-import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Button
@@ -28,37 +24,14 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mMainPresenter = MainPresenterImpl(this)
+
         mRecyclerView = findViewById(R.id.recycler_view)
         mProgressBar = findViewById(R.id.progress_bar)
         mTryAgainButton = findViewById(R.id.try_again_button)
-        mTryAgainButton.setOnClickListener { checkWritePermission() }
-        mMainPresenter = MainPresenterImpl(this)
-        checkWritePermission()
-    }
+        mTryAgainButton.setOnClickListener { mMainPresenter.getData() }
 
-    private fun checkWritePermission() {
-        if (isPermissionGranted(WRITE_EXTERNAL_STORAGE)) {
-            mMainPresenter.getData()
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(Array(1) { WRITE_EXTERNAL_STORAGE }, MY_PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE)
-            }
-        }
-    }
-
-    private fun isPermissionGranted(permission: String): Boolean {
-        val permissionCheck = ActivityCompat.checkSelfPermission(this, permission)
-        return permissionCheck == PackageManager.PERMISSION_GRANTED
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            MY_PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] === PackageManager.PERMISSION_GRANTED) {
-                    mMainPresenter.getData()
-                }
-            }
-        }
+        mMainPresenter.getData()
     }
 
     override fun showProgressBar() {
@@ -88,10 +61,5 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun hideButtonTryAgain() {
         runOnUiThread { mTryAgainButton.visibility = View.GONE }
-    }
-
-    companion object {
-
-        private val MY_PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 7
     }
 }
