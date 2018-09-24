@@ -26,8 +26,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    // picasso
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    // glide
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'

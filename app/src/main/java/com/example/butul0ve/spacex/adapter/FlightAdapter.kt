@@ -9,12 +9,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.butul0ve.spacex.R
 import com.example.butul0ve.spacex.bean.Flight
-import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 import android.support.v4.content.ContextCompat.startActivity
 import android.content.Intent
 import android.net.Uri
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 
 /**
  * Created by butul0ve on 20.01.18.
@@ -34,10 +36,17 @@ class FlightAdapter(private val mFlights: List<Flight>, private val mClickListen
         holder.mFlightNumberTextView.text = flight.flightNumber.toString()
         val date = Date(flight.launchDate.toLong() * 1000)
         val launchDate = SimpleDateFormat("dd MMMM y, HH:mm:ss", Locale.ENGLISH)
-        Picasso.get().load(flight.links.missionPath)
-                .resize(350, 350)
+        val options = RequestOptions()
+                .centerCrop()
                 .placeholder(R.drawable.nyan_cat)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
+                .dontTransform()
+
+        Glide.with(holder.itemView.context).load(flight.links.missionPath)
+                .apply(options)
                 .into(holder.mMissionPatchImageView)
+
         holder.mLaunchDateTextView.text = launchDate.format(date)
         holder.mDetailTextView.text = flight.details
 
