@@ -7,5 +7,6 @@
     <color name="grey_temp">#999296</color>
     <color name="grey_deep">#7a7578</color>
     <color name="brown">#280103</color>
-    <color name="button_grey">#514f50</color>
+    <color name="grey">#514f50</color>
+    <color name="black">#000</color>
 </resources>

@@ -1,8 +1,8 @@
 package com.example.butul0ve.spacex
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener
@@ -36,10 +36,13 @@ class PlayerActivity: AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        playerView.release()
+    }
+
     private fun initializePlayer() {
         tracker = YouTubePlayerTracker()
-
-        lifecycle.addObserver(playerView)
 
         playerView.enterFullScreen()
         playerView.initialize({ youTubePlayer ->

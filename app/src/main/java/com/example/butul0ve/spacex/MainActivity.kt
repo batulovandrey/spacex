@@ -1,8 +1,8 @@
 package com.example.butul0ve.spacex
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.butul0ve.spacex.presenter.MainPresenterImpl
 
 class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
 
             mainFragment = MainFragment()
             manager.beginTransaction().apply {
-                replace(R.id.container, mainFragment)
+                replace(R.id.container, mainFragment!!)
                 commit()
             }
 
