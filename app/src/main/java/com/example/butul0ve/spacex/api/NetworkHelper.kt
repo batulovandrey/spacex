@@ -20,11 +20,11 @@ class NetworkHelper {
             launchYear
         }
 
-        return retrofit.create(ServerApi::class.java).getLaunchesByYear("launches?launch_year=$year")
+        return retrofit.create(ServerApi::class.java).getLaunchesByYear(year)
     }
 
     companion object {
 
-        const val JSON_URL = "https://api.spacexdata.com/v2/"
+        const val JSON_URL = "https://api.spacexdata.com/v3/"
     }
 }

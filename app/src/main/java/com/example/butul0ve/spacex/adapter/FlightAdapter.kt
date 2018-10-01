@@ -48,7 +48,7 @@ class FlightAdapter(private val mFlights: List<Flight>, private val mClickListen
                 .into(holder.mMissionPatchImageView)
 
         holder.mLaunchDateTextView.text = launchDate.format(date)
-        holder.mDetailTextView.text = flight.details
+        holder.mDetailTextView.text = flight.details ?: holder.itemView.context.getString(R.string.no_info)
 
         holder.mArticleButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)

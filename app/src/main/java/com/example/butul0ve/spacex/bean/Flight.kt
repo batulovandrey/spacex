@@ -10,4 +10,4 @@ data class Flight (@SerializedName("flight_number") var flightNumber: Int,
                    @SerializedName("rocket") var rocket: Rocket,
                    @SerializedName("launch_date_unix") var launchDate: String,
                    @SerializedName("links") var links: Links,
-                   @SerializedName("details") var details: String)
+                   @SerializedName("details") var details: String?)

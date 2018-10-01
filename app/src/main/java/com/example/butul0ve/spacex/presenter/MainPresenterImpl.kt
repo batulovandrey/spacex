@@ -65,7 +65,7 @@ class MainPresenterImpl : MainPresenter, FlightClickListener {
                         Log.d(TAG, "ok ${response.body()?.size}")
 
                         response.body()?.forEach {
-                            Log.d(TAG, it.details)
+                            Log.d(TAG, it.details ?: "")
                         }
 
                         response.body()?.let {

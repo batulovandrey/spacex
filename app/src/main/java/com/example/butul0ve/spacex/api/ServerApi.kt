@@ -3,10 +3,10 @@ package com.example.butul0ve.spacex.api
 import com.example.butul0ve.spacex.bean.Flight
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Url
+import retrofit2.http.Query
 
 interface ServerApi {
 
-    @GET
-    fun getLaunchesByYear(@Url url: String): Call<List<Flight>>
+    @GET("launches")
+    fun getLaunchesByYear(@Query(value = "launch_year") year: Int): Call<List<Flight>>
 }
