@@ -4,6 +4,7 @@ import com.example.butul0ve.spacex.bean.Flight
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 
 class NetworkHelper {
 
@@ -12,8 +13,14 @@ class NetworkHelper {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-    fun getFlights(): Call<List<Flight>> {
-        return retrofit.create(ServerApi::class.java).getLaunchesByYear("launches?launch_year=2018")
+    fun getFlights(launchYear: Int = 0): Call<List<Flight>> {
+        val year = if (launchYear == 0) {
+            Calendar.getInstance().get(Calendar.YEAR)
+        } else {
+            launchYear
+        }
+
+        return retrofit.create(ServerApi::class.java).getLaunchesByYear("launches?launch_year=$year")
     }
 
     companion object {
