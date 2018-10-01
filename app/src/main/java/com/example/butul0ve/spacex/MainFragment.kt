@@ -1,6 +1,6 @@
 package com.example.butul0ve.spacex
 
-import android.content.Intent
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -15,8 +15,9 @@ import com.example.butul0ve.spacex.adapter.FlightAdapter
 import com.example.butul0ve.spacex.presenter.MainPresenter
 import com.example.butul0ve.spacex.view.MainView
 
-class MainFragment: Fragment(), MainView {
+class MainFragment : Fragment(), MainView {
 
+    private lateinit var clickListener: OnItemClickListener
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var tryAgainButton: Button
@@ -25,6 +26,15 @@ class MainFragment: Fragment(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        try {
+            clickListener = activity as OnItemClickListener
+        } catch (ex: ClassCastException) {
+            throw ClassCastException("${activity.toString()} must implement OnItemClickListener")
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -54,8 +64,7 @@ class MainFragment: Fragment(), MainView {
     }
 
     override fun openYouTube(uri: Uri) {
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        startActivity(intent)
+        clickListener.onItemClick(uri.query.substringAfter("="))
     }
 
     override fun setAdapter(adapter: FlightAdapter) {
@@ -80,4 +89,9 @@ class MainFragment: Fragment(), MainView {
     }
 
     fun getPresenter() = mainPresenter
+
+    interface OnItemClickListener {
+
+        fun onItemClick(videoId: String)
+    }
 }
