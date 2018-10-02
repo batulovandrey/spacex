@@ -11,6 +11,9 @@ interface ServerApi {
     @GET("launches/past")
     fun getLaunchesByYear(@Query(value = "launch_year") year: Int): Call<List<Flight>>
 
+    @GET("launches/upcoming")
+    fun getUpcomingLaunches(@Query(value = "launch_year") year: Int): Call<List<Flight>>
+
     @GET("dragons")
     fun getDragons(): Call<List<Dragon>>
 }

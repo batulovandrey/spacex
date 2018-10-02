@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.example.butul0ve.spacex.presenter.MainPresenterImpl
 import com.example.butul0ve.spacex.utils.MAIN
 import com.example.butul0ve.spacex.utils.DRAGONS
+import com.example.butul0ve.spacex.utils.UPCOMING
 import com.example.butul0ve.spacex.utils.convert
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -67,8 +68,12 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
         bottomNavigationView = findViewById(R.id.bottom_navigation_view)
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.todo_launches -> {
-
+                R.id.upcoming_launches -> {
+                    currentFragment = UPCOMING.convert()
+                    supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.container, currentFragment!!)
+                        commit()
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.done_launches -> {

@@ -8,3 +8,4 @@ annotation class FragmentsDef
 
 const val MAIN = "main"
 const val DRAGONS = "dragons"
+const val UPCOMING = "upcoming"

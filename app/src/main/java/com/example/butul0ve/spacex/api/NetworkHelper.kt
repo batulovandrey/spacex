@@ -27,6 +27,16 @@ class NetworkHelper {
         return serverApi.getLaunchesByYear(year)
     }
 
+    fun getUpcomingLaunches(launchYear: Int = 0): Call<List<Flight>> {
+        val year = if (launchYear == 0) {
+            Calendar.getInstance().get(Calendar.YEAR)
+        } else {
+            launchYear
+        }
+
+        return serverApi.getUpcomingLaunches(year)
+    }
+
     fun getDragons(): Call<List<Dragon>> {
         return serverApi.getDragons()
     }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/todo_launches"
+        android:id="@+id/upcoming_launches"
         android:icon="@drawable/ic_todo"
         android:title="todo_launches" />
 
