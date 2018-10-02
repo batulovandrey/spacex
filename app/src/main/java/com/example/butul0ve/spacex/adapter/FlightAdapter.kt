@@ -38,7 +38,6 @@ class FlightAdapter(private val mFlights: List<Flight>, private val mClickListen
         val launchDate = SimpleDateFormat("dd MMMM y, HH:mm:ss", Locale.ENGLISH)
         val options = RequestOptions()
                 .centerCrop()
-                .placeholder(R.drawable.nyan_cat)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .dontAnimate()
                 .dontTransform()

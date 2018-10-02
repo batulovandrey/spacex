@@ -70,7 +70,7 @@ class MainPresenterImpl : MainPresenter, FlightClickListener {
 
                         response.body()?.let {
                             flights = it
-                            adapter = FlightAdapter(flights, this@MainPresenterImpl)
+                            adapter = FlightAdapter(flights.reversed(), this@MainPresenterImpl)
                             mainView.setAdapter(adapter)
                         }
 

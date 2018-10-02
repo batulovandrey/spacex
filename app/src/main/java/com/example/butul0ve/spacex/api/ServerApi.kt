@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface ServerApi {
 
-    @GET("launches")
+    @GET("launches/past")
     fun getLaunchesByYear(@Query(value = "launch_year") year: Int): Call<List<Flight>>
 
     @GET("dragons")

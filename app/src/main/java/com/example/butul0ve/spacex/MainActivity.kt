@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
                     setCheckedItemOfBottomNavigationView()
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.rockets -> {
+                R.id.dragons -> {
                     currentFragment = DRAGONS.convert()
                     supportFragmentManager.beginTransaction().apply {
                         replace(R.id.container, currentFragment!!)
