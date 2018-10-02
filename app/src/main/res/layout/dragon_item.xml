@@ -21,29 +21,6 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white">
-
-                <ImageView
-                    android:id="@+id/mission_patch_image_view"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:src="@drawable/nyan_cat"
-                    android:tag="nyan cat" />
-
-                <Button
-                    android:id="@+id/article_button"
-                    style="@style/ArticleButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/article"
-                    android:textStyle="italic" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -51,19 +28,29 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
-                    android:text="@string/rocket_name" />
+                    android:text="@string/dragon_name" />
 
                 <TextView
-                    android:id="@+id/rocket_name_text_view"
+                    android:id="@+id/dragon_name_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    tools:text="some rocket name" />
+                    tools:text="some dragon name" />
 
             </TableRow>
+
+            <Button
+                android:id="@+id/open_wiki_button"
+                style="@style/ArticleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="4dp"
+                android:text="@string/wiki_button"
+                android:textStyle="italic" />
 
             <TableRow
                 android:layout_width="match_parent"
@@ -74,16 +61,16 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
-                    android:text="@string/flight_number" />
+                    android:text="@string/dragon_type" />
 
                 <TextView
-                    android:id="@+id/flight_number_text_view"
+                    android:id="@+id/dragon_type_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:textColor="@color/white"
-                    tools:text="some flight number" />
+                    tools:text="some dragon type" />
 
             </TableRow>
 
@@ -96,17 +83,17 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
-                    android:text="@string/launch_date" />
+                    android:text="@string/dragon_active" />
 
                 <TextView
-                    android:id="@+id/launch_date_text_view"
+                    android:id="@+id/dragon_active_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:textColor="@color/white"
                     android:textStyle="italic"
-                    tools:text="some launch date unix" />
+                    tools:text="true" />
             </TableRow>
 
             <TableRow>
@@ -116,18 +103,44 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
-                    android:text="@string/details" />
+                    android:text="@string/description" />
 
                 <TextView
-                    android:id="@+id/detail_text_view"
+                    android:id="@+id/dragon_description_text_view"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="4dp"
                     android:textColor="@color/white"
-                    tools:text="some details" />
+                    tools:text="some description" />
             </TableRow>
 
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="@string/first_flight" />
+
+                <TextView
+                    android:id="@+id/first_flight_text_view"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:textColor="@color/white"
+                    tools:text="10/10/2020" />
+            </TableRow>
+
+            <LinearLayout
+                android:id="@+id/images_layout"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
         </TableLayout>
+
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

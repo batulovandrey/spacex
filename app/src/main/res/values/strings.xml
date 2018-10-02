@@ -7,4 +7,11 @@
     <string name="flight_number">flight number:</string>
     <string name="error">something went wrong</string>
     <string name="try_again">try again</string>
+    <string name="no_info">no info</string>
+    <string name="dragon_name">dragon name:</string>
+    <string name="dragon_type">dragon type:</string>
+    <string name="dragon_active">dragon active:</string>
+    <string name="description">description:</string>
+    <string name="wiki_button">open wikipedia</string>
+    <string name="first_flight">first flight:</string>
 </resources>
