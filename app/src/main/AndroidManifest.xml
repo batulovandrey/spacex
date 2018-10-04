@@ -24,6 +24,9 @@
         <activity android:name=".PlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout">
         </activity>
+
+        <service android:name=".service.BackgroundNetworkService"/>
+
     </application>
 
 </manifest>
