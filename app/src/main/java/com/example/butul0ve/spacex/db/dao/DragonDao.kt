@@ -1,10 +1,12 @@
 package com.example.butul0ve.spacex.db.dao
 
+import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
+import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.example.butul0ve.spacex.bean.Dragon
 
+@Dao
 interface DragonDao {
 
     @Query("select * from dragons")
@@ -13,6 +15,9 @@ interface DragonDao {
     @Query("delete from dragons")
     fun deleteAll()
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = REPLACE)
     fun insert(dragon: Dragon)
+
+    @Insert(onConflict = REPLACE)
+    fun insert(dragons: List<Dragon>)
 }

@@ -10,7 +10,17 @@ import com.google.gson.annotations.SerializedName
  */
 
 @Entity(tableName = "links")
-data class Links(@PrimaryKey(autoGenerate = true) var linkId: Long?,
-                 @SerializedName("mission_patch") @ColumnInfo(name = "mission_patch") var missionPath: String,
-                 @SerializedName("article_link") @ColumnInfo(name = "article_link") var articleLink: String,
-                 @SerializedName("video_link") @ColumnInfo(name = "video_link") var videoLink: String)
+data class Links(@PrimaryKey(autoGenerate = true)
+                 var linkId: Long?,
+
+                 @SerializedName("mission_patch")
+                 @ColumnInfo(name = "mission_patch")
+                 var missionPath: String,
+
+                 @SerializedName("article_link")
+                 @ColumnInfo(name = "article_link")
+                 var articleLink: String,
+
+                 @SerializedName("video_link")
+                 @ColumnInfo(name = "video_link")
+                 var videoLink: String)

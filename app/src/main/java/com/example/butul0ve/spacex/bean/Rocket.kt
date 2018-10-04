@@ -10,6 +10,13 @@ import com.google.gson.annotations.SerializedName
  */
 
 @Entity(tableName = "rockets")
-data class Rocket(@PrimaryKey(autoGenerate = true) var rocketId: Long?,
-                  @SerializedName("rocket_id") @ColumnInfo(name ="rocket_id") var id: String,
-                  @SerializedName("rocket_name") @ColumnInfo(name = "rocket_name") var name: String)
+data class Rocket(@PrimaryKey(autoGenerate = true)
+                  var rocketId: Long?,
+
+                  @SerializedName("rocket_id")
+                  @ColumnInfo(name ="rocket_id")
+                  var id: String,
+
+                  @SerializedName("rocket_name")
+                  @ColumnInfo(name = "rocket_name")
+                  var name: String)
