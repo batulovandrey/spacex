@@ -6,10 +6,11 @@ import com.example.butul0ve.spacex.adapter.FlightAdapter
 import com.example.butul0ve.spacex.adapter.FlightClickListener
 import com.example.butul0ve.spacex.api.NetworkHelper
 import com.example.butul0ve.spacex.bean.Flight
+import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.view.MainView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by butul0ve on 21.01.18.
@@ -17,7 +18,7 @@ import retrofit2.Response
 
 private val TAG = MainPresenterImpl::class.java.simpleName
 
-class MainPresenterImpl : MainPresenter, FlightClickListener {
+class MainPresenterImpl(private val dataManager: DataManager) : MainPresenter, FlightClickListener {
 
     private lateinit var flights: List<Flight>
     private lateinit var adapter: FlightAdapter
@@ -54,39 +55,15 @@ class MainPresenterImpl : MainPresenter, FlightClickListener {
 
     override fun getData() {
         if (isViewAttached()) {
-            val flightsResponse = networkHelper.getFlights()
-            mainView.showProgressBar()
-
-            flightsResponse.enqueue(object : Callback<List<Flight>> {
-
-                override fun onResponse(call: Call<List<Flight>>?, response: Response<List<Flight>>?) {
-
-                    if (response?.isSuccessful!!) {
-                        Log.d(TAG, "ok ${response.body()?.size}")
-
-                        response.body()?.forEach {
-                            Log.d(TAG, it.details ?: "")
-                        }
-
-                        response.body()?.let {
-                            flights = it
-                            adapter = FlightAdapter(flights.reversed(), this@MainPresenterImpl)
-                            mainView.setAdapter(adapter)
-                        }
-
-                    } else {
-                        Log.e(TAG, "failed")
-                    }
-
-                    mainView.hideProgressBar()
-                }
-
-                override fun onFailure(call: Call<List<Flight>>?, t: Throwable?) {
-                    Log.e(TAG, t?.message)
-                    mainView.hideProgressBar()
-                }
-
-            })
+            CompositeDisposable().add(dataManager.getDoneFlights().
+                    subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        flights = it.reversed()
+                        adapter = FlightAdapter(flights, this@MainPresenterImpl)
+                        mainView.setAdapter(adapter)
+                        Log.d(TAG, "flights size is ${flights.size}")
+                    })
         }
     }
 
