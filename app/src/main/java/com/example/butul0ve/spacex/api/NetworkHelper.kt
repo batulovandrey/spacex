@@ -4,6 +4,7 @@ import com.example.butul0ve.spacex.bean.Dragon
 import com.example.butul0ve.spacex.bean.Flight
 import retrofit2.Call
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
@@ -12,6 +13,7 @@ class NetworkHelper {
     private val retrofit = Retrofit.Builder()
             .baseUrl(JSON_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
 
