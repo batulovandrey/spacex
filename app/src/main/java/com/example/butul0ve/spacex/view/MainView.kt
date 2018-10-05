@@ -1,7 +1,7 @@
 package com.example.butul0ve.spacex.view
 
 import android.net.Uri
-import com.example.butul0ve.spacex.adapter.FlightAdapter
+import com.example.butul0ve.spacex.adapter.PastLaunchesAdapter
 
 /**
  * Created by butul0ve on 21.01.18.
@@ -15,7 +15,7 @@ interface MainView {
 
     fun openYouTube(uri: Uri)
 
-    fun setAdapter(adapter: FlightAdapter)
+    fun setAdapter(adapter: PastLaunchesAdapter)
 
     fun showToast(message: Int)
 

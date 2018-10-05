@@ -2,7 +2,9 @@ package com.example.butul0ve.spacex.db
 
 import android.content.Context
 import com.example.butul0ve.spacex.bean.Dragon
-import com.example.butul0ve.spacex.bean.Flight
+import com.example.butul0ve.spacex.bean.PastLaunch
+import com.example.butul0ve.spacex.bean.UpcomingLaunch
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.async
@@ -11,39 +13,39 @@ class DataManager(context: Context) {
 
     private val dbInstance = SpaceXDataBase.getInstance(context)!!
 
-    fun getDoneFlights(): Flowable<List<Flight>> {
-        return dbInstance.flightDao().getDoneFlights()
+    fun getAllPastLaunches(): Flowable<List<PastLaunch>> {
+        return dbInstance.pastLaunchesDao().getAll()
     }
 
-    suspend fun getNextFlights(): List<Flight> {
-        return GlobalScope.async { dbInstance.flightDao().getNextFlights() }.await()
+    fun getDragons(): Flowable<List<Dragon>> {
+        return dbInstance.dragonDao().getAll()
     }
 
-    suspend fun getDragons(): List<Dragon> {
-        return GlobalScope.async { dbInstance.dragonDao().getAll() }.await()
+    fun getAllUpcomingLaunches(): Flowable<List<UpcomingLaunch>> {
+        return dbInstance.upcomingLaunchesDao().getAll()
     }
 
     suspend fun deleteAllDragons() {
         GlobalScope.async { dbInstance.dragonDao().deleteAll() }.await()
     }
 
-    suspend fun deleteAllFlights() {
-        GlobalScope.async { dbInstance.flightDao().deleteAll() }.await()
+    suspend fun deleteAllPastLaunches() {
+        GlobalScope.async { dbInstance.pastLaunchesDao().deleteAll() }.await()
     }
 
-    suspend fun insertFlight(flight: Flight) {
-        GlobalScope.async { dbInstance.flightDao().insert(flight) }.await()
+    suspend fun deleteAllUpcomingLaunches() {
+        GlobalScope.async { dbInstance.upcomingLaunchesDao().deleteAll() }.await()
     }
 
-    suspend fun insertFlights(flights: List<Flight>) {
-        GlobalScope.async { dbInstance.flightDao().insert(flights) }.await()
+    fun insertPastLaunches(pastLaunches: List<PastLaunch>): Completable {
+        return Completable.fromAction { dbInstance.pastLaunchesDao().insert(pastLaunches) }
     }
 
-    suspend fun insertDragon(dragon: Dragon) {
-        GlobalScope.async { dbInstance.dragonDao().insert(dragon) }.await()
+    fun insertDragons(dragons: List<Dragon>): Completable {
+        return Completable.fromAction { dbInstance.dragonDao().insert(dragons) }
     }
 
-    suspend fun insertDragons(dragons: List<Dragon>) {
-        GlobalScope.async { dbInstance.dragonDao().insert(dragons) }.await()
+    fun insertUpcomingLaunches(upcomingLaunches: List<UpcomingLaunch>): Completable {
+        return Completable.fromAction { dbInstance.upcomingLaunchesDao().insert(upcomingLaunches) }
     }
 }

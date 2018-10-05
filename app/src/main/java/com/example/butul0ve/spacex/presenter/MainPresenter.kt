@@ -1,7 +1,7 @@
 package com.example.butul0ve.spacex.presenter
 
 import android.net.Uri
-import com.example.butul0ve.spacex.adapter.FlightAdapter
+import com.example.butul0ve.spacex.adapter.PastLaunchesAdapter
 import com.example.butul0ve.spacex.view.MainView
 
 /**
@@ -20,7 +20,7 @@ interface MainPresenter {
 
     fun getData()
 
-    fun setAdapter(adapter: FlightAdapter)
+    fun setAdapter(adapter: PastLaunchesAdapter)
 
     fun showToast(message: Int)
 

@@ -14,7 +14,7 @@ fun String.convert(context: Context): Fragment {
     return when(this) {
         DRAGONS -> {
             val fragment = DragonsFragment()
-            fragment.setPresenter(DragonsPresenterImpl())
+            fragment.setPresenter(DragonsPresenterImpl(DataManager(context)))
             fragment
         }
         MAIN -> {
@@ -24,7 +24,7 @@ fun String.convert(context: Context): Fragment {
         }
         UPCOMING -> {
             val fragment = UpcomingFragment()
-            fragment.setPresenter(UpcomingPresenterImpl())
+            fragment.setPresenter(UpcomingPresenterImpl(DataManager(context)))
             fragment
         }
         else  -> {

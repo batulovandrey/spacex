@@ -1,21 +1,21 @@
 package com.example.butul0ve.spacex.presenter
 
-import android.util.Log
-import com.example.butul0ve.spacex.adapter.FlightAdapter
-import com.example.butul0ve.spacex.adapter.FlightClickListener
+import com.example.butul0ve.spacex.adapter.PastLaunchesClickListener
+import com.example.butul0ve.spacex.adapter.UpcomingLaunchesAdaper
 import com.example.butul0ve.spacex.api.NetworkHelper
-import com.example.butul0ve.spacex.bean.Flight
+import com.example.butul0ve.spacex.bean.UpcomingLaunch
+import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.view.UpcomingView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
-class UpcomingPresenterImpl: UpcomingPresenter, FlightClickListener {
+class UpcomingPresenterImpl(private val dataManager: DataManager): UpcomingPresenter, PastLaunchesClickListener {
 
     private val TAG = UpcomingPresenterImpl::class.java.name
 
-    private lateinit var adapter: FlightAdapter
-    private lateinit var flights: List<Flight>
+    private lateinit var adapter: UpcomingLaunchesAdaper
+    private lateinit var upcomingLaunches: List<UpcomingLaunch>
     private lateinit var upcomingView: UpcomingView
     private val networkHelper = NetworkHelper()
 
@@ -24,29 +24,14 @@ class UpcomingPresenterImpl: UpcomingPresenter, FlightClickListener {
     }
 
     override fun getData() {
-        upcomingView.showProgressBar()
-        networkHelper.getUpcomingLaunches().enqueue(object : Callback<List<Flight>> {
-
-            override fun onResponse(call: Call<List<Flight>>?, response: Response<List<Flight>>?) {
-                if (response?.isSuccessful!!) {
-
-                    response.body()?.let {
-                        flights = it
-                        adapter = FlightAdapter(flights, this@UpcomingPresenterImpl)
-                        upcomingView.setAdapter(adapter)
-                    }
-                } else {
-                    Log.d(TAG, "failed")
-                }
-
-                upcomingView.hideProgressBar()
-            }
-
-            override fun onFailure(call: Call<List<Flight>>?, t: Throwable?) {
-                upcomingView.hideProgressBar()
-                Log.e(TAG, t?.message)
-            }
-        })
+        CompositeDisposable().add(dataManager.getAllUpcomingLaunches()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    upcomingLaunches = it
+                    adapter = UpcomingLaunchesAdaper(upcomingLaunches)
+                    upcomingView.setAdapter(adapter)
+                })
     }
 
     override fun onItemClick(position: Int) {

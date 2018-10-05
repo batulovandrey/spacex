@@ -11,7 +11,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.example.butul0ve.spacex.adapter.FlightAdapter
+import com.example.butul0ve.spacex.adapter.PastLaunchesAdapter
 import com.example.butul0ve.spacex.presenter.MainPresenter
 import com.example.butul0ve.spacex.view.MainView
 
@@ -67,7 +67,7 @@ class MainFragment : Fragment(), MainView {
         clickListener.onItemClick(uri.query.substringAfter("="))
     }
 
-    override fun setAdapter(adapter: FlightAdapter) {
+    override fun setAdapter(adapter: PastLaunchesAdapter) {
         activity?.runOnUiThread { recyclerView.adapter = adapter }
     }
 

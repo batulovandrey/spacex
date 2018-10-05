@@ -7,6 +7,15 @@
     android:orientation="vertical"
     tools:context="com.example.butul0ve.spacex.MainActivity">
 
+    <ImageView
+        android:id="@+id/placeholder_iv"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:src="@drawable/nyan_cat"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="150dp"
+        android:layout_height="150dp" />
+
     <FrameLayout
         android:id="@+id/container"
         android:layout_weight="2"

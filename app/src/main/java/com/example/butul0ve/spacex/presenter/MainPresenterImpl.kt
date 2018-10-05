@@ -2,10 +2,10 @@ package com.example.butul0ve.spacex.presenter
 
 import android.net.Uri
 import android.util.Log
-import com.example.butul0ve.spacex.adapter.FlightAdapter
-import com.example.butul0ve.spacex.adapter.FlightClickListener
+import com.example.butul0ve.spacex.adapter.PastLaunchesAdapter
+import com.example.butul0ve.spacex.adapter.PastLaunchesClickListener
 import com.example.butul0ve.spacex.api.NetworkHelper
-import com.example.butul0ve.spacex.bean.Flight
+import com.example.butul0ve.spacex.bean.PastLaunch
 import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.view.MainView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,17 +18,17 @@ import io.reactivex.schedulers.Schedulers
 
 private val TAG = MainPresenterImpl::class.java.simpleName
 
-class MainPresenterImpl(private val dataManager: DataManager) : MainPresenter, FlightClickListener {
+class MainPresenterImpl(private val dataManager: DataManager) : MainPresenter, PastLaunchesClickListener {
 
-    private lateinit var flights: List<Flight>
-    private lateinit var adapter: FlightAdapter
+    private lateinit var pastLaunches: List<PastLaunch>
+    private lateinit var adapter: PastLaunchesAdapter
     private lateinit var mainView: MainView
 
     private val networkHelper = NetworkHelper()
 
     override fun onItemClick(position: Int) {
-        if (::flights.isInitialized) {
-            val flight = flights[position]
+        if (::pastLaunches.isInitialized) {
+            val flight = pastLaunches[position]
             val videoLink = Uri.parse(flight.links.videoLink)
             openYouTube(videoLink)
         }
@@ -55,19 +55,19 @@ class MainPresenterImpl(private val dataManager: DataManager) : MainPresenter, F
 
     override fun getData() {
         if (isViewAttached()) {
-            CompositeDisposable().add(dataManager.getDoneFlights().
-                    subscribeOn(Schedulers.io())
+            CompositeDisposable().add(dataManager.getAllPastLaunches()
+                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
-                        flights = it.reversed()
-                        adapter = FlightAdapter(flights, this@MainPresenterImpl)
+                        pastLaunches = it.reversed()
+                        adapter = PastLaunchesAdapter(pastLaunches, this@MainPresenterImpl)
                         mainView.setAdapter(adapter)
-                        Log.d(TAG, "flights size is ${flights.size}")
+                        Log.d(TAG, "pastLaunches size is ${pastLaunches.size}")
                     })
         }
     }
 
-    override fun setAdapter(adapter: FlightAdapter) {
+    override fun setAdapter(adapter: PastLaunchesAdapter) {
         if (isViewAttached())
             mainView.setAdapter(adapter)
     }
@@ -93,8 +93,8 @@ class MainPresenterImpl(private val dataManager: DataManager) : MainPresenter, F
 
     override fun isDataLoaded(): Boolean {
         return ::adapter.isInitialized &&
-                ::flights.isInitialized &&
-                flights.isNotEmpty()
+                ::pastLaunches.isInitialized &&
+                pastLaunches.isNotEmpty()
     }
 
     override fun showData() {

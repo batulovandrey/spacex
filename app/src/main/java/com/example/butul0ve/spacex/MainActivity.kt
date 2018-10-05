@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.butul0ve.spacex.db.DataManager
@@ -25,11 +27,16 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
 
     private var currentFragment: Fragment? = null
     private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var placeHolderIV: ImageView
 
     private val backgroundBroadcastReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(ctx: Context?, intent: Intent?) {
             if (intent == null) return
+
+            setupBottomNavigationView()
+            setCheckedItemOfBottomNavigationView()
+            placeHolderIV.visibility = View.GONE
 
             if (intent.action == ACTION_BACKGROUND_NETWORK_SERVICE) {
 
@@ -57,10 +64,17 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupBottomNavigationView()
+        placeHolderIV = findViewById(R.id.placeholder_iv)
+
         val manager = supportFragmentManager
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState == null) {
+            placeHolderIV.visibility = View.VISIBLE
+        } else {
+            placeHolderIV.visibility = View.GONE
+            setupBottomNavigationView()
+            setCheckedItemOfBottomNavigationView()
+
             currentFragment = manager.findFragmentById(R.id.container)
             if (currentFragment == null) {
                 currentFragment = savedInstanceState.getString(CURRENT_FRAGMENT, MAIN).convert(this)
@@ -71,7 +85,6 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
             }
         }
 
-        setCheckedItemOfBottomNavigationView()
     }
 
     override fun onResume() {

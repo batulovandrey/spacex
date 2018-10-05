@@ -4,21 +4,21 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import com.example.butul0ve.spacex.bean.Dragon
+import com.example.butul0ve.spacex.bean.PastLaunch
 import io.reactivex.Flowable
 
 @Dao
-interface DragonDao {
+interface PastLaunchesDao {
 
-    @Query("select * from dragons")
-    fun getAll(): Flowable<List<Dragon>>
+    @Query("select * from past_launches")
+    fun getAll(): Flowable<List<PastLaunch>>
 
-    @Query("delete from dragons")
+    @Query("delete from past_launches")
     fun deleteAll()
 
     @Insert(onConflict = REPLACE)
-    fun insert(dragon: Dragon)
+    fun insert(pastLaunch: PastLaunch)
 
     @Insert(onConflict = REPLACE)
-    fun insert(dragons: List<Dragon>)
+    fun insert(pastLaunches: List<PastLaunch>)
 }

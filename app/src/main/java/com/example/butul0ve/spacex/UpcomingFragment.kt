@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.example.butul0ve.spacex.adapter.FlightAdapter
+import com.example.butul0ve.spacex.adapter.UpcomingLaunchesAdaper
 import com.example.butul0ve.spacex.presenter.UpcomingPresenter
 import com.example.butul0ve.spacex.view.UpcomingView
 
@@ -43,7 +43,7 @@ class UpcomingFragment: Fragment(), UpcomingView {
         upcomingPresenter.attachView(this)
     }
 
-    override fun setAdapter(adapter: FlightAdapter) {
+    override fun setAdapter(adapter: UpcomingLaunchesAdaper) {
         activity?.runOnUiThread { dragonsRecycler.adapter = adapter }
     }
 

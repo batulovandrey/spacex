@@ -5,8 +5,9 @@ import android.content.Intent
 import android.util.Log
 import com.example.butul0ve.spacex.api.NetworkHelper
 import com.example.butul0ve.spacex.db.DataManager
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.*
-import java.io.IOException
 
 const val ACTION_BACKGROUND_NETWORK_SERVICE = "BackgroundNetworkServiceResponse"
 const val UPCOMING_LAUNCHES_EXTRA = "upcoming_launches_extra"
@@ -18,6 +19,7 @@ class BackgroundNetworkService : IntentService(BackgroundNetworkService::class.j
     private val TAG = BackgroundNetworkService::class.java.name
 
     private val networkHelper = NetworkHelper()
+    private val disposable = CompositeDisposable()
     private lateinit var dataManager: DataManager
     private lateinit var job: Job
 
@@ -28,8 +30,9 @@ class BackgroundNetworkService : IntentService(BackgroundNetworkService::class.j
         Log.d(TAG, "oncreate before delete")
 
         job = GlobalScope.launch {
-            dataManager.deleteAllFlights()
+            dataManager.deleteAllPastLaunches()
             dataManager.deleteAllDragons()
+            dataManager.deleteAllUpcomingLaunches()
         }
 
         Log.d(TAG, "oncreate after delete")
@@ -49,97 +52,66 @@ class BackgroundNetworkService : IntentService(BackgroundNetworkService::class.j
     }
 
     private fun sendUpcomingLaunchesRequest() {
-        val responseIntent = Intent()
-        responseIntent.action = ACTION_BACKGROUND_NETWORK_SERVICE
-        responseIntent.addCategory(Intent.CATEGORY_DEFAULT)
-
-        val response = networkHelper.getUpcomingLaunches().execute()
-
-        try {
-            if (response.isSuccessful) {
-
-                if (response.body() != null && response.body()?.isNotEmpty()!!) {
-                    Log.d(TAG, "runblocking upcoming")
-                    runBlocking {
-                        GlobalScope.launch { dataManager.insertFlights(response.body()!!) }
-                    }
-
+        disposable.add(networkHelper.getUpcomingLaunches()
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    dataManager.insertUpcomingLaunches(it).subscribe()
+                    val responseIntent = Intent()
+                    responseIntent.action = ACTION_BACKGROUND_NETWORK_SERVICE
+                    responseIntent.addCategory(Intent.CATEGORY_DEFAULT)
                     responseIntent.putExtra(UPCOMING_LAUNCHES_EXTRA, true)
-                    Log.d(TAG, "response body is ok")
-                } else {
-                    responseIntent.putExtra(UPCOMING_LAUNCHES_EXTRA, false)
-                    Log.d(TAG, "response body upcoming launches is null or empty")
-                }
+                    sendBroadcast(responseIntent)
+                    Log.d(TAG, "send upcoming subscribe, size is ${it.size}")
+                },
+                        {
+                            val responseIntent = Intent()
+                            responseIntent.action = ACTION_BACKGROUND_NETWORK_SERVICE
+                            responseIntent.addCategory(Intent.CATEGORY_DEFAULT)
+                            responseIntent.putExtra(UPCOMING_LAUNCHES_EXTRA, false)
+                            sendBroadcast(responseIntent)
 
-            } else {
-                responseIntent.putExtra(UPCOMING_LAUNCHES_EXTRA, false)
-                Log.d(TAG, "onResponse upcoming launches failed")
-            }
-        } catch (ex: IOException) {
-            responseIntent.putExtra(UPCOMING_LAUNCHES_EXTRA, false)
-            Log.e(TAG, ex.message)
-        } finally {
-            sendBroadcast(responseIntent)
-        }
+                        }))
     }
 
     private fun sendPastLaunchesRequest() {
-        val responseIntent = Intent()
-        responseIntent.action = ACTION_BACKGROUND_NETWORK_SERVICE
-        responseIntent.addCategory(Intent.CATEGORY_DEFAULT)
-
-        val response = networkHelper.getFlights().execute()
-
-        try {
-            if (response.isSuccessful) {
-                if (response.body() != null && response.body()?.isNotEmpty()!!) {
-                    Log.d(TAG, "runblocking flights")
-                    runBlocking {
-                        GlobalScope.launch { dataManager.insertFlights(response.body()!!) }
-                    }
-
+        disposable.add(networkHelper.getFlights()
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    dataManager.insertPastLaunches(it).subscribe()
+                    val responseIntent = Intent()
+                    responseIntent.action = ACTION_BACKGROUND_NETWORK_SERVICE
+                    responseIntent.addCategory(Intent.CATEGORY_DEFAULT)
                     responseIntent.putExtra(FLIGHTS_EXTRA, true)
-                    Log.d(TAG, "response body flights is ok")
-                } else {
-                    responseIntent.putExtra(FLIGHTS_EXTRA, false)
-                    Log.d(TAG, "response body flights is null or empty")
-                }
-            }
-        } catch (ex: IOException) {
-            responseIntent.putExtra(FLIGHTS_EXTRA, false)
-            Log.e(TAG, ex.message)
-        } finally {
-            sendBroadcast(responseIntent)
-        }
+                    sendBroadcast(responseIntent)
+                    Log.d(TAG, "send past subscribe, size is ${it.size}")
+                },
+                        {
+                            val responseIntent = Intent()
+                            responseIntent.action = ACTION_BACKGROUND_NETWORK_SERVICE
+                            responseIntent.addCategory(Intent.CATEGORY_DEFAULT)
+                            responseIntent.putExtra(FLIGHTS_EXTRA, false)
+                            sendBroadcast(responseIntent)
+                        }))
     }
 
     private fun sendDragonsRequest() {
-        val responseIntent = Intent()
-        responseIntent.action = ACTION_BACKGROUND_NETWORK_SERVICE
-        responseIntent.addCategory(Intent.CATEGORY_DEFAULT)
-
-        val response = networkHelper.getDragons().execute()
-
-        try {
-            if (response.isSuccessful) {
-                if (response.body() != null && response.body()?.isNotEmpty()!!) {
-                    Log.d(TAG, "runblocking dragons")
-                    runBlocking {
-                        GlobalScope.launch { dataManager.insertDragons(response.body()!!) }
-                    }
-
+        disposable.add(networkHelper.getDragons()
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    dataManager.insertDragons(it).subscribe()
+                    val responseIntent = Intent()
+                    responseIntent.action = ACTION_BACKGROUND_NETWORK_SERVICE
+                    responseIntent.addCategory(Intent.CATEGORY_DEFAULT)
                     responseIntent.putExtra(DRAGONS_EXTRA, true)
-                    Log.d(TAG, "response body dragons is ok")
-                } else {
-                    responseIntent.putExtra(DRAGONS_EXTRA, false)
-                    Log.d(TAG, "response body dragons is null or empty")
-                }
-            }
-        } catch (ex: IOException) {
-            responseIntent.putExtra(DRAGONS_EXTRA, false)
-            Log.e(TAG, ex.message)
-        } finally {
-            sendBroadcast(responseIntent)
-        }
+                    sendBroadcast(responseIntent)
+                    Log.d(TAG, "send dragons subscribe, size is ${it.size}")
+                },
+                        {
+                            val responseIntent = Intent()
+                            responseIntent.action = ACTION_BACKGROUND_NETWORK_SERVICE
+                            responseIntent.addCategory(Intent.CATEGORY_DEFAULT)
+                            responseIntent.putExtra(DRAGONS_EXTRA, true)
+                            sendBroadcast(responseIntent)
+                        }))
     }
 }
