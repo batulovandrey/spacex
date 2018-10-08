@@ -3,7 +3,7 @@ package com.example.butul0ve.spacex.api
 import com.example.butul0ve.spacex.bean.Dragon
 import com.example.butul0ve.spacex.bean.PastLaunch
 import com.example.butul0ve.spacex.bean.UpcomingLaunch
-import io.reactivex.Flowable
+import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -20,7 +20,7 @@ class NetworkHelper {
 
     private val serverApi = retrofit.create(ServerApi::class.java)
 
-    fun getFlights(launchYear: Int = 0): Flowable<List<PastLaunch>> {
+    fun getFlights(launchYear: Int = 0): Single<List<PastLaunch>> {
         val startEnd = if (launchYear == 0) {
             Calendar.getInstance().get(Calendar.YEAR)
         } else {
@@ -30,7 +30,7 @@ class NetworkHelper {
         return serverApi.getLaunchesByYear(startEnd)
     }
 
-    fun getUpcomingLaunches(launchYear: Int = 0): Flowable<List<UpcomingLaunch>> {
+    fun getUpcomingLaunches(launchYear: Int = 0): Single<List<UpcomingLaunch>> {
         val year = if (launchYear == 0) {
             Calendar.getInstance().get(Calendar.YEAR)
         } else {
@@ -40,7 +40,7 @@ class NetworkHelper {
         return serverApi.getUpcomingLaunches(year)
     }
 
-    fun getDragons(): Flowable<List<Dragon>> {
+    fun getDragons(): Single<List<Dragon>> {
         return serverApi.getDragons()
     }
 

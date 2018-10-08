@@ -6,8 +6,6 @@ import com.example.butul0ve.spacex.bean.PastLaunch
 import com.example.butul0ve.spacex.bean.UpcomingLaunch
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.async
 
 class DataManager(context: Context) {
 
@@ -25,16 +23,16 @@ class DataManager(context: Context) {
         return dbInstance.upcomingLaunchesDao().getAll()
     }
 
-    suspend fun deleteAllDragons() {
-        GlobalScope.async { dbInstance.dragonDao().deleteAll() }.await()
+    fun deleteAllDragons(): Completable {
+        return Completable.fromAction { dbInstance.dragonDao().deleteAll() }
     }
 
-    suspend fun deleteAllPastLaunches() {
-        GlobalScope.async { dbInstance.pastLaunchesDao().deleteAll() }.await()
+    fun deleteAllPastLaunches(): Completable {
+        return Completable.fromAction { dbInstance.pastLaunchesDao().deleteAll() }
     }
 
-    suspend fun deleteAllUpcomingLaunches() {
-        GlobalScope.async { dbInstance.upcomingLaunchesDao().deleteAll() }.await()
+    fun deleteAllUpcomingLaunches(): Completable {
+        return Completable.fromAction { dbInstance.upcomingLaunchesDao().deleteAll() }
     }
 
     fun insertPastLaunches(pastLaunches: List<PastLaunch>): Completable {
