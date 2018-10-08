@@ -1,5 +1,6 @@
 package com.example.butul0ve.spacex.presenter
 
+import android.util.Log
 import com.example.butul0ve.spacex.adapter.DragonAdapter
 import com.example.butul0ve.spacex.api.NetworkHelper
 import com.example.butul0ve.spacex.db.DataManager
@@ -14,19 +15,30 @@ class DragonsPresenterImpl(private var dataManager: DataManager) : DragonsPresen
     private lateinit var rocketsView: RocketsView
     private lateinit var dragonAdapter: DragonAdapter
     private val networkHelper = NetworkHelper()
+    private val disposable = CompositeDisposable()
 
     override fun attachView(view: RocketsView) {
         rocketsView = view
     }
 
     override fun getData() {
-        CompositeDisposable().add(dataManager.getDragons()
+        rocketsView.showProgressBar()
+        disposable.add(networkHelper.getDragons()
                 .subscribeOn(Schedulers.io())
+                .map {
+                    dataManager.deleteAllDragons().subscribe()
+                    dataManager.insertDragons(it)
+                    it
+                }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe({
                     dragonAdapter = DragonAdapter(it)
                     rocketsView.setAdapter(dragonAdapter)
                     rocketsView.hideProgressBar()
-                })
+                },
+                        {
+                            Log.e(TAG, it.message)
+                            rocketsView.hideProgressBar()
+                        }))
     }
 }

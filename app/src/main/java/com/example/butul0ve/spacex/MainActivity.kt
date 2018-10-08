@@ -1,18 +1,10 @@
 package com.example.butul0ve.spacex
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.butul0ve.spacex.db.DataManager
-import com.example.butul0ve.spacex.presenter.MainPresenterImpl
-import com.example.butul0ve.spacex.service.*
 import com.example.butul0ve.spacex.utils.MAIN
 import com.example.butul0ve.spacex.utils.DRAGONS
 import com.example.butul0ve.spacex.utils.UPCOMING
@@ -29,37 +21,6 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var placeHolderIV: ImageView
 
-    private val backgroundBroadcastReceiver = object : BroadcastReceiver() {
-
-        override fun onReceive(ctx: Context?, intent: Intent?) {
-            if (intent == null) return
-
-            setupBottomNavigationView()
-            setCheckedItemOfBottomNavigationView()
-            placeHolderIV.visibility = View.GONE
-
-            if (intent.action == ACTION_BACKGROUND_NETWORK_SERVICE) {
-
-                Log.d(TAG, "upcoming extra launches is ${intent.getBooleanExtra(UPCOMING_LAUNCHES_EXTRA, false)}")
-                if (intent.getBooleanExtra(UPCOMING_LAUNCHES_EXTRA, false)) {
-                    currentFragment = MainFragment()
-                    val manager = supportFragmentManager
-
-                    manager.beginTransaction().apply {
-                        replace(R.id.container, currentFragment as MainFragment)
-                        commit()
-                    }
-
-                    (currentFragment as MainFragment).setPresenter(MainPresenterImpl(DataManager(this@MainActivity)))
-                    setCheckedItemOfBottomNavigationView()
-                }
-                Log.d(TAG, "flights extra launches is ${intent.getBooleanExtra(FLIGHTS_EXTRA, false)}")
-                Log.d(TAG, "dragons extra is ${intent.getBooleanExtra(DRAGONS_EXTRA, false)}")
-
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -67,14 +28,17 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
         placeHolderIV = findViewById(R.id.placeholder_iv)
 
         val manager = supportFragmentManager
+        setupBottomNavigationView()
 
         if (savedInstanceState == null) {
-            placeHolderIV.visibility = View.VISIBLE
-        } else {
-            placeHolderIV.visibility = View.GONE
-            setupBottomNavigationView()
-            setCheckedItemOfBottomNavigationView()
+            currentFragment = MAIN.convert(this)
 
+            manager.beginTransaction().apply {
+                replace(R.id.container, currentFragment as MainFragment)
+                commit()
+            }
+
+        } else {
             currentFragment = manager.findFragmentById(R.id.container)
             if (currentFragment == null) {
                 currentFragment = savedInstanceState.getString(CURRENT_FRAGMENT, MAIN).convert(this)
@@ -85,18 +49,8 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
             }
         }
 
-    }
+        setCheckedItemOfBottomNavigationView()
 
-    override fun onResume() {
-        super.onResume()
-        val intentFilter = IntentFilter(ACTION_BACKGROUND_NETWORK_SERVICE)
-        intentFilter.addCategory(Intent.CATEGORY_DEFAULT)
-        registerReceiver(backgroundBroadcastReceiver, intentFilter)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(backgroundBroadcastReceiver)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {

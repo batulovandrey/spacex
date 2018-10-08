@@ -20,22 +20,30 @@ private val TAG = MainPresenterImpl::class.java.simpleName
 
 class MainPresenterImpl(private val dataManager: DataManager) : MainPresenter, PastLaunchesClickListener {
 
-    private lateinit var pastLaunches: List<PastLaunch>
+    private var pastLaunches: List<PastLaunch>
     private lateinit var adapter: PastLaunchesAdapter
     private lateinit var mainView: MainView
-
     private val networkHelper = NetworkHelper()
+    private val disposable = CompositeDisposable()
+
+    init {
+        pastLaunches = dataManager.getAllPastLaunches().
+                subscribeOn(Schedulers.io())
+                .blockingFirst()
+    }
 
     override fun onItemClick(position: Int) {
-        if (::pastLaunches.isInitialized) {
-            val flight = pastLaunches[position]
-            val videoLink = Uri.parse(flight.links.videoLink)
-            openYouTube(videoLink)
-        }
+        val flight = pastLaunches[position]
+        val videoLink = Uri.parse(flight.links.videoLink)
+        openYouTube(videoLink)
     }
 
     override fun attachView(view: MainView) {
         mainView = view
+    }
+
+    override fun clearResources() {
+        disposable.clear()
     }
 
     override fun showProgressBar() {
@@ -55,15 +63,29 @@ class MainPresenterImpl(private val dataManager: DataManager) : MainPresenter, P
 
     override fun getData() {
         if (isViewAttached()) {
-            CompositeDisposable().add(dataManager.getAllPastLaunches()
+            mainView.showProgressBar()
+
+            disposable.add(networkHelper.getFlights()
                     .subscribeOn(Schedulers.io())
+                    .map {
+                        dataManager.deleteAllPastLaunches().subscribe()
+
+                        dataManager.insertPastLaunches(it.reversed()).subscribe()
+                        it.reversed()
+                    }
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        pastLaunches = it.reversed()
+                    .subscribe({
+                        pastLaunches = it
                         adapter = PastLaunchesAdapter(pastLaunches, this@MainPresenterImpl)
                         mainView.setAdapter(adapter)
+                        mainView.hideProgressBar()
                         Log.d(TAG, "pastLaunches size is ${pastLaunches.size}")
-                    })
+                    },
+                            {
+                                Log.e(TAG, it.message)
+                                mainView.hideProgressBar()
+                                mainView.showButtonTryAgain()
+                            }))
         }
     }
 
@@ -92,12 +114,18 @@ class MainPresenterImpl(private val dataManager: DataManager) : MainPresenter, P
     }
 
     override fun isDataLoaded(): Boolean {
-        return ::adapter.isInitialized &&
-                ::pastLaunches.isInitialized &&
-                pastLaunches.isNotEmpty()
+        return pastLaunches.isNotEmpty()
     }
 
     override fun showData() {
-        mainView.setAdapter(adapter)
+        disposable.add(dataManager.getAllPastLaunches()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    pastLaunches = it
+                    adapter = PastLaunchesAdapter(pastLaunches, this@MainPresenterImpl)
+                    mainView.setAdapter(adapter)
+                    Log.d(TAG, "pastLaunches size is ${pastLaunches.size}")
+                })
     }
 }

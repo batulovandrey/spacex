@@ -12,6 +12,8 @@ interface MainPresenter {
 
     fun attachView(view: MainView)
 
+    fun clearResources()
+
     fun showProgressBar()
 
     fun hideProgressBar()
