@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.butul0ve.spacex.adapter.PastLaunchesAdapter
 import com.example.butul0ve.spacex.presenter.MainPresenter
+import com.example.butul0ve.spacex.utils.isConnectedToInternet
 import com.example.butul0ve.spacex.view.MainView
 
 class MainFragment : Fragment(), MainView {
@@ -42,17 +43,14 @@ class MainFragment : Fragment(), MainView {
         recyclerView = view.findViewById(R.id.recycler_view)
         progressBar = view.findViewById(R.id.progress_bar)
         tryAgainButton = view.findViewById(R.id.try_again_button)
-        tryAgainButton.setOnClickListener { mainPresenter.getData() }
+//        tryAgainButton.setOnClickListener { mainPresenter.getData() }
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (mainPresenter.isDataLoaded()) {
-            mainPresenter.showData()
-        } else {
-            mainPresenter.getData()
-        }
+        val isConnected = activity?.isConnectedToInternet()
+        isConnected?.let { mainPresenter.getData(it) }
     }
 
     override fun showProgressBar() {

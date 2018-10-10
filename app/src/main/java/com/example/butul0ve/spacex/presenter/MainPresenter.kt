@@ -20,7 +20,7 @@ interface MainPresenter {
 
     fun openYouTube(uri: Uri)
 
-    fun getData()
+    fun getData(isConnected: Boolean)
 
     fun setAdapter(adapter: PastLaunchesAdapter)
 
@@ -29,8 +29,4 @@ interface MainPresenter {
     fun showButtonTryAgain()
 
     fun hideButtonTryAgain()
-
-    fun isDataLoaded(): Boolean
-
-    fun showData()
 }

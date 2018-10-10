@@ -1,18 +1,44 @@
 package com.example.butul0ve.spacex.db
 
 import android.content.Context
+import android.util.Log
+import com.example.butul0ve.spacex.api.NetworkHelper
 import com.example.butul0ve.spacex.bean.Dragon
 import com.example.butul0ve.spacex.bean.PastLaunch
 import com.example.butul0ve.spacex.bean.UpcomingLaunch
-import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.*
 
 class DataManager(context: Context) {
 
     private val dbInstance = SpaceXDataBase.getInstance(context)!!
+    private val networkHelper = NetworkHelper()
+    private lateinit var pastLaunches: List<PastLaunch>
 
-    fun getAllPastLaunches(): Flowable<List<PastLaunch>> {
-        return dbInstance.pastLaunchesDao().getAll()
+    fun getAllPastLaunches(isConnected: Boolean): Observable<List<PastLaunch>> {
+        val cache = Observable.fromArray(if (::pastLaunches.isInitialized) {
+            pastLaunches
+        } else {
+            listOf()
+        })
+        Log.d("DataManager", "get all past launches")
+        return if (isConnected) {
+            Observable.concat(cache, fetchAllPastLaunches())
+        }
+        else {
+            cache
+        }
+    }
+
+    private fun fetchAllPastLaunches(): Observable<List<PastLaunch>> {
+        return networkHelper.getFlights()
+                .doOnSuccess {
+                    Log.d("DataManager", "fetch data ${it.size} size")
+                    cacheInMemory(it) }.toObservable()
+    }
+
+    private fun cacheInMemory(list: List<PastLaunch>) {
+        Log.d("DataManager", "cache in memory")
+        pastLaunches = list
     }
 
     fun getDragons(): Flowable<List<Dragon>> {
