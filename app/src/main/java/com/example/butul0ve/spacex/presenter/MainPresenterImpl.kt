@@ -4,13 +4,12 @@ import android.net.Uri
 import android.util.Log
 import com.example.butul0ve.spacex.adapter.PastLaunchesAdapter
 import com.example.butul0ve.spacex.adapter.PastLaunchesClickListener
-import com.example.butul0ve.spacex.api.NetworkHelper
-import com.example.butul0ve.spacex.bean.PastLaunch
 import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.view.MainView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 /**
  * Created by butul0ve on 21.01.18.
@@ -18,7 +17,9 @@ import io.reactivex.schedulers.Schedulers
 
 private val TAG = MainPresenterImpl::class.java.simpleName
 
-class MainPresenterImpl(private val dataManager: DataManager) : MainPresenter, PastLaunchesClickListener {
+class MainPresenterImpl
+@Inject constructor(private val dataManager: DataManager) : MainPresenter,
+        PastLaunchesClickListener {
 
     private lateinit var adapter: PastLaunchesAdapter
     private lateinit var mainView: MainView
@@ -64,17 +65,17 @@ class MainPresenterImpl(private val dataManager: DataManager) : MainPresenter, P
             disposable.add(dataManager.getAllPastLaunches(isConnected)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe( {
+                    .subscribe({
                         adapter = PastLaunchesAdapter(it, this@MainPresenterImpl)
                         mainView.setAdapter(adapter)
                         mainView.hideProgressBar()
                         Log.d(TAG, "pastLaunches size is ${it.size}")
                     },
-                    {
-                        Log.e(TAG, it.message)
-                        mainView.hideProgressBar()
-                        mainView.showButtonTryAgain()
-                    }))
+                            {
+                                Log.e(TAG, it.message)
+                                mainView.hideProgressBar()
+                                mainView.showButtonTryAgain()
+                            }))
 
         }
     }

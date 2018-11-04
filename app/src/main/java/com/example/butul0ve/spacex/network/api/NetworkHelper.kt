@@ -1,24 +1,13 @@
-package com.example.butul0ve.spacex.api
+package com.example.butul0ve.spacex.network.api
 
 import com.example.butul0ve.spacex.bean.Dragon
 import com.example.butul0ve.spacex.bean.PastLaunch
 import com.example.butul0ve.spacex.bean.UpcomingLaunch
 import io.reactivex.Single
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
+import javax.inject.Inject
 
-class NetworkHelper {
-
-    private val retrofit = Retrofit.Builder()
-            .baseUrl(JSON_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
-
-
-    private val serverApi = retrofit.create(ServerApi::class.java)
+class NetworkHelper @Inject constructor(val serverApi: ServerApi) {
 
     fun getFlights(launchYear: Int = 0): Single<List<PastLaunch>> {
         val startEnd = if (launchYear == 0) {
@@ -42,10 +31,5 @@ class NetworkHelper {
 
     fun getDragons(): Single<List<Dragon>> {
         return serverApi.getDragons()
-    }
-
-    companion object {
-
-        const val JSON_URL = "https://api.spacexdata.com/v3/"
     }
 }

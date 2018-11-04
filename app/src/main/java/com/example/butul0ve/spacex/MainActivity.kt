@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.utils.MAIN
 import com.example.butul0ve.spacex.utils.DRAGONS
 import com.example.butul0ve.spacex.utils.UPCOMING
 import com.example.butul0ve.spacex.utils.convert
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import javax.inject.Inject
 
 private const val CURRENT_FRAGMENT = "current_fragment"
 
@@ -21,7 +23,12 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var placeHolderIV: ImageView
 
+    @Inject
+    lateinit var dataManager: DataManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        SpaceXApp.netComponent.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -31,7 +38,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
         setupBottomNavigationView()
 
         if (savedInstanceState == null) {
-            currentFragment = MAIN.convert(this)
+            currentFragment = MAIN.convert(dataManager)
 
             manager.beginTransaction().apply {
                 replace(R.id.container, currentFragment as MainFragment)
@@ -41,7 +48,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
         } else {
             currentFragment = manager.findFragmentById(R.id.container)
             if (currentFragment == null) {
-                currentFragment = savedInstanceState.getString(CURRENT_FRAGMENT, MAIN).convert(this)
+                currentFragment = savedInstanceState.getString(CURRENT_FRAGMENT, MAIN).convert(dataManager)
                 manager.beginTransaction().apply {
                     replace(R.id.container, currentFragment!!)
                     commit()
@@ -72,7 +79,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.upcoming_launches -> {
-                    currentFragment = UPCOMING.convert(this)
+                    currentFragment = UPCOMING.convert(dataManager)
                     supportFragmentManager.beginTransaction().apply {
                         replace(R.id.container, currentFragment!!)
                         commit()
@@ -80,7 +87,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.done_launches -> {
-                    currentFragment = MAIN.convert(this)
+                    currentFragment = MAIN.convert(dataManager)
                     supportFragmentManager.beginTransaction().apply {
                         replace(R.id.container, currentFragment!!)
                         commit()
@@ -89,7 +96,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.dragons -> {
-                    currentFragment = DRAGONS.convert(this)
+                    currentFragment = DRAGONS.convert(dataManager)
                     supportFragmentManager.beginTransaction().apply {
                         replace(R.id.container, currentFragment!!)
                         commit()

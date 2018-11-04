@@ -1,17 +1,16 @@
 package com.example.butul0ve.spacex.db
 
-import android.content.Context
 import android.util.Log
-import com.example.butul0ve.spacex.api.NetworkHelper
+import com.example.butul0ve.spacex.network.api.NetworkHelper
 import com.example.butul0ve.spacex.bean.Dragon
 import com.example.butul0ve.spacex.bean.PastLaunch
 import com.example.butul0ve.spacex.bean.UpcomingLaunch
 import io.reactivex.*
+import javax.inject.Inject
 
-class DataManager(context: Context) {
+class DataManager @Inject constructor(val networkHelper: NetworkHelper,
+                                      val spaceXDatabase: SpaceXDataBase) {
 
-    private val dbInstance = SpaceXDataBase.getInstance(context)!!
-    private val networkHelper = NetworkHelper()
     private lateinit var pastLaunches: List<PastLaunch>
 
     fun getAllPastLaunches(isConnected: Boolean): Observable<List<PastLaunch>> {
@@ -42,34 +41,34 @@ class DataManager(context: Context) {
     }
 
     fun getDragons(): Flowable<List<Dragon>> {
-        return dbInstance.dragonDao().getAll()
+        return spaceXDatabase.dragonDao().getAll()
     }
 
     fun getAllUpcomingLaunches(): Flowable<List<UpcomingLaunch>> {
-        return dbInstance.upcomingLaunchesDao().getAll()
+        return spaceXDatabase.upcomingLaunchesDao().getAll()
     }
 
     fun deleteAllDragons(): Completable {
-        return Completable.fromAction { dbInstance.dragonDao().deleteAll() }
+        return Completable.fromAction { spaceXDatabase.dragonDao().deleteAll() }
     }
 
     fun deleteAllPastLaunches(): Completable {
-        return Completable.fromAction { dbInstance.pastLaunchesDao().deleteAll() }
+        return Completable.fromAction { spaceXDatabase.pastLaunchesDao().deleteAll() }
     }
 
     fun deleteAllUpcomingLaunches(): Completable {
-        return Completable.fromAction { dbInstance.upcomingLaunchesDao().deleteAll() }
+        return Completable.fromAction { spaceXDatabase.upcomingLaunchesDao().deleteAll() }
     }
 
     fun insertPastLaunches(pastLaunches: List<PastLaunch>): Completable {
-        return Completable.fromAction { dbInstance.pastLaunchesDao().insert(pastLaunches) }
+        return Completable.fromAction { spaceXDatabase.pastLaunchesDao().insert(pastLaunches) }
     }
 
     fun insertDragons(dragons: List<Dragon>): Completable {
-        return Completable.fromAction { dbInstance.dragonDao().insert(dragons) }
+        return Completable.fromAction { spaceXDatabase.dragonDao().insert(dragons) }
     }
 
     fun insertUpcomingLaunches(upcomingLaunches: List<UpcomingLaunch>): Completable {
-        return Completable.fromAction { dbInstance.upcomingLaunchesDao().insert(upcomingLaunches) }
+        return Completable.fromAction { spaceXDatabase.upcomingLaunchesDao().insert(upcomingLaunches) }
     }
 }

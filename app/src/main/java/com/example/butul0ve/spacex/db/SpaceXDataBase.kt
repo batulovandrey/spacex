@@ -10,6 +10,7 @@ import com.example.butul0ve.spacex.db.convertor.LinkConverter
 import com.example.butul0ve.spacex.db.convertor.ListConverter
 import com.example.butul0ve.spacex.db.convertor.RocketConverter
 import com.example.butul0ve.spacex.db.dao.*
+import javax.inject.Inject
 
 @Database(entities = [
     Dragon::class,
@@ -34,7 +35,7 @@ abstract class SpaceXDataBase : RoomDatabase() {
 
         private var INSTANCE: SpaceXDataBase? = null
 
-        fun getInstance(context: Context): SpaceXDataBase? {
+        @Inject fun getInstance(context: Context): SpaceXDataBase? {
             if (INSTANCE == null) {
                 synchronized(SpaceXDataBase::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
