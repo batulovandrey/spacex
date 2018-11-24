@@ -29,4 +29,6 @@ interface MainPresenter {
     fun showButtonTryAgain()
 
     fun hideButtonTryAgain()
+
+    fun getNextLaunch()
 }

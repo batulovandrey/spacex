@@ -71,4 +71,8 @@ class DataManager @Inject constructor(val networkHelper: NetworkHelper,
     fun insertUpcomingLaunches(upcomingLaunches: List<UpcomingLaunch>): Completable {
         return Completable.fromAction { spaceXDatabase.upcomingLaunchesDao().insert(upcomingLaunches) }
     }
+
+    fun getNextLaunch(): Single<UpcomingLaunch> {
+        return networkHelper.getNext()
+    }
 }

@@ -1,20 +1,26 @@
 package com.example.butul0ve.spacex
 
 import android.content.Context
+import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.butul0ve.spacex.adapter.PastLaunchesAdapter
 import com.example.butul0ve.spacex.presenter.MainPresenter
 import com.example.butul0ve.spacex.utils.isConnectedToInternet
 import com.example.butul0ve.spacex.view.MainView
+import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment(), MainView {
 
@@ -79,6 +85,24 @@ class MainFragment : Fragment(), MainView {
 
     override fun hideButtonTryAgain() {
         activity?.runOnUiThread { tryAgainButton.visibility = View.GONE }
+    }
+
+    override fun showNextLaunch(text: String) {
+        activity?.let {
+            val snack = Snackbar.make(it.findViewById(android.R.id.content),
+                    text,
+                    7000)
+            val tv = snack.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+            tv.setBackgroundColor(ContextCompat.getColor(it, R.color.white))
+            tv.setTextColor(ContextCompat.getColor(it, R.color.black))
+            tv.setTypeface(tv.typeface, Typeface.BOLD)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
+            } else {
+                tv.gravity = Gravity.CENTER_HORIZONTAL
+            }
+            snack.show()
+        }
     }
 
     fun setPresenter(presenter: MainPresenter) {

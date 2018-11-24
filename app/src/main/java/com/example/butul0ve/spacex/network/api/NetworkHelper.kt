@@ -32,4 +32,8 @@ class NetworkHelper @Inject constructor(val serverApi: ServerApi) {
     fun getDragons(): Single<List<Dragon>> {
         return serverApi.getDragons()
     }
+
+    fun getNext(): Single<UpcomingLaunch> {
+        return serverApi.getNextLaunch()
+    }
 }

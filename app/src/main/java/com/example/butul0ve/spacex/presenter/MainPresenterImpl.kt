@@ -9,6 +9,8 @@ import com.example.butul0ve.spacex.view.MainView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -65,6 +67,7 @@ class MainPresenterImpl
             disposable.add(dataManager.getAllPastLaunches(isConnected)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doOnComplete { getNextLaunch() }
                     .subscribe({
                         adapter = PastLaunchesAdapter(it, this@MainPresenterImpl)
                         mainView.setAdapter(adapter)
@@ -75,6 +78,31 @@ class MainPresenterImpl
                                 Log.e(TAG, it.message)
                                 mainView.hideProgressBar()
                                 mainView.showButtonTryAgain()
+                            }))
+
+        }
+    }
+
+    override fun getNextLaunch() {
+        if (isViewAttached()) {
+            mainView.showProgressBar()
+            disposable.add(dataManager.getNextLaunch()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+
+                        val date = Date(it.launchDate.toLong() * 1000)
+                        val launchDate = SimpleDateFormat("dd MMMM y, HH:mm:ss", Locale.ENGLISH)
+                        val text = "the next launch is scheduled for:\n${launchDate.format(date)}"
+
+                        mainView.showNextLaunch(text)
+
+                        mainView.hideProgressBar()
+                        Log.d("mainpresenter", "get next launch ${it.details}")
+                    },
+                            {
+                                mainView.hideProgressBar()
+                                Log.d("mainpresenter", "error getting data")
                             }))
 
         }

@@ -17,4 +17,7 @@ interface ServerApi {
 
     @GET("dragons")
     fun getDragons(): Single<List<Dragon>>
+
+    @GET("launches/next")
+    fun getNextLaunch(): Single<UpcomingLaunch>
 }

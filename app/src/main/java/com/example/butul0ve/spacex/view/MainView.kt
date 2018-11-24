@@ -22,4 +22,6 @@ interface MainView {
     fun showButtonTryAgain()
 
     fun hideButtonTryAgain()
+
+    fun showNextLaunch(text: String)
 }
