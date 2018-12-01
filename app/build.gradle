@@ -52,7 +52,7 @@ dependencies {
     kapt "android.arch.persistence.room:compiler:1.1.1"
 
     // corutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.30.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.30.1-eap13'
 
     //rx java
     implementation "io.reactivex.rxjava2:rxjava:2.2.0"
