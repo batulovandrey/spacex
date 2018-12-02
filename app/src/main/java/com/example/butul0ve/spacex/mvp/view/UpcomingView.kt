@@ -1,8 +1,9 @@
-package com.example.butul0ve.spacex.view
+package com.example.butul0ve.spacex.mvp.view
 
+import com.arellomobile.mvp.MvpView
 import com.example.butul0ve.spacex.adapter.UpcomingLaunchesAdaper
 
-interface UpcomingView {
+interface UpcomingView: MvpView {
 
     fun setAdapter(adapter: UpcomingLaunchesAdaper)
 

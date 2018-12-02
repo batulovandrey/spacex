@@ -1,13 +1,13 @@
-package com.example.butul0ve.spacex.view
+package com.example.butul0ve.spacex.mvp.view
 
 import android.net.Uri
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.example.butul0ve.spacex.adapter.PastLaunchesAdapter
+import com.example.butul0ve.spacex.adapter.PastLaunchesClickListener
 
-/**
- * Created by butul0ve on 21.01.18.
- */
-
-interface MainView {
+@StateStrategyType(SkipStrategy::class)
+interface MainView: View, PastLaunchesClickListener {
 
     fun showProgressBar()
 

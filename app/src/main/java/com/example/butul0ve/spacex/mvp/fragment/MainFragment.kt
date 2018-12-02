@@ -1,10 +1,11 @@
-package com.example.butul0ve.spacex
+package com.example.butul0ve.spacex.mvp.fragment
 
 import android.content.Context
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -14,29 +15,38 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.example.butul0ve.spacex.R
+import com.example.butul0ve.spacex.SpaceXApp
 import com.example.butul0ve.spacex.adapter.PastLaunchesAdapter
-import com.example.butul0ve.spacex.presenter.MainPresenter
-import com.example.butul0ve.spacex.utils.isConnectedToInternet
-import com.example.butul0ve.spacex.view.MainView
+import com.example.butul0ve.spacex.db.DataManager
+import com.example.butul0ve.spacex.mvp.view.MainView
+import com.example.butul0ve.spacex.mvp.presenter.MainPresenter
+import com.example.butul0ve.spacex.ui.BaseFragment
 import com.google.android.material.snackbar.Snackbar
+import javax.inject.Inject
 
-class MainFragment : Fragment(), MainView {
+class MainFragment : BaseFragment(), MainView {
 
     private lateinit var clickListener: OnItemClickListener
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var tryAgainButton: Button
-    private lateinit var mainPresenter: MainPresenter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
-    }
+    @Inject
+    lateinit var dataManager: DataManager
+
+    @InjectPresenter
+    lateinit var mainPresenter: MainPresenter
+
+    @ProvidePresenter
+    fun provideMainPresenter() = MainPresenter(dataManager)
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
+        SpaceXApp.netComponent.inject(this)
         try {
             clickListener = activity as OnItemClickListener
         } catch (ex: ClassCastException) {
@@ -49,14 +59,8 @@ class MainFragment : Fragment(), MainView {
         recyclerView = view.findViewById(R.id.recycler_view)
         progressBar = view.findViewById(R.id.progress_bar)
         tryAgainButton = view.findViewById(R.id.try_again_button)
-//        tryAgainButton.setOnClickListener { mainPresenter.getData() }
+        tryAgainButton.setOnClickListener { mainPresenter.getData() }
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val isConnected = activity?.isConnectedToInternet()
-        isConnected?.let { mainPresenter.getData(it) }
     }
 
     override fun showProgressBar() {
@@ -105,12 +109,9 @@ class MainFragment : Fragment(), MainView {
         }
     }
 
-    fun setPresenter(presenter: MainPresenter) {
-        mainPresenter = presenter
-        mainPresenter.attachView(this)
+    override fun onItemClick(position: Int) {
+        mainPresenter.onItemClick(position)
     }
-
-    fun getPresenter() = mainPresenter
 
     interface OnItemClickListener {
 

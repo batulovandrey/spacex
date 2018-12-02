@@ -6,6 +6,6 @@ import androidx.annotation.StringDef
 @StringDef(MAIN, DRAGONS, UPCOMING)
 annotation class FragmentsDef
 
-const val MAIN = "main"
-const val DRAGONS = "dragons"
-const val UPCOMING = "upcoming"
+const val MAIN = "MainFragment"
+const val DRAGONS = "DragonsFragment"
+const val UPCOMING = "UpcomingFragment"

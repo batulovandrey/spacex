@@ -1,27 +1,42 @@
-package com.example.butul0ve.spacex
+package com.example.butul0ve.spacex.mvp.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.example.butul0ve.spacex.R
+import com.example.butul0ve.spacex.SpaceXApp
 import com.example.butul0ve.spacex.adapter.DragonAdapter
-import com.example.butul0ve.spacex.presenter.DragonsPresenter
-import com.example.butul0ve.spacex.view.RocketsView
+import com.example.butul0ve.spacex.db.DataManager
+import com.example.butul0ve.spacex.mvp.presenter.RocketsPresenter
+import com.example.butul0ve.spacex.mvp.view.RocketsView
+import com.example.butul0ve.spacex.ui.BaseFragment
+import javax.inject.Inject
 
-class DragonsFragment: Fragment(), RocketsView {
+class DragonsFragment : BaseFragment(), RocketsView {
 
-    private lateinit var dragonsPresenter: DragonsPresenter
     private lateinit var dragonsRecycler: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var tryAgainButton: Button
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
+    @Inject
+    lateinit var dataManager: DataManager
+
+    @InjectPresenter
+    lateinit var rocketsPresenter: RocketsPresenter
+
+    @ProvidePresenter
+    fun providePresenter() = RocketsPresenter(dataManager)
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        SpaceXApp.netComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -29,18 +44,8 @@ class DragonsFragment: Fragment(), RocketsView {
         dragonsRecycler = view.findViewById(R.id.dragons_recycler)
         progressBar = view.findViewById(R.id.progress_bar)
         tryAgainButton = view.findViewById(R.id.try_again_button)
-        tryAgainButton.setOnClickListener { dragonsPresenter.getData() }
+        tryAgainButton.setOnClickListener { rocketsPresenter.getData() }
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        dragonsPresenter.getData()
-    }
-
-    fun setPresenter(presenter: DragonsPresenter) {
-        dragonsPresenter = presenter
-        dragonsPresenter.attachView(this)
     }
 
     override fun setAdapter(adapter: DragonAdapter) {

@@ -1,27 +1,42 @@
-package com.example.butul0ve.spacex
+package com.example.butul0ve.spacex.mvp.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.example.butul0ve.spacex.R
+import com.example.butul0ve.spacex.SpaceXApp
 import com.example.butul0ve.spacex.adapter.UpcomingLaunchesAdaper
-import com.example.butul0ve.spacex.presenter.UpcomingPresenter
-import com.example.butul0ve.spacex.view.UpcomingView
+import com.example.butul0ve.spacex.db.DataManager
+import com.example.butul0ve.spacex.mvp.presenter.UpcomingPresenter
+import com.example.butul0ve.spacex.mvp.view.UpcomingView
+import com.example.butul0ve.spacex.ui.BaseFragment
+import javax.inject.Inject
 
-class UpcomingFragment: Fragment(), UpcomingView {
+class UpcomingFragment: BaseFragment(), UpcomingView {
 
     private lateinit var dragonsRecycler: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var tryAgainButton: Button
-    private lateinit var upcomingPresenter: UpcomingPresenter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
+    @Inject
+    lateinit var dataManager: DataManager
+
+    @InjectPresenter
+    lateinit var upcomingPresenter: UpcomingPresenter
+
+    @ProvidePresenter
+    fun providePresenter() = UpcomingPresenter(dataManager)
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        SpaceXApp.netComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -31,16 +46,6 @@ class UpcomingFragment: Fragment(), UpcomingView {
         tryAgainButton = view.findViewById(R.id.try_again_button)
         tryAgainButton.setOnClickListener { upcomingPresenter.getData() }
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        upcomingPresenter.getData()
-    }
-
-    fun setPresenter(presenter: UpcomingPresenter) {
-        upcomingPresenter = presenter
-        upcomingPresenter.attachView(this)
     }
 
     override fun setAdapter(adapter: UpcomingLaunchesAdaper) {

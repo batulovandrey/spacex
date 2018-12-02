@@ -1,21 +1,28 @@
-package com.example.butul0ve.spacex
+package com.example.butul0ve.spacex.mvp
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.example.butul0ve.spacex.PlayerActivity
+import com.example.butul0ve.spacex.R
+import com.example.butul0ve.spacex.SpaceXApp
+import com.example.butul0ve.spacex.VIDEO_EXTRA
 import com.example.butul0ve.spacex.db.DataManager
-import com.example.butul0ve.spacex.utils.MAIN
-import com.example.butul0ve.spacex.utils.DRAGONS
-import com.example.butul0ve.spacex.utils.UPCOMING
+import com.example.butul0ve.spacex.mvp.fragment.DragonsFragment
+import com.example.butul0ve.spacex.mvp.fragment.MainFragment
+import com.example.butul0ve.spacex.mvp.presenter.MainActivityPresenter
+import com.example.butul0ve.spacex.mvp.view.MainActivityView
+import com.example.butul0ve.spacex.ui.BaseFragment
+import com.example.butul0ve.spacex.ui.MvpAppCompatActivity
 import com.example.butul0ve.spacex.utils.convert
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import javax.inject.Inject
 
 private const val CURRENT_FRAGMENT = "current_fragment"
 
-class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
+class MainActivity : MvpAppCompatActivity(), MainFragment.OnItemClickListener, MainActivityView {
 
     private val TAG = MainActivity::class.java.simpleName
 
@@ -26,6 +33,9 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
     @Inject
     lateinit var dataManager: DataManager
 
+    @InjectPresenter
+    lateinit var presenter: MainActivityPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         SpaceXApp.netComponent.inject(this)
 
@@ -34,30 +44,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
 
         placeHolderIV = findViewById(R.id.placeholder_iv)
 
-        val manager = supportFragmentManager
         setupBottomNavigationView()
-
-        if (savedInstanceState == null) {
-            currentFragment = MAIN.convert(dataManager)
-
-            manager.beginTransaction().apply {
-                replace(R.id.container, currentFragment as MainFragment)
-                commit()
-            }
-
-        } else {
-            currentFragment = manager.findFragmentById(R.id.container)
-            if (currentFragment == null) {
-                currentFragment = savedInstanceState.getString(CURRENT_FRAGMENT, MAIN).convert(dataManager)
-                manager.beginTransaction().apply {
-                    replace(R.id.container, currentFragment!!)
-                    commit()
-                }
-            }
-        }
-
-        setCheckedItemOfBottomNavigationView()
-
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -71,6 +58,18 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
         startActivity(intent)
     }
 
+    override fun showFragment(fragment: BaseFragment) {
+        currentFragment = fragment::class.java.simpleName.convert()
+        val manager = supportFragmentManager
+
+        manager.beginTransaction().apply {
+            replace(R.id.container, currentFragment as BaseFragment)
+            commit()
+        }
+
+        setCheckedItemOfBottomNavigationView()
+    }
+
     /**
      * BottomNavigationView setup
      */
@@ -79,29 +78,15 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.upcoming_launches -> {
-                    currentFragment = UPCOMING.convert(dataManager)
-                    supportFragmentManager.beginTransaction().apply {
-                        replace(R.id.container, currentFragment!!)
-                        commit()
-                    }
+                    presenter.openUpcomingFragment()
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.done_launches -> {
-                    currentFragment = MAIN.convert(dataManager)
-                    supportFragmentManager.beginTransaction().apply {
-                        replace(R.id.container, currentFragment!!)
-                        commit()
-                    }
-                    setCheckedItemOfBottomNavigationView()
+                    presenter.openMainFragment()
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.dragons -> {
-                    currentFragment = DRAGONS.convert(dataManager)
-                    supportFragmentManager.beginTransaction().apply {
-                        replace(R.id.container, currentFragment!!)
-                        commit()
-                    }
-                    setCheckedItemOfBottomNavigationView()
+                    presenter.openDragonsFragment()
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> {
@@ -113,7 +98,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
 
     private fun setCheckedItemOfBottomNavigationView() {
         val menu = bottomNavigationView.menu
-        val number = when(currentFragment) {
+        val number = when (currentFragment) {
             is MainFragment -> 1
             is DragonsFragment -> 2
             else -> 0
