@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.butul0ve.spacex.MainActivity">
+    android:fitsSystemWindows="true"
+    tools:context="com.example.butul0ve.spacex.mvp.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_weight="2"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
-        android:layout_height="0dp" />
+        android:layout_height="wrap_content">
 
-    <include
-        layout="@layout/layout_bottom_navigation" />
+        <include layout="@layout/layout_top_navigation" />
 
-</LinearLayout>
+
+        <ImageView
+            android:id="@+id/placeholder_iv"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/nyan_cat"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

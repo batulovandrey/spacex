@@ -1,27 +1,23 @@
 package com.example.butul0ve.spacex.utils
 
-import androidx.fragment.app.Fragment
-import com.example.butul0ve.spacex.MainFragment
-import com.example.butul0ve.spacex.DragonsFragment
-import com.example.butul0ve.spacex.presenter.MainPresenterImpl
-import com.example.butul0ve.spacex.presenter.DragonsPresenterImpl
+import com.example.butul0ve.spacex.mvp.fragment.DragonsFragment
+import com.example.butul0ve.spacex.mvp.fragment.MainFragment
+import com.example.butul0ve.spacex.mvp.fragment.UpcomingFragment
+import com.example.butul0ve.spacex.ui.BaseFragment
 
-fun String.convert(): Fragment {
-    return when(this) {
+fun String.convert(): BaseFragment {
+    return when (this) {
         DRAGONS -> {
-            val fragment = DragonsFragment()
-            fragment.setPresenter(DragonsPresenterImpl())
-            fragment
+            DragonsFragment()
         }
         MAIN -> {
-            val fragment = MainFragment()
-            fragment.setPresenter(MainPresenterImpl())
-            fragment
+            MainFragment()
         }
-        else  -> {
-            val fragment = MainFragment()
-            fragment.setPresenter(MainPresenterImpl())
-            fragment
+        UPCOMING -> {
+            UpcomingFragment()
+        }
+        else -> {
+            MainFragment()
         }
     }
 }

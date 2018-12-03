@@ -1,7 +1,7 @@
 package com.example.butul0ve.spacex.adapter
 
 import com.example.butul0ve.spacex.R
-import com.example.butul0ve.spacex.bean.Flight
+import com.example.butul0ve.spacex.bean.PastLaunch
 import java.text.SimpleDateFormat
 import java.util.*
 import android.content.Intent
@@ -22,8 +22,8 @@ import com.bumptech.glide.request.RequestOptions
  * Created by butul0ve on 20.01.18.
  */
 
-class FlightAdapter(private val mFlights: List<Flight>, private val mClickListener: FlightClickListener) :
-        RecyclerView.Adapter<FlightAdapter.FlightViewHolder>() {
+class PastLaunchesAdapter(private val mPastLaunches: List<PastLaunch>, private val mClickListener: PastLaunchesClickListener) :
+        RecyclerView.Adapter<PastLaunchesAdapter.FlightViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FlightViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.flight_item, null)
@@ -31,14 +31,13 @@ class FlightAdapter(private val mFlights: List<Flight>, private val mClickListen
     }
 
     override fun onBindViewHolder(holder: FlightViewHolder, position: Int) {
-        val flight = mFlights[position]
+        val flight = mPastLaunches[position]
         holder.mRocketNameTextView.text = flight.rocket.name
         holder.mFlightNumberTextView.text = flight.flightNumber.toString()
         val date = Date(flight.launchDate.toLong() * 1000)
         val launchDate = SimpleDateFormat("dd MMMM y, HH:mm:ss", Locale.ENGLISH)
         val options = RequestOptions()
                 .centerCrop()
-                .placeholder(R.drawable.nyan_cat)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .dontAnimate()
                 .dontTransform()
@@ -58,10 +57,10 @@ class FlightAdapter(private val mFlights: List<Flight>, private val mClickListen
     }
 
     override fun getItemCount(): Int {
-        return mFlights.size
+        return mPastLaunches.size
     }
 
-    class FlightViewHolder(itemView: View, private val mClickListener: FlightClickListener) :
+    class FlightViewHolder(itemView: View, private val mClickListener: PastLaunchesClickListener) :
             RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         var mRocketNameTextView: TextView = itemView.findViewById(R.id.rocket_name_text_view)
