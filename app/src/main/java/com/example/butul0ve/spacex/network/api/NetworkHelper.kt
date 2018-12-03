@@ -19,14 +19,8 @@ class NetworkHelper @Inject constructor(val serverApi: ServerApi) {
         return serverApi.getLaunchesByYear(startEnd)
     }
 
-    fun getUpcomingLaunches(launchYear: Int = 0): Single<List<UpcomingLaunch>> {
-        val year = if (launchYear == 0) {
-            Calendar.getInstance().get(Calendar.YEAR)
-        } else {
-            launchYear
-        }
-
-        return serverApi.getUpcomingLaunches(year)
+    fun getUpcomingLaunches(): Single<List<UpcomingLaunch>> {
+        return serverApi.getUpcomingLaunches()
     }
 
     fun getDragons(): Single<List<Dragon>> {

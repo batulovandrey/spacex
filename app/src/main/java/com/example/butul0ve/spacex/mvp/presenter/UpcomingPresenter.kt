@@ -35,7 +35,9 @@ class UpcomingPresenter(override val dataManager: DataManager) :
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         upcomingLaunches = it
-                        adapter = UpcomingLaunchesAdaper(upcomingLaunches)
+                        adapter = UpcomingLaunchesAdaper(upcomingLaunches.filter {
+                            launch -> !launch.details.isNullOrEmpty()
+                        })
                         viewState.setAdapter(adapter)
                         viewState.hideProgressBar()
                     },

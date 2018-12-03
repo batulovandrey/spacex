@@ -13,7 +13,7 @@ interface ServerApi {
     fun getLaunchesByYear(@Query(value = "launch_year") year: Int): Single<List<PastLaunch>>
 
     @GET("launches/upcoming")
-    fun getUpcomingLaunches(@Query(value = "launch_year") year: Int): Single<List<UpcomingLaunch>>
+    fun getUpcomingLaunches(): Single<List<UpcomingLaunch>>
 
     @GET("dragons")
     fun getDragons(): Single<List<Dragon>>
