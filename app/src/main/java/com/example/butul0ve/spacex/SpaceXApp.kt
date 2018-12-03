@@ -3,6 +3,7 @@ package com.example.butul0ve.spacex
 import android.app.Application
 import com.bumptech.glide.request.target.ViewTarget
 import com.example.butul0ve.spacex.di.*
+import timber.log.Timber
 
 class SpaceXApp: Application() {
 
@@ -11,6 +12,7 @@ class SpaceXApp: Application() {
         netComponent = initComponent()
 
         ViewTarget.setTagId(R.id.glide_tag)
+        Timber.plant(Timber.DebugTree())
     }
 
     private fun initComponent() : NetComponent {

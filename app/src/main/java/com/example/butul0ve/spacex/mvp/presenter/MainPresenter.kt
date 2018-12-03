@@ -1,13 +1,13 @@
 package com.example.butul0ve.spacex.mvp.presenter
 
 import android.net.Uri
-import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.example.butul0ve.spacex.adapter.PastLaunchesAdapter
 import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.mvp.view.MainView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,7 +53,7 @@ class MainPresenter(override val dataManager: DataManager) :
                                 viewState.showButtonTryAgain()
                             }))
         } else {
-            Log.d("MainPresenter", "view is not attached")
+            Timber.d("view is not attached")
         }
     }
 
@@ -79,11 +79,11 @@ class MainPresenter(override val dataManager: DataManager) :
                     },
                             {
                                 viewState.hideProgressBar()
-                                Log.d("mainpresenter", "error getting data")
+                                Timber.d("error getting data")
                             }))
 
         } else {
-            Log.d("MainPresenter", "view is not attached")
+            Timber.d("view is not attached")
         }
     }
 

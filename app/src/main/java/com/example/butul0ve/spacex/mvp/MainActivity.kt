@@ -24,8 +24,6 @@ private const val CURRENT_FRAGMENT = "current_fragment"
 
 class MainActivity : MvpAppCompatActivity(), MainFragment.OnItemClickListener, MainActivityView {
 
-    private val TAG = MainActivity::class.java.simpleName
-
     private var currentFragment: Fragment? = null
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var placeHolderIV: ImageView

@@ -1,6 +1,5 @@
 package com.example.butul0ve.spacex.mvp.presenter
 
-import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.example.butul0ve.spacex.adapter.PastLaunchesClickListener
 import com.example.butul0ve.spacex.adapter.UpcomingLaunchesAdaper
@@ -9,12 +8,11 @@ import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.mvp.view.UpcomingView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 
 @InjectViewState
 class UpcomingPresenter(override val dataManager: DataManager) :
         BasePresenter<UpcomingView>(dataManager), PastLaunchesClickListener {
-
-    private val TAG = UpcomingPresenter::class.java.name
 
     private lateinit var adapter: UpcomingLaunchesAdaper
     private lateinit var upcomingLaunches: List<UpcomingLaunch>
@@ -42,7 +40,7 @@ class UpcomingPresenter(override val dataManager: DataManager) :
                         viewState.hideProgressBar()
                     },
                             {
-                                Log.e(TAG, it.message)
+                                Timber.e(it)
                                 viewState.hideProgressBar()
                             }))
         }
