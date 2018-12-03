@@ -34,6 +34,10 @@ class MainPresenter(override val dataManager: DataManager) :
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         getNextLaunch()
+    }
+
+    override fun attachView(view: MainView?) {
+        super.attachView(view)
         getData(true)
     }
 

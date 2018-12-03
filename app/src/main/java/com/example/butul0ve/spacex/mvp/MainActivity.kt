@@ -3,12 +3,14 @@ package com.example.butul0ve.spacex.mvp
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.example.butul0ve.spacex.PlayerActivity
 import com.example.butul0ve.spacex.R
 import com.example.butul0ve.spacex.SpaceXApp
 import com.example.butul0ve.spacex.VIDEO_EXTRA
+import com.example.butul0ve.spacex.adapter.SpaceXPagerAdapter
 import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.mvp.fragment.DragonsFragment
 import com.example.butul0ve.spacex.mvp.fragment.MainFragment
@@ -16,17 +18,16 @@ import com.example.butul0ve.spacex.mvp.presenter.MainActivityPresenter
 import com.example.butul0ve.spacex.mvp.view.MainActivityView
 import com.example.butul0ve.spacex.ui.BaseFragment
 import com.example.butul0ve.spacex.ui.MvpAppCompatActivity
-import com.example.butul0ve.spacex.utils.convert
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import timber.log.Timber
 import javax.inject.Inject
-
-private const val CURRENT_FRAGMENT = "current_fragment"
 
 class MainActivity : MvpAppCompatActivity(), MainFragment.OnItemClickListener, MainActivityView {
 
-    private var currentFragment: Fragment? = null
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var placeHolderIV: ImageView
+    private lateinit var viewPager: ViewPager
+    private lateinit var pagerAdapter: PagerAdapter
 
     @Inject
     lateinit var dataManager: DataManager
@@ -41,13 +42,26 @@ class MainActivity : MvpAppCompatActivity(), MainFragment.OnItemClickListener, M
         setContentView(R.layout.activity_main)
 
         placeHolderIV = findViewById(R.id.placeholder_iv)
+        viewPager = findViewById(R.id.view_pager)
+        pagerAdapter = SpaceXPagerAdapter(supportFragmentManager)
+        viewPager.adapter = pagerAdapter
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+
+            override fun onPageScrollStateChanged(state: Int) {
+                Timber.d("onPageScrollStateChanged $state")
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                Timber.d("onPageScrolled $position")
+            }
+
+            override fun onPageSelected(position: Int) {
+                Timber.d("onPageSelected $position")
+                setCheckedItemOfBottomNavigationView(position)
+            }
+        })
 
         setupBottomNavigationView()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        outState?.putString(CURRENT_FRAGMENT, currentFragment?.tag)
-        super.onSaveInstanceState(outState)
     }
 
     override fun onItemClick(videoId: String) {
@@ -57,15 +71,11 @@ class MainActivity : MvpAppCompatActivity(), MainFragment.OnItemClickListener, M
     }
 
     override fun showFragment(fragment: BaseFragment) {
-        currentFragment = fragment::class.java.simpleName.convert()
-        val manager = supportFragmentManager
-
-        manager.beginTransaction().apply {
-            replace(R.id.container, currentFragment as BaseFragment)
-            commit()
+        viewPager.currentItem = when(fragment) {
+            is MainFragment -> 1
+            is DragonsFragment -> 2
+            else -> 0
         }
-
-        setCheckedItemOfBottomNavigationView()
     }
 
     /**
@@ -94,14 +104,9 @@ class MainActivity : MvpAppCompatActivity(), MainFragment.OnItemClickListener, M
         }
     }
 
-    private fun setCheckedItemOfBottomNavigationView() {
+    private fun setCheckedItemOfBottomNavigationView(position: Int) {
         val menu = bottomNavigationView.menu
-        val number = when (currentFragment) {
-            is MainFragment -> 1
-            is DragonsFragment -> 2
-            else -> 0
-        }
-        val menuItem = menu.getItem(number)
+        val menuItem = menu.getItem(position)
         menuItem.isChecked = true
     }
 }
