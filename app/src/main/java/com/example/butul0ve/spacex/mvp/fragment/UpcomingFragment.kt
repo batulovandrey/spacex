@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.butul0ve.spacex.R
@@ -19,10 +19,10 @@ import com.example.butul0ve.spacex.mvp.view.UpcomingView
 import com.example.butul0ve.spacex.ui.BaseFragment
 import javax.inject.Inject
 
-class UpcomingFragment: BaseFragment(), UpcomingView {
+class UpcomingFragment: BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var dragonsRecycler: RecyclerView
-    private lateinit var progressBar: ProgressBar
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var tryAgainButton: Button
 
     @Inject
@@ -40,12 +40,21 @@ class UpcomingFragment: BaseFragment(), UpcomingView {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.dragons_fragment, container, false)
-        dragonsRecycler = view.findViewById(R.id.dragons_recycler)
-        progressBar = view.findViewById(R.id.progress_bar)
+        val view = inflater.inflate(R.layout.base_fragment, container, false)
+        dragonsRecycler = view.findViewById(R.id.recycler_view)
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
+        swipeRefreshLayout.setOnRefreshListener(this)
         tryAgainButton = view.findViewById(R.id.try_again_button)
         tryAgainButton.setOnClickListener { upcomingPresenter.getData() }
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark)
     }
 
     override fun setAdapter(adapter: UpcomingLaunchesAdaper) {
@@ -53,10 +62,14 @@ class UpcomingFragment: BaseFragment(), UpcomingView {
     }
 
     override fun showProgressBar() {
-        activity?.runOnUiThread { progressBar.visibility = View.VISIBLE }
+        activity?.runOnUiThread { swipeRefreshLayout.isRefreshing = true }
     }
 
     override fun hideProgressBar() {
-        activity?.runOnUiThread { progressBar.visibility = View.GONE }
+        activity?.runOnUiThread { swipeRefreshLayout.isRefreshing = false }
+    }
+
+    override fun onRefresh() {
+        upcomingPresenter.getData()
     }
 }
