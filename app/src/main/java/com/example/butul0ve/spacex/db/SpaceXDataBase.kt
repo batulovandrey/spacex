@@ -14,10 +14,9 @@ import javax.inject.Inject
 
 @Database(entities = [
     Dragon::class,
-    PastLaunch::class,
+    Launch::class,
     Links::class,
-    Rocket::class,
-    UpcomingLaunch::class],
+    Rocket::class],
         version = 1)
 @TypeConverters(
         LinkConverter::class,
@@ -26,10 +25,9 @@ import javax.inject.Inject
 abstract class SpaceXDataBase : RoomDatabase() {
 
     abstract fun dragonDao(): DragonDao
-    abstract fun pastLaunchesDao(): PastLaunchesDao
+    abstract fun launchesDao(): LaunchesDao
     abstract fun linkDao(): LinkDao
     abstract fun rocketDao(): RocketDao
-    abstract fun upcomingLaunchesDao(): UpcomingLaunchesDao
 
     companion object {
 

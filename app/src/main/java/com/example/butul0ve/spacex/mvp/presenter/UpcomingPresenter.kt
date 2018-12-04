@@ -1,9 +1,8 @@
 package com.example.butul0ve.spacex.mvp.presenter
 
 import com.arellomobile.mvp.InjectViewState
-import com.example.butul0ve.spacex.adapter.PastLaunchesClickListener
-import com.example.butul0ve.spacex.adapter.UpcomingLaunchesAdaper
-import com.example.butul0ve.spacex.bean.UpcomingLaunch
+import com.example.butul0ve.spacex.adapter.LaunchesAdapter
+import com.example.butul0ve.spacex.bean.Launch
 import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.mvp.view.UpcomingView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,10 +11,10 @@ import timber.log.Timber
 
 @InjectViewState
 class UpcomingPresenter(override val dataManager: DataManager) :
-        BasePresenter<UpcomingView>(dataManager), PastLaunchesClickListener {
+        BasePresenter<UpcomingView>(dataManager) {
 
-    private lateinit var adapter: UpcomingLaunchesAdaper
-    private lateinit var upcomingLaunches: List<UpcomingLaunch>
+    private lateinit var adapter: LaunchesAdapter
+    private lateinit var upcomingLaunches: List<Launch>
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -29,15 +28,15 @@ class UpcomingPresenter(override val dataManager: DataManager) :
                     .subscribeOn(Schedulers.io())
                     .map {
                         dataManager.deleteAllUpcomingLaunches()
-                        dataManager.insertUpcomingLaunches(it)
+                        dataManager.insertLaunches(it)
                         it
                     }
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         upcomingLaunches = it
-                        adapter = UpcomingLaunchesAdaper(upcomingLaunches.filter {
+                        adapter = LaunchesAdapter(upcomingLaunches.filter {
                             launch -> !launch.details.isNullOrEmpty()
-                        })
+                        }, viewState)
                         viewState.setAdapter(adapter)
                         viewState.hideProgressBar()
                     },
@@ -46,9 +45,5 @@ class UpcomingPresenter(override val dataManager: DataManager) :
                                 viewState.hideProgressBar()
                             }))
         }
-    }
-
-    override fun onItemClick(position: Int) {
-        // ignore
     }
 }

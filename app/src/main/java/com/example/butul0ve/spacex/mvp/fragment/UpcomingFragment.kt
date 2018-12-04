@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.butul0ve.spacex.R
 import com.example.butul0ve.spacex.SpaceXApp
-import com.example.butul0ve.spacex.adapter.UpcomingLaunchesAdaper
+import com.example.butul0ve.spacex.adapter.LaunchesAdapter
 import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.mvp.presenter.UpcomingPresenter
 import com.example.butul0ve.spacex.mvp.view.UpcomingView
@@ -24,6 +25,8 @@ class UpcomingFragment: BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefre
     private lateinit var dragonsRecycler: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var tryAgainButton: Button
+
+    private var toast: Toast? = null
 
     @Inject
     lateinit var dataManager: DataManager
@@ -57,7 +60,7 @@ class UpcomingFragment: BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefre
                 android.R.color.holo_blue_dark)
     }
 
-    override fun setAdapter(adapter: UpcomingLaunchesAdaper) {
+    override fun setAdapter(adapter: LaunchesAdapter) {
         activity?.runOnUiThread { dragonsRecycler.adapter = adapter }
     }
 
@@ -71,5 +74,13 @@ class UpcomingFragment: BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefre
 
     override fun onRefresh() {
         upcomingPresenter.getData()
+    }
+
+    override fun onItemClick(position: Int) {
+        if (toast != null) {
+            toast?.cancel()
+        }
+        toast = Toast.makeText(activity, "soon", Toast.LENGTH_SHORT)
+        toast!!.show()
     }
 }

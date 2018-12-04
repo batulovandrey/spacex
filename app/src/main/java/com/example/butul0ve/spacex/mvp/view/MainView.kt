@@ -4,11 +4,11 @@ import android.net.Uri
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
-import com.example.butul0ve.spacex.adapter.PastLaunchesAdapter
-import com.example.butul0ve.spacex.adapter.PastLaunchesClickListener
+import com.example.butul0ve.spacex.adapter.LaunchesAdapter
+import com.example.butul0ve.spacex.adapter.LaunchesClickListener
 
 @StateStrategyType(AddToEndSingleStrategy::class)
-interface MainView : View, PastLaunchesClickListener {
+interface MainView : View, LaunchesClickListener {
 
     fun showProgressBar()
 
@@ -20,7 +20,7 @@ interface MainView : View, PastLaunchesClickListener {
     @StateStrategyType(SkipStrategy::class)
     override fun onItemClick(position: Int)
 
-    fun setAdapter(adapter: PastLaunchesAdapter)
+    fun setAdapter(adapter: LaunchesAdapter)
 
     fun showToast(message: Int)
 

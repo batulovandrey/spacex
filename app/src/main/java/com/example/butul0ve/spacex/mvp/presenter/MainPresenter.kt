@@ -2,7 +2,7 @@ package com.example.butul0ve.spacex.mvp.presenter
 
 import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
-import com.example.butul0ve.spacex.adapter.PastLaunchesAdapter
+import com.example.butul0ve.spacex.adapter.LaunchesAdapter
 import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.mvp.view.MainView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,7 +15,7 @@ import java.util.*
 class MainPresenter(override val dataManager: DataManager) :
         BasePresenter<MainView>(dataManager) {
 
-    private lateinit var adapter: PastLaunchesAdapter
+    private lateinit var adapter: LaunchesAdapter
 
     fun onItemClick(position: Int) {
         if (viewState != null) {
@@ -43,7 +43,7 @@ class MainPresenter(override val dataManager: DataManager) :
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                        adapter = PastLaunchesAdapter(it, viewState)
+                        adapter = LaunchesAdapter(it.reversed(), viewState)
                         viewState.setAdapter(adapter)
                         viewState.hideProgressBar()
                     },
@@ -56,7 +56,7 @@ class MainPresenter(override val dataManager: DataManager) :
         }
     }
 
-    fun setAdapter(adapter: PastLaunchesAdapter) {
+    fun setAdapter(adapter: LaunchesAdapter) {
         viewState.setAdapter(adapter)
     }
 

@@ -1,15 +1,14 @@
 package com.example.butul0ve.spacex.network.api
 
 import com.example.butul0ve.spacex.bean.Dragon
-import com.example.butul0ve.spacex.bean.PastLaunch
-import com.example.butul0ve.spacex.bean.UpcomingLaunch
+import com.example.butul0ve.spacex.bean.Launch
 import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
 
 class NetworkHelper @Inject constructor(val serverApi: ServerApi) {
 
-    fun getFlights(launchYear: Int = 0): Single<List<PastLaunch>> {
+    fun getFlights(launchYear: Int = 0): Single<List<Launch>> {
         val startEnd = if (launchYear == 0) {
             Calendar.getInstance().get(Calendar.YEAR)
         } else {
@@ -19,7 +18,7 @@ class NetworkHelper @Inject constructor(val serverApi: ServerApi) {
         return serverApi.getLaunchesByYear(startEnd)
     }
 
-    fun getUpcomingLaunches(): Single<List<UpcomingLaunch>> {
+    fun getUpcomingLaunches(): Single<List<Launch>> {
         return serverApi.getUpcomingLaunches()
     }
 
@@ -27,7 +26,7 @@ class NetworkHelper @Inject constructor(val serverApi: ServerApi) {
         return serverApi.getDragons()
     }
 
-    fun getNext(): Single<UpcomingLaunch> {
+    fun getNext(): Single<Launch> {
         return serverApi.getNextLaunch()
     }
 }

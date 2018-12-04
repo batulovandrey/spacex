@@ -19,7 +19,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.butul0ve.spacex.R
 import com.example.butul0ve.spacex.SpaceXApp
-import com.example.butul0ve.spacex.adapter.PastLaunchesAdapter
+import com.example.butul0ve.spacex.adapter.LaunchesAdapter
 import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.mvp.view.MainView
 import com.example.butul0ve.spacex.mvp.presenter.MainPresenter
@@ -87,7 +87,7 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
         clickListener.onItemClick(uri.query.substringAfter("="))
     }
 
-    override fun setAdapter(adapter: PastLaunchesAdapter) {
+    override fun setAdapter(adapter: LaunchesAdapter) {
         activity?.runOnUiThread { recyclerView.adapter = adapter }
     }
 
