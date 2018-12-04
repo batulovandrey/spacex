@@ -5,17 +5,16 @@ import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.butul0ve.spacex.R
@@ -28,12 +27,12 @@ import com.example.butul0ve.spacex.ui.BaseFragment
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-class MainFragment : BaseFragment(), MainView {
+class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var clickListener: OnItemClickListener
     private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
     private lateinit var tryAgainButton: Button
+    private lateinit var swipeRefreshLaoyut: SwipeRefreshLayout
 
     @Inject
     lateinit var dataManager: DataManager
@@ -57,18 +56,31 @@ class MainFragment : BaseFragment(), MainView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = layoutInflater.inflate(R.layout.main_fragment, container, false)
         recyclerView = view.findViewById(R.id.recycler_view)
-        progressBar = view.findViewById(R.id.progress_bar)
+        swipeRefreshLaoyut = view.findViewById(R.id.swipe_refresh_layout)
+        swipeRefreshLaoyut.setOnRefreshListener(this)
         tryAgainButton = view.findViewById(R.id.try_again_button)
         tryAgainButton.setOnClickListener { mainPresenter.getData() }
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        swipeRefreshLaoyut.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark)
+    }
+
     override fun showProgressBar() {
-        activity?.runOnUiThread { progressBar.visibility = View.VISIBLE }
+        activity?.runOnUiThread {
+            swipeRefreshLaoyut.isRefreshing = true
+        }
     }
 
     override fun hideProgressBar() {
-        activity?.runOnUiThread { progressBar.visibility = View.GONE }
+        activity?.runOnUiThread {
+            swipeRefreshLaoyut.isRefreshing = false
+        }
     }
 
     override fun openYouTube(uri: Uri) {
@@ -111,6 +123,11 @@ class MainFragment : BaseFragment(), MainView {
 
     override fun onItemClick(position: Int) {
         mainPresenter.onItemClick(position)
+    }
+
+    override fun onRefresh() {
+        swipeRefreshLaoyut.isRefreshing = true
+        mainPresenter.getData()
     }
 
     interface OnItemClickListener {
