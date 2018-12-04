@@ -27,18 +27,13 @@ class MainPresenter(override val dataManager: DataManager) :
                         val videoLink = Uri.parse(flight.links.videoLink)
                         openYouTube(videoLink)
                     })
-
         }
     }
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         getNextLaunch()
-    }
-
-    override fun attachView(view: MainView?) {
-        super.attachView(view)
-        getData(true)
+        getData()
     }
 
     fun getData(isConnected: Boolean = true) {
@@ -67,7 +62,6 @@ class MainPresenter(override val dataManager: DataManager) :
 
     private fun getNextLaunch() {
         if (viewState != null) {
-            viewState.showProgressBar()
             disposable.add(dataManager.getNextLaunch()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -79,10 +73,8 @@ class MainPresenter(override val dataManager: DataManager) :
 
                         viewState.showNextLaunch(text)
 
-                        viewState.hideProgressBar()
                     },
                             {
-                                viewState.hideProgressBar()
                                 Timber.d("error getting data")
                             }))
 

@@ -22,7 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import timber.log.Timber
 import javax.inject.Inject
 
-class MainActivity : MvpAppCompatActivity(), MainFragment.OnItemClickListener, MainActivityView {
+class MainActivity : MvpAppCompatActivity(), MainActivityView {
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var placeHolderIV: ImageView
