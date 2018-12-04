@@ -32,7 +32,7 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
     private lateinit var clickListener: OnItemClickListener
     private lateinit var recyclerView: RecyclerView
     private lateinit var tryAgainButton: Button
-    private lateinit var swipeRefreshLaoyut: SwipeRefreshLayout
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     @Inject
     lateinit var dataManager: DataManager
@@ -54,10 +54,10 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = layoutInflater.inflate(R.layout.main_fragment, container, false)
+        val view = layoutInflater.inflate(R.layout.base_fragment, container, false)
         recyclerView = view.findViewById(R.id.recycler_view)
-        swipeRefreshLaoyut = view.findViewById(R.id.swipe_refresh_layout)
-        swipeRefreshLaoyut.setOnRefreshListener(this)
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
+        swipeRefreshLayout.setOnRefreshListener(this)
         tryAgainButton = view.findViewById(R.id.try_again_button)
         tryAgainButton.setOnClickListener { mainPresenter.getData() }
         return view
@@ -65,7 +65,7 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        swipeRefreshLaoyut.setColorSchemeResources(R.color.colorPrimary,
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark)
@@ -73,13 +73,13 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
 
     override fun showProgressBar() {
         activity?.runOnUiThread {
-            swipeRefreshLaoyut.isRefreshing = true
+            swipeRefreshLayout.isRefreshing = true
         }
     }
 
     override fun hideProgressBar() {
         activity?.runOnUiThread {
-            swipeRefreshLaoyut.isRefreshing = false
+            swipeRefreshLayout.isRefreshing = false
         }
     }
 
@@ -126,7 +126,6 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
     }
 
     override fun onRefresh() {
-        swipeRefreshLaoyut.isRefreshing = true
         mainPresenter.getData()
     }
 
