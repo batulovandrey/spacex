@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.butul0ve.spacex.bean.Links
+import com.example.butul0ve.spacex.db.model.Links
 
 @Dao
 interface LinkDao {

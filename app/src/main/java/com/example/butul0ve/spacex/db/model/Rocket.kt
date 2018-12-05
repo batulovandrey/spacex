@@ -1,4 +1,4 @@
-package com.example.butul0ve.spacex.bean
+package com.example.butul0ve.spacex.db.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

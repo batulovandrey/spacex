@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import com.example.butul0ve.spacex.bean.Rocket
+import com.example.butul0ve.spacex.db.model.Rocket
 
 @Dao
 interface RocketDao {

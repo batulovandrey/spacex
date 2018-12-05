@@ -5,10 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.butul0ve.spacex.bean.*
-import com.example.butul0ve.spacex.db.convertor.LinkConverter
-import com.example.butul0ve.spacex.db.convertor.ListConverter
-import com.example.butul0ve.spacex.db.convertor.RocketConverter
+import com.example.butul0ve.spacex.db.model.*
+import com.example.butul0ve.spacex.db.converter.LinkConverter
+import com.example.butul0ve.spacex.db.converter.ListConverter
+import com.example.butul0ve.spacex.db.converter.RocketConverter
 import com.example.butul0ve.spacex.db.dao.*
 import javax.inject.Inject
 

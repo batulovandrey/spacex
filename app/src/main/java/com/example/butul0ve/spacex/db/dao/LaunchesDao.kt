@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import com.example.butul0ve.spacex.bean.Launch
+import com.example.butul0ve.spacex.db.model.Launch
 import io.reactivex.Flowable
 
 @Dao

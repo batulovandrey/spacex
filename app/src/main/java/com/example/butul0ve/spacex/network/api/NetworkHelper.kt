@@ -1,7 +1,7 @@
 package com.example.butul0ve.spacex.network.api
 
-import com.example.butul0ve.spacex.bean.Dragon
-import com.example.butul0ve.spacex.bean.Launch
+import com.example.butul0ve.spacex.db.model.Dragon
+import com.example.butul0ve.spacex.db.model.Launch
 import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject

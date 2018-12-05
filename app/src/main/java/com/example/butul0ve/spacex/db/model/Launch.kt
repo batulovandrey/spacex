@@ -1,11 +1,11 @@
-package com.example.butul0ve.spacex.bean
+package com.example.butul0ve.spacex.db.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.butul0ve.spacex.db.convertor.LinkConverter
-import com.example.butul0ve.spacex.db.convertor.RocketConverter
+import com.example.butul0ve.spacex.db.converter.LinkConverter
+import com.example.butul0ve.spacex.db.converter.RocketConverter
 import com.google.gson.annotations.SerializedName
 
 /**

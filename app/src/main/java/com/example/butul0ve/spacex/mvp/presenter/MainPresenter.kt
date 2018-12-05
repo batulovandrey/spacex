@@ -3,7 +3,7 @@ package com.example.butul0ve.spacex.mvp.presenter
 import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import com.example.butul0ve.spacex.adapter.LaunchesAdapter
-import com.example.butul0ve.spacex.bean.Launch
+import com.example.butul0ve.spacex.db.model.Launch
 import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.mvp.view.MainView
 import io.reactivex.Observer

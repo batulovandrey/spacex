@@ -7,7 +7,7 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.butul0ve.spacex.R
-import com.example.butul0ve.spacex.bean.Dragon
+import com.example.butul0ve.spacex.db.model.Dragon
 
 class DragonAdapter(private val dragons: List<Dragon>): RecyclerView.Adapter<DragonAdapter.DragonViewHolder>() {
 

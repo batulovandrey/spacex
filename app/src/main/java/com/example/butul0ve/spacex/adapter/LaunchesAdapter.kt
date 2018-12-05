@@ -1,7 +1,7 @@
 package com.example.butul0ve.spacex.adapter
 
 import com.example.butul0ve.spacex.R
-import com.example.butul0ve.spacex.bean.Launch
+import com.example.butul0ve.spacex.db.model.Launch
 import java.text.SimpleDateFormat
 import java.util.*
 import android.content.Intent
