@@ -3,9 +3,12 @@ package com.example.butul0ve.spacex.mvp.presenter
 import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import com.example.butul0ve.spacex.adapter.LaunchesAdapter
+import com.example.butul0ve.spacex.bean.Launch
 import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.mvp.view.MainView
+import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -39,18 +42,10 @@ class MainPresenter(override val dataManager: DataManager) :
     fun getData(isConnected: Boolean = true) {
         if (viewState != null) {
             viewState.showProgressBar()
-            disposable.add(dataManager.getAllPastLaunches(isConnected)
+            dataManager.getAllPastLaunches(isConnected)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        adapter = LaunchesAdapter(it.reversed(), viewState)
-                        viewState.setAdapter(adapter)
-                        viewState.hideProgressBar()
-                    },
-                            {
-                                viewState.hideProgressBar()
-                                viewState.showButtonTryAgain()
-                            }))
+                    .subscribe(getObserver())
         } else {
             Timber.d("view is not attached")
         }
@@ -58,6 +53,29 @@ class MainPresenter(override val dataManager: DataManager) :
 
     fun setAdapter(adapter: LaunchesAdapter) {
         viewState.setAdapter(adapter)
+    }
+
+    private fun getObserver(): Observer<List<Launch>> {
+        return object : Observer<List<Launch>> {
+
+            override fun onComplete() {
+                viewState.hideProgressBar()
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                disposable.add(d)
+            }
+
+            override fun onNext(t: List<Launch>) {
+                adapter = LaunchesAdapter(t.reversed(), viewState)
+                viewState.setAdapter(adapter)
+            }
+
+            override fun onError(e: Throwable) {
+                viewState.hideProgressBar()
+                viewState.showButtonTryAgain()
+            }
+        }
     }
 
     private fun getNextLaunch() {

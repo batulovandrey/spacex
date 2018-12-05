@@ -72,15 +72,11 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
     }
 
     override fun showProgressBar() {
-        activity?.runOnUiThread {
-            swipeRefreshLayout.isRefreshing = true
-        }
+        swipeRefreshLayout.isRefreshing = true
     }
 
     override fun hideProgressBar() {
-        activity?.runOnUiThread {
-            swipeRefreshLayout.isRefreshing = false
-        }
+        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun openYouTube(uri: Uri) {
@@ -88,7 +84,7 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
     }
 
     override fun setAdapter(adapter: LaunchesAdapter) {
-        activity?.runOnUiThread { recyclerView.adapter = adapter }
+        recyclerView.adapter = adapter
     }
 
     override fun showToast(message: Int) {
