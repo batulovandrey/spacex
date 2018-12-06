@@ -4,46 +4,49 @@ import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import com.example.butul0ve.spacex.adapter.LaunchesAdapter
 import com.example.butul0ve.spacex.db.model.Launch
-import com.example.butul0ve.spacex.db.DataManager
+import com.example.butul0ve.spacex.mvp.interactor.MainMvpInteractor
 import com.example.butul0ve.spacex.mvp.view.MainView
-import io.reactivex.Observer
+import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 @InjectViewState
-class MainPresenter(override val dataManager: DataManager) :
-        BasePresenter<MainView>(dataManager) {
+class MainPresenter @Inject constructor(override val interactor: MainMvpInteractor) :
+        BasePresenter<MainView>(interactor) {
 
     private lateinit var adapter: LaunchesAdapter
 
     fun onItemClick(position: Int) {
         if (viewState != null) {
-            disposable.add(dataManager.getAllPastLaunches(true)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        val flight = it[position]
-                        val videoLink = Uri.parse(flight.links.videoLink)
-                        openYouTube(videoLink)
-                    })
+            if (::adapter.isInitialized) {
+                val launch = adapter.getLaunchById(position)
+                val videoLink = Uri.parse(launch.links.videoLink)
+                viewState.openYouTube(videoLink)
+            }
         }
     }
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         getNextLaunch()
-        getData()
+        getDataFromDb()
+//        getData()
     }
 
     fun getData(isConnected: Boolean = true) {
         if (viewState != null) {
-            viewState.showProgressBar()
-            dataManager.getAllPastLaunches(isConnected)
+            interactor.getPastFlightsFromServer()
                     .subscribeOn(Schedulers.io())
+                    .map {
+                        interactor.replacePastLaunches(it)
+                                .subscribe()
+                        it
+                    }
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(getObserver())
         } else {
@@ -51,14 +54,31 @@ class MainPresenter(override val dataManager: DataManager) :
         }
     }
 
-    fun setAdapter(adapter: LaunchesAdapter) {
-        viewState.setAdapter(adapter)
+    private fun getDataFromDb() {
+        disposable.add(interactor.getPastLaunchesFromDb()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    adapter = LaunchesAdapter(it, viewState)
+                    viewState.setAdapter(adapter)
+//                    viewState.showProgressBar()
+                    getData()
+                })
     }
 
-    private fun getObserver(): Observer<List<Launch>> {
-        return object : Observer<List<Launch>> {
+    private fun getObserver(): SingleObserver<List<Launch>> {
+        return object : SingleObserver<List<Launch>> {
 
-            override fun onComplete() {
+            override fun onSuccess(t: List<Launch>) {
+
+                if (viewState == null) return
+
+                if (::adapter.isInitialized) {
+                    adapter.updateLaunches(t)
+                } else {
+                    adapter = LaunchesAdapter(t, viewState)
+                }
+                viewState.setAdapter(adapter)
                 viewState.hideProgressBar()
             }
 
@@ -66,12 +86,10 @@ class MainPresenter(override val dataManager: DataManager) :
                 disposable.add(d)
             }
 
-            override fun onNext(t: List<Launch>) {
-                adapter = LaunchesAdapter(t.reversed(), viewState)
-                viewState.setAdapter(adapter)
-            }
-
             override fun onError(e: Throwable) {
+                Timber.d(e)
+
+                if (viewState == null) return
                 viewState.hideProgressBar()
                 viewState.showButtonTryAgain()
             }
@@ -80,7 +98,7 @@ class MainPresenter(override val dataManager: DataManager) :
 
     private fun getNextLaunch() {
         if (viewState != null) {
-            disposable.add(dataManager.getNextLaunch()
+            disposable.add(interactor.getNextLaunch()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
@@ -99,9 +117,5 @@ class MainPresenter(override val dataManager: DataManager) :
         } else {
             Timber.d("view is not attached")
         }
-    }
-
-    private fun openYouTube(uri: Uri) {
-        viewState.openYouTube(uri)
     }
 }

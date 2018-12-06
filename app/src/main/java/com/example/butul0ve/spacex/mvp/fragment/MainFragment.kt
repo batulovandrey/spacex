@@ -20,9 +20,9 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.butul0ve.spacex.R
 import com.example.butul0ve.spacex.SpaceXApp
 import com.example.butul0ve.spacex.adapter.LaunchesAdapter
-import com.example.butul0ve.spacex.db.DataManager
-import com.example.butul0ve.spacex.mvp.view.MainView
+import com.example.butul0ve.spacex.mvp.interactor.MainMvpInteractor
 import com.example.butul0ve.spacex.mvp.presenter.MainPresenter
+import com.example.butul0ve.spacex.mvp.view.MainView
 import com.example.butul0ve.spacex.ui.BaseFragment
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
@@ -35,13 +35,13 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     @Inject
-    lateinit var dataManager: DataManager
+    lateinit var interactor: MainMvpInteractor
 
     @InjectPresenter
     lateinit var mainPresenter: MainPresenter
 
     @ProvidePresenter
-    fun provideMainPresenter() = MainPresenter(dataManager)
+    fun provideMainPresenter() = MainPresenter(interactor)
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

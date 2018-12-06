@@ -14,7 +14,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.butul0ve.spacex.R
 import com.example.butul0ve.spacex.SpaceXApp
 import com.example.butul0ve.spacex.adapter.LaunchesAdapter
-import com.example.butul0ve.spacex.db.DataManager
+import com.example.butul0ve.spacex.mvp.interactor.UpcomingMvpInteractor
 import com.example.butul0ve.spacex.mvp.presenter.UpcomingPresenter
 import com.example.butul0ve.spacex.mvp.view.UpcomingView
 import com.example.butul0ve.spacex.ui.BaseFragment
@@ -29,13 +29,13 @@ class UpcomingFragment: BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefre
     private var toast: Toast? = null
 
     @Inject
-    lateinit var dataManager: DataManager
+    lateinit var interactor: UpcomingMvpInteractor
 
     @InjectPresenter
     lateinit var upcomingPresenter: UpcomingPresenter
 
     @ProvidePresenter
-    fun providePresenter() = UpcomingPresenter(dataManager)
+    fun providePresenter() = UpcomingPresenter(interactor)
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

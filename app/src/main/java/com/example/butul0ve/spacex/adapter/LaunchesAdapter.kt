@@ -1,9 +1,5 @@
 package com.example.butul0ve.spacex.adapter
 
-import com.example.butul0ve.spacex.R
-import com.example.butul0ve.spacex.db.model.Launch
-import java.text.SimpleDateFormat
-import java.util.*
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
@@ -17,6 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.example.butul0ve.spacex.R
+import com.example.butul0ve.spacex.db.model.Launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by butul0ve on 20.01.18.
@@ -58,6 +58,15 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
         } else {
             ViewTypes.PAST_LAUNCHES
         }
+    }
+
+    fun getLaunchById(position: Int) = launches[position]
+
+    fun updateLaunches(launches: List<Launch>) {
+        this.launches as ArrayList
+        this.launches.clear()
+        this.launches.addAll(launches)
+        notifyDataSetChanged()
     }
 
     inner class PastLaunchesViewHolder(itemView: View, private val listener: LaunchesClickListener) :

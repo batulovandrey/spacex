@@ -1,10 +1,10 @@
 package com.example.butul0ve.spacex.mvp.presenter
 
 import com.arellomobile.mvp.InjectViewState
-import com.example.butul0ve.spacex.adapter.LaunchesAdapter
-import com.example.butul0ve.spacex.db.model.Launch
-import com.example.butul0ve.spacex.mvp.interactor.UpcomingMvpInteractor
-import com.example.butul0ve.spacex.mvp.view.UpcomingView
+import com.example.butul0ve.spacex.adapter.DragonAdapter
+import com.example.butul0ve.spacex.db.model.Dragon
+import com.example.butul0ve.spacex.mvp.interactor.DragonsMvpInteractor
+import com.example.butul0ve.spacex.mvp.view.RocketsView
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -13,10 +13,10 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @InjectViewState
-class UpcomingPresenter @Inject constructor(override val interactor: UpcomingMvpInteractor) :
-        BasePresenter<UpcomingView>(interactor) {
+class DragonsPresenter @Inject constructor(override val interactor: DragonsMvpInteractor) :
+        BasePresenter<RocketsView>(interactor) {
 
-    private lateinit var adapter: LaunchesAdapter
+    private lateinit var dragonAdapter: DragonAdapter
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -26,21 +26,21 @@ class UpcomingPresenter @Inject constructor(override val interactor: UpcomingMvp
     fun getData() {
         if (viewState != null) {
 
-            disposable.add(interactor.getUpcomingLaunchesFromDb()
+            disposable.add(interactor.getDragonsFromDb()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
-                        adapter = LaunchesAdapter(it, viewState)
-                        viewState.setAdapter(adapter)
+                        dragonAdapter = DragonAdapter(it)
+                        viewState.setAdapter(dragonAdapter)
                     })
 
             viewState.showProgressBar()
 
-            interactor.getUpcomingLaunchesFromServer()
+            interactor.getDragonsFromServer()
                     .subscribeOn(Schedulers.io())
                     .map {
-                        disposable.add(interactor.replaceUpcomingLaunches(it)
-                                .subscribe())
+                        interactor.replaceDragons(it)
+                                .subscribe()
                         it
                     }
                     .observeOn(AndroidSchedulers.mainThread())
@@ -48,14 +48,14 @@ class UpcomingPresenter @Inject constructor(override val interactor: UpcomingMvp
         }
     }
 
-    private fun getObserver() : SingleObserver<List<Launch>> {
-        return object : SingleObserver<List<Launch>> {
+    private fun getObserver(): SingleObserver<List<Dragon>> {
+        return object : SingleObserver<List<Dragon>> {
 
-            override fun onSuccess(t: List<Launch>) {
+            override fun onSuccess(t: List<Dragon>) {
                 if (viewState == null) return
 
-                adapter = LaunchesAdapter(t, viewState)
-                viewState.setAdapter(adapter)
+                dragonAdapter = DragonAdapter(t)
+                viewState.setAdapter(dragonAdapter)
                 viewState.hideProgressBar()
             }
 
@@ -64,7 +64,7 @@ class UpcomingPresenter @Inject constructor(override val interactor: UpcomingMvp
             }
 
             override fun onError(e: Throwable) {
-                Timber.e(e)
+                Timber.d(e)
                 if (viewState == null) return
 
                 viewState.hideProgressBar()
