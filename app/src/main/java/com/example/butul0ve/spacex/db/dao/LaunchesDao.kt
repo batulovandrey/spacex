@@ -13,20 +13,20 @@ interface LaunchesDao {
     @Query("select * from launches")
     fun getAll(): Flowable<List<Launch>>
 
-    @Query("select * from launches where launch_success = :isLaunchSuccess")
-    fun getAllUpcomingLaunches(isLaunchSuccess: Boolean? = null): Flowable<List<Launch>>
+    @Query("select * from launches where launch_success is null")
+    fun getAllUpcomingLaunches(): Flowable<List<Launch>>
 
-    @Query("select * from launches where launch_success != :isLaunchSuccess")
-    fun getAllPastLaunches(isLaunchSuccess: Boolean? = null): Flowable<List<Launch>>
+    @Query("select * from launches where launch_success is not null")
+    fun getAllPastLaunches(): Flowable<List<Launch>>
 
     @Query("delete from launches")
     fun deleteAll()
 
-    @Query("delete from launches where launch_success = :isLaunchSuccess")
-    fun deleteAllUpcomingLaunches(isLaunchSuccess: Boolean? = null)
+    @Query("delete from launches where launch_success is null")
+    fun deleteAllUpcomingLaunches()
 
-    @Query("delete from launches where launch_success != :isLaunchSuccess")
-    fun deleteAllPastLaunches(isLaunchSuccess: Boolean? = null)
+    @Query("delete from launches where launch_success is not null")
+    fun deleteAllPastLaunches()
 
     @Insert(onConflict = REPLACE)
     fun insert(launch: Launch)
