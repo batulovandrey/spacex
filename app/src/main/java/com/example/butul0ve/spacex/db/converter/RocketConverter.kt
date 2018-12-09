@@ -1,7 +1,7 @@
-package com.example.butul0ve.spacex.db.convertor
+package com.example.butul0ve.spacex.db.converter
 
 import androidx.room.TypeConverter
-import com.example.butul0ve.spacex.bean.Rocket
+import com.example.butul0ve.spacex.db.model.Rocket
 
 class RocketConverter {
 

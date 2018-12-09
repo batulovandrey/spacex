@@ -1,6 +1,8 @@
 package com.example.butul0ve.spacex
 
 import android.app.Application
+import android.content.Context
+import androidx.multidex.MultiDex
 import com.bumptech.glide.request.target.ViewTarget
 import com.example.butul0ve.spacex.di.*
 import timber.log.Timber
@@ -13,6 +15,11 @@ class SpaceXApp: Application() {
 
         ViewTarget.setTagId(R.id.glide_tag)
         Timber.plant(Timber.DebugTree())
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
     private fun initComponent() : NetComponent {

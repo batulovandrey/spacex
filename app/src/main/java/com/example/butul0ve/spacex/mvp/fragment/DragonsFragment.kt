@@ -13,8 +13,8 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.butul0ve.spacex.R
 import com.example.butul0ve.spacex.SpaceXApp
 import com.example.butul0ve.spacex.adapter.DragonAdapter
-import com.example.butul0ve.spacex.db.DataManager
-import com.example.butul0ve.spacex.mvp.presenter.RocketsPresenter
+import com.example.butul0ve.spacex.mvp.interactor.DragonsMvpInteractor
+import com.example.butul0ve.spacex.mvp.presenter.DragonsPresenter
 import com.example.butul0ve.spacex.mvp.view.RocketsView
 import com.example.butul0ve.spacex.ui.BaseFragment
 import javax.inject.Inject
@@ -26,13 +26,13 @@ class DragonsFragment : BaseFragment(), RocketsView {
     private lateinit var tryAgainButton: Button
 
     @Inject
-    lateinit var dataManager: DataManager
+    lateinit var interactor: DragonsMvpInteractor
 
     @InjectPresenter
-    lateinit var rocketsPresenter: RocketsPresenter
+    lateinit var dragonsPresenter: DragonsPresenter
 
     @ProvidePresenter
-    fun providePresenter() = RocketsPresenter(dataManager)
+    fun providePresenter() = DragonsPresenter(interactor)
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -44,7 +44,7 @@ class DragonsFragment : BaseFragment(), RocketsView {
         dragonsRecycler = view.findViewById(R.id.dragons_recycler)
         progressBar = view.findViewById(R.id.progress_bar)
         tryAgainButton = view.findViewById(R.id.try_again_button)
-        tryAgainButton.setOnClickListener { rocketsPresenter.getData() }
+        tryAgainButton.setOnClickListener { dragonsPresenter.getData() }
         return view
     }
 

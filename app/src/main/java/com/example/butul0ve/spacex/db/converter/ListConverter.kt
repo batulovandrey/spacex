@@ -1,4 +1,4 @@
-package com.example.butul0ve.spacex.db.convertor
+package com.example.butul0ve.spacex.db.converter
 
 import androidx.room.TypeConverter
 

@@ -8,10 +8,8 @@ import androidx.viewpager.widget.ViewPager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.example.butul0ve.spacex.PlayerActivity
 import com.example.butul0ve.spacex.R
-import com.example.butul0ve.spacex.SpaceXApp
 import com.example.butul0ve.spacex.VIDEO_EXTRA
 import com.example.butul0ve.spacex.adapter.SpaceXPagerAdapter
-import com.example.butul0ve.spacex.db.DataManager
 import com.example.butul0ve.spacex.mvp.fragment.DragonsFragment
 import com.example.butul0ve.spacex.mvp.fragment.MainFragment
 import com.example.butul0ve.spacex.mvp.presenter.MainActivityPresenter
@@ -20,24 +18,18 @@ import com.example.butul0ve.spacex.ui.BaseFragment
 import com.example.butul0ve.spacex.ui.MvpAppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import timber.log.Timber
-import javax.inject.Inject
 
-class MainActivity : MvpAppCompatActivity(), MainFragment.OnItemClickListener, MainActivityView {
+class MainActivity : MvpAppCompatActivity(), MainActivityView {
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var placeHolderIV: ImageView
     private lateinit var viewPager: ViewPager
     private lateinit var pagerAdapter: PagerAdapter
 
-    @Inject
-    lateinit var dataManager: DataManager
-
     @InjectPresenter
     lateinit var presenter: MainActivityPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        SpaceXApp.netComponent.inject(this)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
