@@ -59,7 +59,10 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
         swipeRefreshLayout.setOnRefreshListener(this)
         tryAgainButton = view.findViewById(R.id.try_again_button)
-        tryAgainButton.setOnClickListener { mainPresenter.getData() }
+        tryAgainButton.setOnClickListener {
+            mainPresenter.getNextLaunch()
+            mainPresenter.getData()
+        }
         return view
     }
 

@@ -66,37 +66,7 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
                 })
     }
 
-    private fun getObserver(): SingleObserver<List<Launch>> {
-        return object : SingleObserver<List<Launch>> {
-
-            override fun onSuccess(t: List<Launch>) {
-
-                if (viewState == null) return
-
-                if (::adapter.isInitialized) {
-                    adapter.updateLaunches(t)
-                } else {
-                    adapter = LaunchesAdapter(t, viewState)
-                }
-                viewState.setAdapter(adapter)
-                viewState.hideProgressBar()
-            }
-
-            override fun onSubscribe(d: Disposable) {
-                disposable.add(d)
-            }
-
-            override fun onError(e: Throwable) {
-                Timber.d(e)
-
-                if (viewState == null) return
-                viewState.hideProgressBar()
-                viewState.showButtonTryAgain()
-            }
-        }
-    }
-
-    private fun getNextLaunch() {
+    fun getNextLaunch() {
         if (viewState != null) {
             disposable.add(interactor.getNextLaunch()
                     .subscribeOn(Schedulers.io())
@@ -116,6 +86,37 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
 
         } else {
             Timber.d("view is not attached")
+        }
+    }
+
+    private fun getObserver(): SingleObserver<List<Launch>> {
+        return object : SingleObserver<List<Launch>> {
+
+            override fun onSuccess(t: List<Launch>) {
+
+                if (viewState == null) return
+
+                if (::adapter.isInitialized) {
+                    adapter.updateLaunches(t)
+                } else {
+                    adapter = LaunchesAdapter(t, viewState)
+                }
+                viewState.setAdapter(adapter)
+                viewState.hideProgressBar()
+                viewState.hideButtonTryAgain()
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                disposable.add(d)
+            }
+
+            override fun onError(e: Throwable) {
+                Timber.d(e)
+
+                if (viewState == null) return
+                viewState.hideProgressBar()
+                viewState.showButtonTryAgain()
+            }
         }
     }
 }
