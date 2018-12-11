@@ -13,4 +13,8 @@ interface RocketsView: MvpView {
     fun showProgressBar()
 
     fun hideProgressBar()
+
+    fun showButtonTryAgain()
+
+    fun hideButtonTryAgain()
 }

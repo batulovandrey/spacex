@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.butul0ve.spacex.R
@@ -19,11 +19,11 @@ import com.example.butul0ve.spacex.mvp.view.RocketsView
 import com.example.butul0ve.spacex.ui.BaseFragment
 import javax.inject.Inject
 
-class DragonsFragment : BaseFragment(), RocketsView {
+class DragonsFragment : BaseFragment(), RocketsView, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var dragonsRecycler: RecyclerView
-    private lateinit var progressBar: ProgressBar
     private lateinit var tryAgainButton: Button
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     @Inject
     lateinit var interactor: DragonsMvpInteractor
@@ -42,10 +42,19 @@ class DragonsFragment : BaseFragment(), RocketsView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dragons_fragment, container, false)
         dragonsRecycler = view.findViewById(R.id.dragons_recycler)
-        progressBar = view.findViewById(R.id.progress_bar)
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
+        swipeRefreshLayout.setOnRefreshListener(this)
         tryAgainButton = view.findViewById(R.id.try_again_button)
         tryAgainButton.setOnClickListener { dragonsPresenter.getData() }
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark)
     }
 
     override fun setAdapter(adapter: DragonAdapter) {
@@ -53,10 +62,22 @@ class DragonsFragment : BaseFragment(), RocketsView {
     }
 
     override fun showProgressBar() {
-        activity?.runOnUiThread { progressBar.visibility = View.VISIBLE }
+        swipeRefreshLayout.isRefreshing = true
     }
 
     override fun hideProgressBar() {
-        activity?.runOnUiThread { progressBar.visibility = View.GONE }
+        swipeRefreshLayout.isRefreshing = false
+    }
+
+    override fun showButtonTryAgain() {
+        tryAgainButton.visibility = View.VISIBLE
+    }
+
+    override fun hideButtonTryAgain() {
+        tryAgainButton.visibility = View.GONE
+    }
+
+    override fun onRefresh() {
+        dragonsPresenter.getData()
     }
 }

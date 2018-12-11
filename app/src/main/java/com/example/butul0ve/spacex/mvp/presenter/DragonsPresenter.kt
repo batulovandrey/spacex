@@ -57,6 +57,7 @@ class DragonsPresenter @Inject constructor(override val interactor: DragonsMvpIn
                 dragonAdapter = DragonAdapter(t)
                 viewState.setAdapter(dragonAdapter)
                 viewState.hideProgressBar()
+                viewState.hideButtonTryAgain()
             }
 
             override fun onSubscribe(d: Disposable) {
@@ -68,6 +69,7 @@ class DragonsPresenter @Inject constructor(override val interactor: DragonsMvpIn
                 if (viewState == null) return
 
                 viewState.hideProgressBar()
+                viewState.showButtonTryAgain()
             }
         }
     }
