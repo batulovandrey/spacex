@@ -76,6 +76,14 @@ class UpcomingFragment : BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefr
         upcomingPresenter.getData()
     }
 
+    override fun showTryAgainButton() {
+        tryAgainButton.visibility = View.VISIBLE
+    }
+
+    override fun hideTryAgainButton() {
+        tryAgainButton.visibility = View.GONE
+    }
+
     override fun onItemClick(position: Int) {
         if (toast != null) {
             toast?.cancel()

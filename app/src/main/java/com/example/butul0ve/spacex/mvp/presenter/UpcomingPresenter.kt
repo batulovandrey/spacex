@@ -57,6 +57,7 @@ class UpcomingPresenter @Inject constructor(override val interactor: UpcomingMvp
                 adapter = LaunchesAdapter(t, viewState)
                 viewState.setAdapter(adapter)
                 viewState.hideProgressBar()
+                viewState.hideTryAgainButton()
             }
 
             override fun onSubscribe(d: Disposable) {
@@ -68,6 +69,7 @@ class UpcomingPresenter @Inject constructor(override val interactor: UpcomingMvp
                 if (viewState == null) return
 
                 viewState.hideProgressBar()
+                viewState.showTryAgainButton()
             }
         }
     }

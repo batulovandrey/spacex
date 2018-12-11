@@ -14,6 +14,10 @@ interface UpcomingView: MvpView, LaunchesClickListener {
 
     fun hideProgressBar()
 
+    fun showTryAgainButton()
+
+    fun hideTryAgainButton()
+
     @StateStrategyType(SkipStrategy::class)
     override fun onItemClick(position: Int)
 }
