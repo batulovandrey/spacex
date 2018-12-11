@@ -91,15 +91,15 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
     }
 
     override fun showToast(message: Int) {
-        activity?.runOnUiThread { Toast.makeText(activity, message, Toast.LENGTH_LONG).show() }
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
     }
 
     override fun showButtonTryAgain() {
-        activity?.runOnUiThread { tryAgainButton.visibility = View.VISIBLE }
+        tryAgainButton.visibility = View.VISIBLE
     }
 
     override fun hideButtonTryAgain() {
-        activity?.runOnUiThread { tryAgainButton.visibility = View.GONE }
+        tryAgainButton.visibility = View.GONE
     }
 
     override fun showNextLaunch(text: String) {

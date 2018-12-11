@@ -20,7 +20,7 @@ import com.example.butul0ve.spacex.mvp.view.UpcomingView
 import com.example.butul0ve.spacex.ui.BaseFragment
 import javax.inject.Inject
 
-class UpcomingFragment: BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefreshListener {
+class UpcomingFragment : BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var dragonsRecycler: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -61,15 +61,15 @@ class UpcomingFragment: BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefre
     }
 
     override fun setAdapter(adapter: LaunchesAdapter) {
-        activity?.runOnUiThread { dragonsRecycler.adapter = adapter }
+        dragonsRecycler.adapter = adapter
     }
 
     override fun showProgressBar() {
-        activity?.runOnUiThread { swipeRefreshLayout.isRefreshing = true }
+        swipeRefreshLayout.isRefreshing = true
     }
 
     override fun hideProgressBar() {
-        activity?.runOnUiThread { swipeRefreshLayout.isRefreshing = false }
+        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun onRefresh() {
