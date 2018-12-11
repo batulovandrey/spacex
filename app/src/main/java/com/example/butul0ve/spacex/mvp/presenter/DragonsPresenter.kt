@@ -4,7 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.example.butul0ve.spacex.adapter.DragonAdapter
 import com.example.butul0ve.spacex.db.model.Dragon
 import com.example.butul0ve.spacex.mvp.interactor.DragonsMvpInteractor
-import com.example.butul0ve.spacex.mvp.view.RocketsView
+import com.example.butul0ve.spacex.mvp.view.DragonsView
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @InjectViewState
 class DragonsPresenter @Inject constructor(override val interactor: DragonsMvpInteractor) :
-        BasePresenter<RocketsView>(interactor) {
+        BasePresenter<DragonsView>(interactor) {
 
     private lateinit var dragonAdapter: DragonAdapter
 

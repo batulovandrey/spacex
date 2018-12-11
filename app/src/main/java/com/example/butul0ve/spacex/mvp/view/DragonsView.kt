@@ -6,7 +6,7 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.example.butul0ve.spacex.adapter.DragonAdapter
 
 @StateStrategyType(AddToEndSingleStrategy::class)
-interface RocketsView: MvpView {
+interface DragonsView: MvpView {
 
     fun setAdapter(adapter: DragonAdapter)
 

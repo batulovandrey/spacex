@@ -15,11 +15,11 @@ import com.example.butul0ve.spacex.SpaceXApp
 import com.example.butul0ve.spacex.adapter.DragonAdapter
 import com.example.butul0ve.spacex.mvp.interactor.DragonsMvpInteractor
 import com.example.butul0ve.spacex.mvp.presenter.DragonsPresenter
-import com.example.butul0ve.spacex.mvp.view.RocketsView
+import com.example.butul0ve.spacex.mvp.view.DragonsView
 import com.example.butul0ve.spacex.ui.BaseFragment
 import javax.inject.Inject
 
-class DragonsFragment : BaseFragment(), RocketsView, SwipeRefreshLayout.OnRefreshListener {
+class DragonsFragment : BaseFragment(), DragonsView, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var dragonsRecycler: RecyclerView
     private lateinit var tryAgainButton: Button
