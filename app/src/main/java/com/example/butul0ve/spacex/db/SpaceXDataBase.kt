@@ -5,11 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.butul0ve.spacex.db.model.*
-import com.example.butul0ve.spacex.db.converter.LinkConverter
-import com.example.butul0ve.spacex.db.converter.ListConverter
-import com.example.butul0ve.spacex.db.converter.RocketConverter
-import com.example.butul0ve.spacex.db.dao.*
+import com.example.butul0ve.spacex.db.converter.*
+import com.example.butul0ve.spacex.db.dao.DragonDao
+import com.example.butul0ve.spacex.db.dao.LaunchesDao
+import com.example.butul0ve.spacex.db.dao.LinkDao
+import com.example.butul0ve.spacex.db.dao.RocketDao
+import com.example.butul0ve.spacex.db.model.Dragon
+import com.example.butul0ve.spacex.db.model.Launch
+import com.example.butul0ve.spacex.db.model.Links
+import com.example.butul0ve.spacex.db.model.Rocket
 import javax.inject.Inject
 
 @Database(entities = [
@@ -21,7 +25,10 @@ import javax.inject.Inject
 @TypeConverters(
         LinkConverter::class,
         ListConverter::class,
-        RocketConverter::class)
+        RocketConverter::class,
+        HeightConverter::class,
+        MassConverter::class,
+        DiameterConverter::class)
 abstract class SpaceXDataBase : RoomDatabase() {
 
     abstract fun dragonDao(): DragonDao

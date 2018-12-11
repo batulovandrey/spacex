@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.example.butul0ve.spacex.mvp.fragment.DragonsFragment
 import com.example.butul0ve.spacex.mvp.fragment.MainFragment
+import com.example.butul0ve.spacex.mvp.fragment.RocketsFragment
 import com.example.butul0ve.spacex.mvp.fragment.UpcomingFragment
 import com.example.butul0ve.spacex.mvp.view.MainActivityView
 
@@ -26,5 +27,9 @@ class MainActivityPresenter: MvpPresenter<MainActivityView>() {
 
     fun openMainFragment() {
         viewState.showFragment(MainFragment())
+    }
+
+    fun openRocketsFragment() {
+        viewState.showFragment(RocketsFragment())
     }
 }

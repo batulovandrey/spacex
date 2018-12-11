@@ -12,6 +12,8 @@ import com.example.butul0ve.spacex.VIDEO_EXTRA
 import com.example.butul0ve.spacex.adapter.SpaceXPagerAdapter
 import com.example.butul0ve.spacex.mvp.fragment.DragonsFragment
 import com.example.butul0ve.spacex.mvp.fragment.MainFragment
+import com.example.butul0ve.spacex.mvp.fragment.RocketsFragment
+import com.example.butul0ve.spacex.mvp.fragment.UpcomingFragment
 import com.example.butul0ve.spacex.mvp.presenter.MainActivityPresenter
 import com.example.butul0ve.spacex.mvp.view.MainActivityView
 import com.example.butul0ve.spacex.ui.BaseFragment
@@ -64,9 +66,11 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
 
     override fun showFragment(fragment: BaseFragment) {
         viewPager.currentItem = when(fragment) {
+            is UpcomingFragment -> 0
             is MainFragment -> 1
             is DragonsFragment -> 2
-            else -> 0
+            is RocketsFragment -> 3
+            else -> 1
         }
     }
 
@@ -90,6 +94,7 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> {
+                    presenter.openRocketsFragment()
                     return@setOnNavigationItemSelectedListener false
                 }
             }

@@ -3,9 +3,11 @@ package com.example.butul0ve.spacex.di
 import android.content.Context
 import com.example.butul0ve.spacex.db.DragonsRepository
 import com.example.butul0ve.spacex.db.LaunchesRepository
+import com.example.butul0ve.spacex.db.RocketsRepository
 import com.example.butul0ve.spacex.db.SpaceXDataBase
 import com.example.butul0ve.spacex.db.dao.DragonDao
 import com.example.butul0ve.spacex.db.dao.LaunchesDao
+import com.example.butul0ve.spacex.db.dao.RocketDao
 import com.example.butul0ve.spacex.mvp.interactor.*
 import com.example.butul0ve.spacex.network.api.NetworkHelper
 import dagger.Module
@@ -30,6 +32,11 @@ class DataModule {
     }
 
     @Provides
+    fun provideRocketsDao(db: SpaceXDataBase): RocketDao {
+        return db.rocketDao()
+    }
+
+    @Provides
     fun provideLaunchesRepository(dao: LaunchesDao): LaunchesRepository {
         return LaunchesRepository(dao)
     }
@@ -37,6 +44,11 @@ class DataModule {
     @Provides
     fun provideDragonsRepository(dao: DragonDao): DragonsRepository {
         return DragonsRepository(dao)
+    }
+
+    @Provides
+    fun provideRocketsRepositore(dao: RocketDao): RocketsRepository {
+        return RocketsRepository(dao)
     }
 
     @Provides
@@ -55,5 +67,11 @@ class DataModule {
     fun provideDragonsInteractor(networkHelper: NetworkHelper,
                                  repository: DragonsRepository): DragonsMvpInteractor {
         return DragonsInteractor(networkHelper, repository)
+    }
+
+    @Provides
+    fun provideRocketInteractor(networkHelper: NetworkHelper,
+                                repository: RocketsRepository): RocketsMvpInteractor {
+        return RocketsInteractor(networkHelper, repository)
     }
 }

@@ -5,12 +5,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.example.butul0ve.spacex.db.model.Rocket
+import io.reactivex.Flowable
 
 @Dao
 interface RocketDao {
 
     @Query("select * from rockets")
-    fun getAll(): List<Rocket>
+    fun getAll(): Flowable<List<Rocket>>
 
     @Query("delete from rockets")
     fun deleteAll()

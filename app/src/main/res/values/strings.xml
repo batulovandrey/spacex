@@ -14,4 +14,15 @@
     <string name="description">description:</string>
     <string name="wiki_button">open wikipedia</string>
     <string name="first_flight">first flight:</string>
+    <string name="is_active">active:</string>
+    <string name="stages">stages:</string>
+    <string name="height">height:</string>
+    <string name="diameter">diameter:</string>
+    <string name="mass">mass</string>
+    <string name="meters_feet">%.2f meters %.2f feet</string>
+    <string name="kg_lb">%d kg %d lb</string>
+    <string name="upcoming">upcoming</string>
+    <string name="past">past</string>
+    <string name="dragons">dragons</string>
+    <string name="rockets">rockets</string>
 </resources>

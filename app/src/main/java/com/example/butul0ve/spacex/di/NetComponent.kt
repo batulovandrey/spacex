@@ -2,9 +2,10 @@ package com.example.butul0ve.spacex.di
 
 import android.app.Application
 import androidx.annotation.NonNull
-import com.example.butul0ve.spacex.mvp.fragment.DragonsFragment
 import com.example.butul0ve.spacex.mvp.MainActivity
+import com.example.butul0ve.spacex.mvp.fragment.DragonsFragment
 import com.example.butul0ve.spacex.mvp.fragment.MainFragment
+import com.example.butul0ve.spacex.mvp.fragment.RocketsFragment
 import com.example.butul0ve.spacex.mvp.fragment.UpcomingFragment
 import dagger.Component
 
@@ -23,4 +24,6 @@ interface NetComponent {
     fun inject(@NonNull dragonsFragment: DragonsFragment)
 
     fun inject(@NonNull upcomingFragment: UpcomingFragment)
+
+    fun inject(@NonNull rocketsFragment: RocketsFragment)
 }

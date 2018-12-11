@@ -2,6 +2,7 @@ package com.example.butul0ve.spacex.network.api
 
 import com.example.butul0ve.spacex.db.model.Dragon
 import com.example.butul0ve.spacex.db.model.Launch
+import com.example.butul0ve.spacex.db.model.Rocket
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -21,5 +22,9 @@ class NetworkHelper @Inject constructor(val serverApi: ServerApi) {
 
     fun getNext(): Single<Launch> {
         return serverApi.getNextLaunch()
+    }
+
+    fun getRockets(): Single<List<Rocket>> {
+        return serverApi.getRockets()
     }
 }
