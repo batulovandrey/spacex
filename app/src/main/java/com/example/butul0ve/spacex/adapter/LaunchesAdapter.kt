@@ -2,6 +2,7 @@ package com.example.butul0ve.spacex.adapter
 
 import android.content.Intent
 import android.net.Uri
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import com.example.butul0ve.spacex.R
 import com.example.butul0ve.spacex.db.model.Launch
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by butul0ve on 20.01.18.
@@ -40,7 +42,32 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
             ViewTypes.UPCOMING_LAUNCHES -> {
                 holder as UpcomingLaunchesViewHolder
                 holder.bind(launch)
+
+                val dateBeforeLaunch = Date(launch.launchDate.toLong() * 1000)
+                val currentDateTime = Calendar.getInstance().time
+                val dif = dateBeforeLaunch.time - currentDateTime.time
+                val days = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+
+                if (holder.countDownTimer != null) {
+                    holder.countDownTimer!!.cancel()
+                }
+
+                if (days < 7) {
+                    holder.countDownTimer = object : CountDownTimer(dif, 1000L) {
+
+                        override fun onTick(millisUntilFinished: Long) {
+                            val launchBeforeDateFormat = SimpleDateFormat("dd, HH:mm:ss", Locale.ENGLISH)
+                            holder.launchDateTextView.text = launchBeforeDateFormat.format(millisUntilFinished)
+                        }
+
+                        override fun onFinish() {
+                            holder.launchDateTextView.text = "launch!"
+                        }
+
+                    }.start()
+                }
             }
+
             ViewTypes.PAST_LAUNCHES -> {
                 holder as PastLaunchesViewHolder
                 holder.bind(launch)
@@ -107,6 +134,9 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
     inner class UpcomingLaunchesViewHolder(itemView: View, private val listener: LaunchesClickListener) :
             RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
+        var countDownTimer: CountDownTimer? = null
+        val launchDateTextView: TextView = itemView.findViewById(R.id.launch_date_text_view)
+
         init {
             itemView.setOnClickListener(this)
         }
@@ -119,11 +149,11 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
             itemView.findViewById<TextView>(R.id.rocket_name_text_view).text = upcomingLaunch.rocket.name
             itemView.findViewById<TextView>(R.id.flight_number_text_view).text = upcomingLaunch.flightNumber.toString()
 
-            val date = Date(upcomingLaunch.launchDate.toLong() * 1000)
-            val launchDate = SimpleDateFormat("dd MMMM y, HH:mm:ss", Locale.ENGLISH)
+            val dateBeforeLaunch = Date(upcomingLaunch.launchDate.toLong() * 1000)
+            val launchDateFormat = SimpleDateFormat("dd MMMM y, HH:mm:ss", Locale.ENGLISH)
 
-            itemView.findViewById<TextView>(R.id.launch_date_text_view).text = launchDate.format(date)
             itemView.findViewById<TextView>(R.id.detail_text_view).text = upcomingLaunch.details
+            launchDateTextView.text = launchDateFormat.format(dateBeforeLaunch)
         }
     }
 }
