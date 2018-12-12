@@ -25,4 +25,5 @@
     <string name="past">past</string>
     <string name="dragons">dragons</string>
     <string name="rockets">rockets</string>
+    <string name="date_time_before_launch">%d days %s</string>
 </resources>

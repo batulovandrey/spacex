@@ -16,9 +16,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.butul0ve.spacex.R
 import com.example.butul0ve.spacex.db.model.Launch
-import java.text.SimpleDateFormat
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.temporal.ChronoUnit
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 /**
  * Created by butul0ve on 20.01.18.
@@ -43,21 +47,33 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
                 holder as UpcomingLaunchesViewHolder
                 holder.bind(launch)
 
-                val dateBeforeLaunch = Date(launch.launchDate.toLong() * 1000)
-                val currentDateTime = Calendar.getInstance().time
-                val dif = dateBeforeLaunch.time - currentDateTime.time
-                val days = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS)
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                val localDateTimeOfLaunch = LocalDateTime.parse(launch.launchDate, formatter)
+                val dateTimeOfLaunch = localDateTimeOfLaunch.atZone(ZoneId.of("UTC"))
+                        .withZoneSameInstant(ZoneId.systemDefault())
+
+                val tempDateTime = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault())
+
+                val dif = tempDateTime.until(dateTimeOfLaunch, ChronoUnit.MILLIS)
+
+                val daysBeforeLaunch = tempDateTime.until(dateTimeOfLaunch, ChronoUnit.DAYS)
 
                 if (holder.countDownTimer != null) {
                     holder.countDownTimer!!.cancel()
                 }
 
-                if (days < 7) {
+                if (daysBeforeLaunch < 7) {
                     holder.countDownTimer = object : CountDownTimer(dif, 1000L) {
 
                         override fun onTick(millisUntilFinished: Long) {
-                            val launchBeforeDateFormat = SimpleDateFormat("dd, HH:mm:ss", Locale.ENGLISH)
-                            holder.launchDateTextView.text = launchBeforeDateFormat.format(millisUntilFinished)
+                            val localDateTime = LocalDateTime
+                                    .ofInstant(Instant.ofEpochMilli(millisUntilFinished), ZoneId.of("UTC"))
+
+                            holder.launchDateTextView.text =
+                                    holder.itemView.resources.getString(R.string.date_time_before_launch,
+                                            daysBeforeLaunch,
+                                            localDateTime.format(DateTimeFormatter
+                                                    .ofPattern("HH:mm:ss")))
                         }
 
                         override fun onFinish() {
@@ -102,8 +118,12 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
         fun bind(pastLaunch: Launch) {
             itemView.findViewById<TextView>(R.id.rocket_name_text_view).text = pastLaunch.rocket.name
             itemView.findViewById<TextView>(R.id.flight_number_text_view).text = pastLaunch.flightNumber.toString()
-            val date = Date(pastLaunch.launchDate.toLong() * 1000)
-            val launchDate = SimpleDateFormat("dd MMMM y, HH:mm:ss", Locale.ENGLISH)
+
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+            val localDateTime = LocalDateTime.parse(pastLaunch.launchDate, formatter)
+            val zonedDateTime = localDateTime.atZone(ZoneId.of("UTC"))
+                    .withZoneSameInstant(ZoneId.systemDefault())
+
             val options = RequestOptions()
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -113,7 +133,8 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
             Glide.with(itemView.context).load(pastLaunch.links.missionPath)
                     .apply(options)
                     .into(itemView.findViewById<ImageView>(R.id.mission_patch_image_view))
-            itemView.findViewById<TextView>(R.id.launch_date_text_view).text = launchDate.format(date)
+            itemView.findViewById<TextView>(R.id.launch_date_text_view).text =
+                    zonedDateTime.format(DateTimeFormatter.ofPattern("dd MMMM y, HH:mm:ss"))
             itemView.findViewById<TextView>(R.id.detail_text_view).text = pastLaunch.details
             itemView.findViewById<Button>(R.id.article_button).setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW)
@@ -149,11 +170,13 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
             itemView.findViewById<TextView>(R.id.rocket_name_text_view).text = upcomingLaunch.rocket.name
             itemView.findViewById<TextView>(R.id.flight_number_text_view).text = upcomingLaunch.flightNumber.toString()
 
-            val dateBeforeLaunch = Date(upcomingLaunch.launchDate.toLong() * 1000)
-            val launchDateFormat = SimpleDateFormat("dd MMMM y, HH:mm:ss", Locale.ENGLISH)
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+            val localDateTime = LocalDateTime.parse(upcomingLaunch.launchDate, formatter)
+            val zonedDateTime = localDateTime.atZone(ZoneId.of("UTC"))
+                    .withZoneSameInstant(ZoneId.systemDefault())
 
             itemView.findViewById<TextView>(R.id.detail_text_view).text = upcomingLaunch.details
-            launchDateTextView.text = launchDateFormat.format(dateBeforeLaunch)
+            launchDateTextView.text = zonedDateTime.format(DateTimeFormatter.ofPattern("dd MMMM y, HH:mm:ss"))
         }
     }
 }

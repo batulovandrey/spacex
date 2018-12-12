@@ -10,9 +10,10 @@ import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneId
+import org.threeten.bp.format.DateTimeFormatter
 import timber.log.Timber
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 @InjectViewState
@@ -73,9 +74,14 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
 
-                        val date = Date(it.launchDate.toLong() * 1000)
-                        val launchDate = SimpleDateFormat("dd MMMM y, HH:mm:ss", Locale.ENGLISH)
-                        val text = "the next launch is scheduled for:\n${launchDate.format(date)}"
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                        val localDateTime = LocalDateTime.parse(it.launchDate, formatter)
+
+                        val nextLaunchDateTime = localDateTime.atZone(ZoneId.of("UTC"))
+                                .withZoneSameInstant(ZoneId.systemDefault())
+
+                        val text = "the next launch is scheduled for:\n${nextLaunchDateTime.toLocalDateTime()
+                                .format(DateTimeFormatter.ofPattern("dd MMMM y, HH:mm:ss"))}"
 
                         viewState.showNextLaunch(text)
 

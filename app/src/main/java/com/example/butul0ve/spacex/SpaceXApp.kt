@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.multidex.MultiDex
 import com.bumptech.glide.request.target.ViewTarget
 import com.example.butul0ve.spacex.di.*
+import com.jakewharton.threetenabp.AndroidThreeTen
 import timber.log.Timber
 
 class SpaceXApp: Application() {
@@ -15,6 +16,7 @@ class SpaceXApp: Application() {
 
         ViewTarget.setTagId(R.id.glide_tag)
         Timber.plant(Timber.DebugTree())
+        AndroidThreeTen.init(this)
     }
 
     override fun attachBaseContext(base: Context?) {

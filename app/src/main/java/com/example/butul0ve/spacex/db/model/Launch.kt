@@ -14,30 +14,30 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "launches")
 data class Launch(@PrimaryKey(autoGenerate = true)
-                      var flightId: Long?,
+                  var flightId: Long?,
 
                   @SerializedName("flight_number")
-                      @ColumnInfo(name = "flight_number")
-                      var flightNumber: Int,
+                  @ColumnInfo(name = "flight_number")
+                  var flightNumber: Int,
 
                   @SerializedName("rocket")
-                      @ColumnInfo(name = "rocket")
-                      @TypeConverters(RocketConverter::class)
-                      var rocket: Rocket,
+                  @ColumnInfo(name = "rocket")
+                  @TypeConverters(RocketConverter::class)
+                  var rocket: Rocket,
 
-                  @SerializedName("launch_date_unix")
-                      @ColumnInfo(name = "launch_date_unix")
-                      var launchDate: String,
+                  @SerializedName("launch_date_utc")
+                  @ColumnInfo(name = "launch_date_utc")
+                  var launchDate: String,
 
                   @SerializedName("links")
-                      @ColumnInfo(name = "links")
-                      @TypeConverters(LinkConverter::class)
-                      var links: Links,
+                  @ColumnInfo(name = "links")
+                  @TypeConverters(LinkConverter::class)
+                  var links: Links,
 
                   @SerializedName("details")
-                      @ColumnInfo(name = "details")
-                      var details: String?,
+                  @ColumnInfo(name = "details")
+                  var details: String?,
 
                   @SerializedName("launch_success")
-                      @ColumnInfo(name = "launch_success")
-                      var isLaunchSuccess: Boolean?)
+                  @ColumnInfo(name = "launch_success")
+                  var isLaunchSuccess: Boolean?)
