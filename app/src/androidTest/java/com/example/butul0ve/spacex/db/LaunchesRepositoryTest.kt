@@ -2,10 +2,8 @@ package com.example.butul0ve.spacex.db
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.test.InstrumentationRegistry
-import com.example.butul0ve.spacex.db.model.Launch
-import com.example.butul0ve.spacex.db.model.Links
-import com.example.butul0ve.spacex.db.model.Rocket
+import androidx.test.core.app.ApplicationProvider
+import com.example.butul0ve.spacex.db.model.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -21,7 +19,7 @@ class LaunchesRepositoryTest {
 
     @Before
     fun init() {
-        db = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
+        db = Room.inMemoryDatabaseBuilder(ApplicationProvider.getApplicationContext(),
                 SpaceXDataBase::class.java)
                 .allowMainThreadQueries()
                 .build()
@@ -67,7 +65,17 @@ class LaunchesRepositoryTest {
 
         val launch = Launch(null,
                 1,
-                Rocket(null, "1", "rocket"),
+                Rocket(null,
+                        "1",
+                        "rocket",
+                        true,
+                        3,
+                        "11/12/2011",
+                        "wiki",
+                        "description",
+                        Height(1f, 0.5f),
+                        Diameter(2f, 3f),
+                        Mass(1L, 3L)),
                 "10-10-2011",
                 Links(null, "path", "link", "video"),
                 "details",
@@ -232,7 +240,17 @@ class LaunchesRepositoryTest {
     private fun getSomeLaunches(): List<Launch> {
         val upcomingLaunch1 = Launch(null,
                 1,
-                Rocket(null, "1", "rocket"),
+                Rocket(null,
+                        "1",
+                        "rocket",
+                        true,
+                        3,
+                        "11/12/2011",
+                        "wiki",
+                        "description",
+                        Height(1f, 0.5f),
+                        Diameter(2f, 3f),
+                        Mass(1L, 3L)),
                 "10-10-2011",
                 Links(null, "path", "link", "video"),
                 "details",
@@ -240,7 +258,17 @@ class LaunchesRepositoryTest {
 
         val pastLaunch1 = Launch(null,
                 2,
-                Rocket(null, "2", "rocket2"),
+                Rocket(null,
+                        "2",
+                        "rocket2",
+                        false,
+                        2,
+                        "11/10/2009",
+                        "wiki",
+                        "desc",
+                        Height(10f, 20f),
+                        Diameter(5f, 10f),
+                        Mass(2L, 5L)),
                 "10-11-2011",
                 Links(null, "path2", "link", "video"),
                 "details2",
@@ -248,7 +276,17 @@ class LaunchesRepositoryTest {
 
         val pastLaunch2 = Launch(null,
                 3,
-                Rocket(null, "3", "rocket3"),
+                Rocket(null,
+                        "3",
+                        "rocket3",
+                        true,
+                        5,
+                        "10/09/2010",
+                        "wikipedia",
+                        "some description",
+                        Height(10f, 20f),
+                        Diameter(50f, 120f),
+                        Mass(5L, 10L)),
                 "10-11-2012",
                 Links(null, "path3", "link", "video"),
                 "details3",
@@ -256,7 +294,17 @@ class LaunchesRepositoryTest {
 
         val upcomingLaunch2 = Launch(null,
                 4,
-                Rocket(null, "4", "rocket4"),
+                Rocket(null,
+                        "4",
+                        "rocket4",
+                        true,
+                        2,
+                        "05/10/2013",
+                        "wiki",
+                        "description",
+                        Height(10f, 20f),
+                        Diameter(5f, 10f),
+                        Mass(5L, 10L)),
                 "03-10-2011",
                 Links(null, "path", "link", "video"),
                 "details4",

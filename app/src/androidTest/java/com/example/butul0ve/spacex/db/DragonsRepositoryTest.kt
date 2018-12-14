@@ -2,7 +2,7 @@ package com.example.butul0ve.spacex.db
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.test.InstrumentationRegistry
+import androidx.test.core.app.ApplicationProvider
 import com.example.butul0ve.spacex.db.model.Dragon
 import org.junit.After
 import org.junit.Before
@@ -19,7 +19,7 @@ class DragonsRepositoryTest {
 
     @Before
     fun init() {
-        db = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
+        db = Room.inMemoryDatabaseBuilder(ApplicationProvider.getApplicationContext(),
                 SpaceXDataBase::class.java)
                 .allowMainThreadQueries()
                 .build()
