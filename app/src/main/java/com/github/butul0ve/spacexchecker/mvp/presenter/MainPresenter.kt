@@ -93,7 +93,7 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
                     Timber.d("getdbObserver onSuccess view is not attached")
                 } else {
 
-                    adapter = LaunchesAdapter(t, viewState)
+                    adapter = LaunchesAdapter(t.reversed(), viewState)
                     viewState.setAdapter(adapter)
                     Timber.d("getdbObserver onSucccess set adapter ${t.size}")
                     getData()
@@ -134,7 +134,7 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
                         .subscribe {
                             if (viewState == null) return@subscribe
 
-                            adapter.updateLaunches(t)
+                            adapter.updateLaunches(t.reversed())
                             viewState.setAdapter(adapter)
 
                             viewState.hideProgressBar()
