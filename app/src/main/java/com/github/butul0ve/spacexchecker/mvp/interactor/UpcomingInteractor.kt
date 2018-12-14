@@ -4,7 +4,7 @@ import com.github.butul0ve.spacexchecker.db.LaunchesRepository
 import com.github.butul0ve.spacexchecker.db.model.Launch
 import com.github.butul0ve.spacexchecker.network.api.NetworkHelper
 import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class UpcomingInteractor @Inject constructor(override val networkHelper: Network
         return networkHelper.getUpcomingLaunches()
     }
 
-    override fun getUpcomingLaunchesFromDb(): Flowable<List<Launch>> {
+    override fun getUpcomingLaunchesFromDb(): Maybe<List<Launch>> {
         return repository.getAllUpcomingLaunches()
     }
 

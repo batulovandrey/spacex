@@ -6,6 +6,7 @@ import com.github.butul0ve.spacexchecker.adapter.LaunchesAdapter
 import com.github.butul0ve.spacexchecker.db.model.Launch
 import com.github.butul0ve.spacexchecker.mvp.interactor.MainMvpInteractor
 import com.github.butul0ve.spacexchecker.mvp.view.MainView
+import io.reactivex.MaybeObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -34,37 +35,19 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        getNextLaunch()
         getDataFromDb()
-//        getData()
+        getNextLaunch()
     }
 
     fun getData(isConnected: Boolean = true) {
         if (viewState != null) {
             interactor.getPastFlightsFromServer()
                     .subscribeOn(Schedulers.io())
-                    .map {
-                        interactor.replacePastLaunches(it)
-                                .subscribe()
-                        it
-                    }
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(getObserver())
         } else {
             Timber.d("view is not attached")
         }
-    }
-
-    private fun getDataFromDb() {
-        disposable.add(interactor.getPastLaunchesFromDb()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    adapter = LaunchesAdapter(it, viewState)
-                    viewState.setAdapter(adapter)
-//                    viewState.showProgressBar()
-                    getData()
-                })
     }
 
     fun getNextLaunch() {
@@ -95,25 +78,77 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
         }
     }
 
+    private fun getDataFromDb() {
+        interactor.getPastLaunchesFromDb()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getDbObserver())
+    }
+
+    private fun getDbObserver(): MaybeObserver<List<Launch>> {
+        return object : MaybeObserver<List<Launch>> {
+
+            override fun onSuccess(t: List<Launch>) {
+                if (viewState == null) {
+                    Timber.d("getdbObserver onSuccess view is not attached")
+                } else {
+
+                    adapter = LaunchesAdapter(t, viewState)
+                    viewState.setAdapter(adapter)
+                    Timber.d("getdbObserver onSucccess set adapter ${t.size}")
+                    getData()
+                }
+            }
+
+            override fun onComplete() {
+                Timber.d("getDbObserver onComplete")
+                if (viewState == null) {
+                    Timber.d("getdbObserver onComplete view is not attached")
+                }
+                getData()
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                disposable.add(d)
+            }
+
+            override fun onError(e: Throwable) {
+                Timber.d("getDbObserver onError")
+                Timber.e(e)
+                if (viewState == null) {
+                    Timber.d("dbObserver onError view is not attached")
+                }
+                getData()
+            }
+        }
+    }
+
     private fun getObserver(): SingleObserver<List<Launch>> {
         return object : SingleObserver<List<Launch>> {
 
             override fun onSuccess(t: List<Launch>) {
 
-                if (viewState == null) return
+                disposable.add(interactor.replacePastLaunches(t)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+                            if (viewState == null) return@subscribe
 
-                if (::adapter.isInitialized) {
-                    adapter.updateLaunches(t)
-                } else {
-                    adapter = LaunchesAdapter(t, viewState)
-                }
-                viewState.setAdapter(adapter)
-                viewState.hideProgressBar()
-                viewState.hideButtonTryAgain()
+                            adapter.updateLaunches(t)
+                            viewState.setAdapter(adapter)
+
+                            viewState.hideProgressBar()
+                            viewState.hideButtonTryAgain()
+                        })
             }
 
             override fun onSubscribe(d: Disposable) {
                 disposable.add(d)
+                if (viewState == null) {
+                    Timber.d("getObserver view is not attached")
+                } else {
+                    viewState.showProgressBar()
+                }
             }
 
             override fun onError(e: Throwable) {

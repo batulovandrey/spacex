@@ -5,19 +5,19 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.github.butul0ve.spacexchecker.db.model.Launch
-import io.reactivex.Flowable
+import io.reactivex.Maybe
 
 @Dao
 interface LaunchesDao {
 
     @Query("select * from launches")
-    fun getAll(): Flowable<List<Launch>>
+    fun getAll(): Maybe<List<Launch>>
 
     @Query("select * from launches where launch_success is null")
-    fun getAllUpcomingLaunches(): Flowable<List<Launch>>
+    fun getAllUpcomingLaunches(): Maybe<List<Launch>>
 
     @Query("select * from launches where launch_success is not null")
-    fun getAllPastLaunches(): Flowable<List<Launch>>
+    fun getAllPastLaunches(): Maybe<List<Launch>>
 
     @Query("delete from launches")
     fun deleteAll()

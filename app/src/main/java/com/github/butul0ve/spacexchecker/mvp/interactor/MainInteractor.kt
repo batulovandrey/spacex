@@ -4,13 +4,13 @@ import com.github.butul0ve.spacexchecker.db.LaunchesRepository
 import com.github.butul0ve.spacexchecker.db.model.Launch
 import com.github.butul0ve.spacexchecker.network.api.NetworkHelper
 import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
 
 class MainInteractor @Inject constructor(override val networkHelper: NetworkHelper,
-                     val repository: LaunchesRepository):
+                                         val repository: LaunchesRepository) :
         BaseInteractor(networkHelper), MainMvpInteractor {
 
     override fun getPastFlightsFromServer(launchYear: Int): Single<List<Launch>> {
@@ -26,7 +26,7 @@ class MainInteractor @Inject constructor(override val networkHelper: NetworkHelp
         return networkHelper.getNext()
     }
 
-    override fun getPastLaunchesFromDb(): Flowable<List<Launch>> {
+    override fun getPastLaunchesFromDb(): Maybe<List<Launch>> {
         return repository.getAllPastLaunches()
     }
 

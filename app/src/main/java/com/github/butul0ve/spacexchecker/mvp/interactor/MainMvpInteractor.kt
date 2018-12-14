@@ -2,7 +2,7 @@ package com.github.butul0ve.spacexchecker.mvp.interactor
 
 import com.github.butul0ve.spacexchecker.db.model.Launch
 import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 interface MainMvpInteractor: MvpInteractor {
@@ -11,7 +11,7 @@ interface MainMvpInteractor: MvpInteractor {
 
     fun getNextLaunch(): Single<Launch>
 
-    fun getPastLaunchesFromDb(): Flowable<List<Launch>>
+    fun getPastLaunchesFromDb(): Maybe<List<Launch>>
 
     fun replacePastLaunches(launches: List<Launch>): Completable
 }
