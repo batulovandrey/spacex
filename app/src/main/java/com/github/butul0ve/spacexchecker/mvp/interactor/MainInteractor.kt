@@ -31,9 +31,7 @@ class MainInteractor @Inject constructor(override val networkHelper: NetworkHelp
     }
 
     override fun replacePastLaunches(launches: List<Launch>): Completable {
-        return Completable.fromAction {
-            repository.deleteAllPastLaunches()
-            repository.insertLaunches(launches)
-        }
+        return repository.deleteAllPastLaunches()
+                .andThen(repository.insertLaunches(launches))
     }
 }

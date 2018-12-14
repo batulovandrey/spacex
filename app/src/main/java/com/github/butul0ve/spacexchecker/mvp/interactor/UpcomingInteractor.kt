@@ -21,9 +21,7 @@ class UpcomingInteractor @Inject constructor(override val networkHelper: Network
     }
 
     override fun replaceUpcomingLaunches(launches: List<Launch>): Completable {
-        return Completable.fromAction {
-            repository.deleteAllUpcomingLaunches()
-            repository.insertLaunches(launches)
-        }
+        return repository.deleteAllUpcomingLaunches()
+                .andThen(repository.insertLaunches(launches))
     }
 }
