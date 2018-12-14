@@ -9,7 +9,7 @@ apply plugin: 'org.jetbrains.kotlin.kapt'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.butul0ve.spacex"
+        applicationId "com.github.butul0ve.spacex"
         minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
