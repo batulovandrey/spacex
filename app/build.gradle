@@ -9,7 +9,7 @@ apply plugin: 'org.jetbrains.kotlin.kapt'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.butul0ve.spacex"
+        applicationId "com.github.butul0ve.spacex"
         minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
@@ -77,10 +77,13 @@ dependencies {
     // timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    implementation "androidx.appcompat:appcompat:1.0.2"
-    implementation "com.google.android.material:material:1.0.0-rc01"
-    implementation "androidx.recyclerview:recyclerview:1.0.0"
-    implementation "androidx.cardview:cardview:1.0.0"
+    // JSR-310 (time lib)
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
+
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.google.android.material:material:1.0.0-rc01'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.19.0'
