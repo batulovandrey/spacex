@@ -16,29 +16,29 @@ class RocketConverter {
             append(" ")
             append(rocket.id)
             append(" ")
-            append(rocket.name)
+            append(rocket.name ?: "")
             append(" ")
             append(rocket.isActive)
             append(" ")
-            append(rocket.stages)
+            append(rocket.stages ?: 0)
             append(" ")
-            append(rocket.firstFlight)
+            append(rocket.firstFlight ?: "")
             append(" ")
-            append(rocket.wiki)
+            append(rocket.wiki ?: "")
             append(" ")
-            append(rocket.description)
+            append(rocket.description ?: "")
             append(" ")
-            append(rocket.height.meters)
+            append(rocket.height?.meters ?: "")
             append(" ")
-            append(rocket.height.feet)
+            append(rocket.height?.feet ?: "")
             append(" ")
-            append(rocket.diameter.meters)
+            append(rocket.diameter?.meters ?: "")
             append(" ")
-            append(rocket.diameter.feet)
+            append(rocket.diameter?.feet ?: "")
             append(" ")
-            append(rocket.mass.kg)
+            append(rocket.mass?.kg ?: "")
             append(" ")
-            append(rocket.mass.kg)
+            append(rocket.mass?.kg ?: "")
         }
         return sb.toString()
     }
@@ -57,7 +57,7 @@ class RocketConverter {
                 list[1],
                 list[2],
                 list[3].toBoolean(),
-                list[4].toInt(),
+                list[4].toIntOrNull(),
                 list[5],
                 list[6],
                 list[7],

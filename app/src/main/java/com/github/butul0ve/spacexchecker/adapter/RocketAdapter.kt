@@ -35,18 +35,28 @@ class RocketAdapter(private val rockets: List<Rocket>) : RecyclerView.Adapter<Ro
             itemView.findViewById<TextView>(R.id.rocket_is_active_text_view).text = rocket.isActive.toString()
             itemView.findViewById<TextView>(R.id.first_flight_text_view).text = rocket.firstFlight
             itemView.findViewById<TextView>(R.id.rocket_stages_text_view).text = rocket.stages.toString()
-            itemView.findViewById<TextView>(R.id.rocket_height_text_view).text =
-                    itemView.resources.getString(R.string.meters_feet,
-                            rocket.height.meters,
-                            rocket.height.feet)
-            itemView.findViewById<TextView>(R.id.rocket_diameter_text_view).text =
-                    itemView.resources.getString(R.string.meters_feet,
-                            rocket.diameter.meters,
-                            rocket.diameter.feet)
-            itemView.findViewById<TextView>(R.id.rocket_mass_text_view).text =
-                    itemView.resources.getString(R.string.kg_lb,
-                            rocket.mass.kg,
-                            rocket.mass.lb)
+
+            rocket.height?.let {
+                itemView.findViewById<TextView>(R.id.rocket_height_text_view).text =
+                        itemView.resources.getString(R.string.meters_feet,
+                                rocket.height?.meters,
+                                rocket.height?.feet)
+            }
+
+            rocket.diameter?.let {
+                itemView.findViewById<TextView>(R.id.rocket_diameter_text_view).text =
+                        itemView.resources.getString(R.string.meters_feet,
+                                rocket.diameter?.meters,
+                                rocket.diameter?.feet)
+            }
+
+            rocket.mass?.let {
+                itemView.findViewById<TextView>(R.id.rocket_mass_text_view).text =
+                        itemView.resources.getString(R.string.kg_lb,
+                                rocket.mass?.kg,
+                                rocket.mass?.lb)
+            }
+
             itemView.findViewById<TextView>(R.id.rocket_description_text_view).text = rocket.description
             itemView.findViewById<Button>(R.id.article_button).setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW)
