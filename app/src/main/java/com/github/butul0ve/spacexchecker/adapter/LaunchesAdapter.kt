@@ -32,7 +32,7 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.launch_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.launch_item, null, false)
         return when (viewType) {
             ViewTypes.PAST_LAUNCHES -> PastLaunchesViewHolder(view, clickListener)
             else -> UpcomingLaunchesViewHolder(view, clickListener)
