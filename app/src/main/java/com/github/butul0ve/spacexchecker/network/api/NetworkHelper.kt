@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 class NetworkHelper @Inject constructor(val serverApi: ServerApi) {
 
-    fun getFlights(launchYear: Int): Single<List<Launch>> {
-        return serverApi.getLaunchesByYear(launchYear)
+    fun getFlights(): Single<List<Launch>> {
+        return serverApi.getPastLaunches()
     }
 
     fun getUpcomingLaunches(): Single<List<Launch>> {
