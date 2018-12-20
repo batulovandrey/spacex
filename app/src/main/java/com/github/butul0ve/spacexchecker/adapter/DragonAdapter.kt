@@ -15,7 +15,7 @@ import com.github.butul0ve.spacexchecker.db.model.Dragon
 class DragonAdapter(private val dragons: List<Dragon>): RecyclerView.Adapter<DragonAdapter.DragonViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DragonViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.dragon_item, null)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.dragon_item, null, false)
         return DragonViewHolder(view)
     }
 
@@ -36,7 +36,7 @@ class DragonAdapter(private val dragons: List<Dragon>): RecyclerView.Adapter<Dra
             itemView.findViewById<TextView>(R.id.dragon_active_text_view).text = dragon.isActive.toString()
             itemView.findViewById<TextView>(R.id.dragon_description_text_view).text = dragon.description
             itemView.findViewById<TextView>(R.id.first_flight_text_view).text = dragon.firstFlight
-            itemView.findViewById<Button>(R.id.open_wiki_button).setOnClickListener {
+            itemView.findViewById<ImageButton>(R.id.open_wiki_button).setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(dragon.wiki)
                 startActivity(itemView.context, intent, null)
