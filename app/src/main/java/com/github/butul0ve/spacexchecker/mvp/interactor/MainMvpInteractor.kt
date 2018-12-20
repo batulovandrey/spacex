@@ -7,7 +7,7 @@ import io.reactivex.Single
 
 interface MainMvpInteractor: MvpInteractor {
 
-    fun getPastFlightsFromServer(launchYear: Int = 0): Single<List<Launch>>
+    fun getPastFlightsFromServer(): Single<List<Launch>>
 
     fun getNextLaunch(): Single<Launch>
 

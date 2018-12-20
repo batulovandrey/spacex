@@ -6,14 +6,10 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -30,9 +26,6 @@ import javax.inject.Inject
 class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var clickListener: OnItemClickListener
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var tryAgainButton: Button
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     @Inject
     lateinit var interactor: MainMvpInteractor
@@ -53,25 +46,13 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = layoutInflater.inflate(R.layout.base_fragment, container, false)
-        recyclerView = view.findViewById(R.id.recycler_view)
-        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout.setOnRefreshListener(this)
-        tryAgainButton = view.findViewById(R.id.try_again_button)
         tryAgainButton.setOnClickListener {
             mainPresenter.getNextLaunch()
             mainPresenter.getData()
         }
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
-                android.R.color.holo_green_dark,
-                android.R.color.holo_orange_dark,
-                android.R.color.holo_blue_dark)
     }
 
     override fun showProgressBar() {

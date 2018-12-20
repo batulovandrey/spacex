@@ -9,4 +9,6 @@
     <color name="brown">#280103</color>
     <color name="grey">#514f50</color>
     <color name="black">#000</color>
+    <color name="colorPrimaryLight">#263238</color>
+    <color name="colorLight">#4f5b62</color>
 </resources>
