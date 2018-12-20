@@ -19,8 +19,8 @@ data class Links(@PrimaryKey(autoGenerate = true)
 
                  @SerializedName("article_link")
                  @ColumnInfo(name = "article_link")
-                 var articleLink: String,
+                 var articleLink: String?,
 
                  @SerializedName("video_link")
                  @ColumnInfo(name = "video_link")
-                 var videoLink: String)
+                 var videoLink: String?)
