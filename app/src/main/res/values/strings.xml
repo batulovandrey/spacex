@@ -3,7 +3,7 @@
     <string name="rocket_name">rocket name:</string>
     <string name="launch_date">launch date:</string>
     <string name="details">details:</string>
-    <string name="article">open article</string>
+    <string name="article">article</string>
     <string name="flight_number">flight number:</string>
     <string name="error">something went wrong</string>
     <string name="try_again">try again</string>
@@ -26,4 +26,5 @@
     <string name="dragons">dragons</string>
     <string name="rockets">rockets</string>
     <string name="date_time_before_launch">%d days %s</string>
+    <string name="youtube">video</string>
 </resources>
