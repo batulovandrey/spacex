@@ -39,7 +39,7 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
         getNextLaunch()
     }
 
-    fun getData(isConnected: Boolean = true) {
+    fun getData() {
         if (viewState != null) {
             interactor.getPastFlightsFromServer()
                     .subscribeOn(Schedulers.io())
@@ -92,8 +92,11 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
                 if (viewState == null) {
                     Timber.d("getdbObserver onSuccess view is not attached")
                 } else {
-
-                    adapter = LaunchesAdapter(t.reversed(), viewState)
+                    adapter = if (t.isEmpty()) {
+                        LaunchesAdapter(ArrayList(), viewState)
+                    } else {
+                        LaunchesAdapter(t.reversed(), viewState)
+                    }
                     viewState.setAdapter(adapter)
                     Timber.d("getdbObserver onSucccess set adapter ${t.size}")
                     getData()
@@ -102,9 +105,15 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
 
             override fun onComplete() {
                 Timber.d("getDbObserver onComplete")
+
+                adapter = LaunchesAdapter(ArrayList(), viewState)
+
                 if (viewState == null) {
                     Timber.d("getdbObserver onComplete view is not attached")
+                } else {
+                    viewState.setAdapter(adapter)
                 }
+
                 getData()
             }
 
@@ -115,9 +124,15 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
             override fun onError(e: Throwable) {
                 Timber.d("getDbObserver onError")
                 Timber.e(e)
+
+                adapter = LaunchesAdapter(ArrayList(), viewState)
+
                 if (viewState == null) {
                     Timber.d("dbObserver onError view is not attached")
+                } else {
+                    viewState.setAdapter(adapter)
                 }
+
                 getData()
             }
         }
@@ -134,9 +149,10 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
                         .subscribe {
                             if (viewState == null) return@subscribe
 
-                            adapter.updateLaunches(t.reversed())
-                            viewState.setAdapter(adapter)
-
+                            if (t.isNotEmpty()) {
+                                adapter.updateLaunches(t.reversed())
+                                viewState.setAdapter(adapter)
+                            }
                             viewState.hideProgressBar()
                             viewState.hideButtonTryAgain()
                         })
@@ -156,7 +172,9 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
 
                 if (viewState == null) return
                 viewState.hideProgressBar()
-                viewState.showButtonTryAgain()
+                if (adapter.itemCount == 0) {
+                    viewState.showButtonTryAgain()
+                }
             }
         }
     }

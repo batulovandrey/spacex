@@ -6,20 +6,14 @@ import com.github.butul0ve.spacexchecker.network.api.NetworkHelper
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
-import java.util.*
 import javax.inject.Inject
 
 class MainInteractor @Inject constructor(override val networkHelper: NetworkHelper,
                                          val repository: LaunchesRepository) :
         BaseInteractor(networkHelper), MainMvpInteractor {
 
-    override fun getPastFlightsFromServer(launchYear: Int): Single<List<Launch>> {
-        val startEnd = if (launchYear == 0) {
-            Calendar.getInstance().get(Calendar.YEAR)
-        } else {
-            launchYear
-        }
-        return networkHelper.getFlights(startEnd)
+    override fun getPastFlightsFromServer(): Single<List<Launch>> {
+        return networkHelper.getFlights()
     }
 
     override fun getNextLaunch(): Single<Launch> {

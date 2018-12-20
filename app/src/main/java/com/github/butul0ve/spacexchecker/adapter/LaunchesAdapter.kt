@@ -6,9 +6,9 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
+import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -32,7 +32,7 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.flight_item, null)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.launch_item, null, false)
         return when (viewType) {
             ViewTypes.PAST_LAUNCHES -> PastLaunchesViewHolder(view, clickListener)
             else -> UpcomingLaunchesViewHolder(view, clickListener)
@@ -42,21 +42,21 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val launch = launches[position]
 
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+        val localDateTime = LocalDateTime.parse(launch.launchDate, formatter)
+        val zonedDateTime = localDateTime.atZone(ZoneId.of("UTC"))
+                .withZoneSameInstant(ZoneId.systemDefault())
+
         when (holder.itemViewType) {
             ViewTypes.UPCOMING_LAUNCHES -> {
                 holder as UpcomingLaunchesViewHolder
-                holder.bind(launch)
-
-                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
-                val localDateTimeOfLaunch = LocalDateTime.parse(launch.launchDate, formatter)
-                val dateTimeOfLaunch = localDateTimeOfLaunch.atZone(ZoneId.of("UTC"))
-                        .withZoneSameInstant(ZoneId.systemDefault())
+                holder.bind(launch, zonedDateTime)
 
                 val tempDateTime = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault())
 
-                val dif = tempDateTime.until(dateTimeOfLaunch, ChronoUnit.MILLIS)
+                val dif = tempDateTime.until(zonedDateTime, ChronoUnit.MILLIS)
 
-                val daysBeforeLaunch = tempDateTime.until(dateTimeOfLaunch, ChronoUnit.DAYS)
+                val daysBeforeLaunch = tempDateTime.until(zonedDateTime, ChronoUnit.DAYS)
 
                 if (holder.countDownTimer != null) {
                     holder.countDownTimer!!.cancel()
@@ -66,13 +66,13 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
                     holder.countDownTimer = object : CountDownTimer(dif, 1000L) {
 
                         override fun onTick(millisUntilFinished: Long) {
-                            val localDateTime = LocalDateTime
+                            val currentDateTime = LocalDateTime
                                     .ofInstant(Instant.ofEpochMilli(millisUntilFinished), ZoneId.of("UTC"))
 
                             holder.launchDateTextView.text =
                                     holder.itemView.resources.getString(R.string.date_time_before_launch,
                                             daysBeforeLaunch,
-                                            localDateTime.format(DateTimeFormatter
+                                            currentDateTime.format(DateTimeFormatter
                                                     .ofPattern("HH:mm:ss")))
                         }
 
@@ -86,7 +86,7 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
 
             ViewTypes.PAST_LAUNCHES -> {
                 holder as PastLaunchesViewHolder
-                holder.bind(launch)
+                holder.bind(launch, zonedDateTime)
             }
         }
     }
@@ -115,14 +115,9 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
     inner class PastLaunchesViewHolder(itemView: View, private val listener: LaunchesClickListener) :
             RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-        fun bind(pastLaunch: Launch) {
+        fun bind(pastLaunch: Launch, dateTime: ZonedDateTime) {
             itemView.findViewById<TextView>(R.id.rocket_name_text_view).text = pastLaunch.rocket.name
             itemView.findViewById<TextView>(R.id.flight_number_text_view).text = pastLaunch.flightNumber.toString()
-
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
-            val localDateTime = LocalDateTime.parse(pastLaunch.launchDate, formatter)
-            val zonedDateTime = localDateTime.atZone(ZoneId.of("UTC"))
-                    .withZoneSameInstant(ZoneId.systemDefault())
 
             val options = RequestOptions()
                     .centerCrop()
@@ -132,14 +127,30 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
 
             Glide.with(itemView.context).load(pastLaunch.links.missionPath)
                     .apply(options)
-                    .into(itemView.findViewById<ImageView>(R.id.mission_patch_image_view))
+                    .into(itemView.findViewById(R.id.mission_patch_image_view))
+
             itemView.findViewById<TextView>(R.id.launch_date_text_view).text =
-                    zonedDateTime.format(DateTimeFormatter.ofPattern("dd MMMM y, HH:mm:ss"))
+                    dateTime.format(DateTimeFormatter.ofPattern("dd MMMM y, HH:mm:ss"))
             itemView.findViewById<TextView>(R.id.detail_text_view).text = pastLaunch.details
-            itemView.findViewById<Button>(R.id.article_button).setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(pastLaunch.links.articleLink)
-                startActivity(itemView.context, intent, null)
+
+            val articleButton = itemView.findViewById<ImageButton>(R.id.article_button)
+            if (pastLaunch.links.articleLink.isNullOrEmpty()) {
+                articleButton.visibility = View.GONE
+            } else {
+                articleButton.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse(pastLaunch.links.articleLink)
+                    startActivity(itemView.context, intent, null)
+                }
+            }
+
+            val youtubeButton = itemView.findViewById<ImageButton>(R.id.youtube_button)
+            if (pastLaunch.links.videoLink.isNullOrEmpty()) {
+                youtubeButton.visibility = View.GONE
+            } else {
+                youtubeButton.setOnClickListener {
+                    Toast.makeText(itemView.context, "here we go", Toast.LENGTH_LONG).show()
+                }
             }
         }
 
@@ -166,17 +177,32 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
             listener.onItemClick(layoutPosition)
         }
 
-        fun bind(upcomingLaunch: Launch) {
+        fun bind(upcomingLaunch: Launch, dateTime: ZonedDateTime) {
             itemView.findViewById<TextView>(R.id.rocket_name_text_view).text = upcomingLaunch.rocket.name
             itemView.findViewById<TextView>(R.id.flight_number_text_view).text = upcomingLaunch.flightNumber.toString()
 
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
-            val localDateTime = LocalDateTime.parse(upcomingLaunch.launchDate, formatter)
-            val zonedDateTime = localDateTime.atZone(ZoneId.of("UTC"))
-                    .withZoneSameInstant(ZoneId.systemDefault())
-
             itemView.findViewById<TextView>(R.id.detail_text_view).text = upcomingLaunch.details
-            launchDateTextView.text = zonedDateTime.format(DateTimeFormatter.ofPattern("dd MMMM y, HH:mm:ss"))
+            launchDateTextView.text = dateTime.format(DateTimeFormatter.ofPattern("dd MMMM y, HH:mm:ss"))
+
+            val articleButton = itemView.findViewById<ImageButton>(R.id.article_button)
+            if (upcomingLaunch.links.articleLink.isNullOrEmpty()) {
+                articleButton.visibility = View.GONE
+            } else {
+                articleButton.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse(upcomingLaunch.links.articleLink)
+                    startActivity(itemView.context, intent, null)
+                }
+            }
+
+            val youtubeButton = itemView.findViewById<ImageButton>(R.id.youtube_button)
+            if (upcomingLaunch.links.videoLink.isNullOrEmpty()) {
+                youtubeButton.visibility = View.GONE
+            } else {
+                youtubeButton.setOnClickListener {
+                    Toast.makeText(itemView.context, "here we go", Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 }

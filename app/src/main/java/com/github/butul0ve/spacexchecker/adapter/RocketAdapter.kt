@@ -5,7 +5,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -58,7 +58,7 @@ class RocketAdapter(private val rockets: List<Rocket>) : RecyclerView.Adapter<Ro
             }
 
             itemView.findViewById<TextView>(R.id.rocket_description_text_view).text = rocket.description
-            itemView.findViewById<Button>(R.id.article_button).setOnClickListener {
+            itemView.findViewById<ImageButton>(R.id.article_button).setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(rocket.wiki)
                 startActivity(itemView.context, intent, null)

@@ -8,7 +8,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.*
 
 @RunWith(MockitoJUnitRunner::class)
 class NetworkHelperTest {
@@ -18,7 +17,6 @@ class NetworkHelperTest {
     private lateinit var upcomingLaunches: List<Launch>
     private lateinit var dragons: List<Dragon>
     private lateinit var pastLaunches: List<Launch>
-    private var currentYear = Calendar.getInstance().get(Calendar.YEAR)
 
     @Mock
     private lateinit var serverApi: ServerApi
@@ -53,7 +51,7 @@ class NetworkHelperTest {
                 .thenReturn(Single.just(upcomingLaunches))
         `when`(serverApi.getDragons())
                 .thenReturn(Single.just(dragons))
-        `when`(serverApi.getLaunchesByYear(currentYear))
+        `when`(serverApi.getPastLaunches())
                 .thenReturn(Single.just(pastLaunches))
 
         networkHelper = NetworkHelper(serverApi)
@@ -85,7 +83,7 @@ class NetworkHelperTest {
 
     @Test
     fun testGetFlights() {
-        networkHelper.getFlights(currentYear)
+        networkHelper.getFlights()
                 .test()
                 .assertNoErrors()
                 .assertValue { it == pastLaunches }
