@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.github.butul0ve.spacexchecker.R
 import com.github.butul0ve.spacexchecker.db.model.Dragon
+import com.squareup.picasso.Picasso
 
 class DragonAdapter(private val dragons: List<Dragon>): RecyclerView.Adapter<DragonAdapter.DragonViewHolder>() {
 
@@ -44,11 +44,21 @@ class DragonAdapter(private val dragons: List<Dragon>): RecyclerView.Adapter<Dra
 
             if (dragon.images.isNotEmpty()) {
                 val tableLayout = TableLayout(itemView.context)
+                tableLayout.layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT)
+
                 dragon.images.forEach {
                     val iv = ImageView(itemView.context)
-                    Glide.with(itemView.context)
+
+                    iv.layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT)
+
+                    Picasso.get()
                             .load(it)
                             .into(iv)
+
                     tableLayout.addView(iv)
                 }
                 itemView.findViewById<LinearLayout>(R.id.images_layout).addView(tableLayout)

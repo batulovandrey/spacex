@@ -3,7 +3,6 @@ package com.github.butul0ve.spacexchecker
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
-import com.bumptech.glide.request.target.ViewTarget
 import com.github.butul0ve.spacexchecker.di.*
 import com.jakewharton.threetenabp.AndroidThreeTen
 import timber.log.Timber
@@ -14,7 +13,6 @@ class SpaceXApp: Application() {
         super.onCreate()
         netComponent = initComponent()
 
-        ViewTarget.setTagId(R.id.glide_tag)
         Timber.plant(Timber.DebugTree())
         AndroidThreeTen.init(this)
     }
