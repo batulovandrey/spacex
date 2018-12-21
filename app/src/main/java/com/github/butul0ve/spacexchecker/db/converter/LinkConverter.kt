@@ -11,11 +11,15 @@ class LinkConverter {
         sb.apply {
             append(links.linkId)
             append(" ")
-            append(links.missionPath)
+            append(links.missionPathSmall)
             append(" ")
             append(links.articleLink)
             append(" ")
             append(links.videoLink)
+            append(" ")
+            append(links.redditCampaing)
+            append(" ")
+            append(links.redditLaunch)
         }
         return sb.toString()
     }
@@ -33,6 +37,8 @@ class LinkConverter {
         return Links(linkId,
                 list[1],
                 list[2],
-                list[3])
+                list[3],
+                list[4],
+                list[5])
     }
 }
