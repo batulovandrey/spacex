@@ -2,14 +2,14 @@ package com.github.butul0ve.spacexchecker.mvp.interactor
 
 import com.github.butul0ve.spacexchecker.db.model.Dragon
 import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 interface DragonsMvpInteractor : MvpInteractor {
 
     fun getDragonsFromServer(): Single<List<Dragon>>
 
-    fun getDragonsFromDb(): Flowable<List<Dragon>>
+    fun getDragonsFromDb(): Maybe<List<Dragon>>
 
     fun deleteDragons(): Completable
 

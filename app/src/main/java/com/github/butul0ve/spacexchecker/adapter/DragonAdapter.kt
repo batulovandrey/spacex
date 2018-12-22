@@ -28,6 +28,13 @@ class DragonAdapter(private val dragons: List<Dragon>): RecyclerView.Adapter<Dra
         holder.bind(dragon)
     }
 
+    fun updateDragons(dragons: List<Dragon>) {
+        this.dragons as ArrayList
+        this.dragons.clear()
+        this.dragons.addAll(dragons)
+        notifyDataSetChanged()
+    }
+
     class DragonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(dragon: Dragon) {
