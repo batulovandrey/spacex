@@ -105,13 +105,13 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
             override fun onComplete() {
                 Timber.d("getDbObserver onComplete")
 
-                adapter = LaunchesAdapter(ArrayList(), viewState)
-
                 if (viewState == null) {
                     Timber.d("getdbObserver onComplete view is not attached")
-                } else {
-                    viewState.setAdapter(adapter)
+                    return
                 }
+
+                adapter = LaunchesAdapter(ArrayList(), viewState)
+                viewState.setAdapter(adapter)
 
                 getData()
             }
