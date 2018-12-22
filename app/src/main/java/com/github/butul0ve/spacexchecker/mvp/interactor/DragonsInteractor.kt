@@ -4,7 +4,7 @@ import com.github.butul0ve.spacexchecker.db.DragonsRepository
 import com.github.butul0ve.spacexchecker.db.model.Dragon
 import com.github.butul0ve.spacexchecker.network.api.NetworkHelper
 import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class DragonsInteractor @Inject constructor(override val networkHelper: NetworkH
         return networkHelper.getDragons()
     }
 
-    override fun getDragonsFromDb(): Flowable<List<Dragon>> {
+    override fun getDragonsFromDb(): Maybe<List<Dragon>> {
         return repository.getAllDragonsFromDb()
     }
 

@@ -3,6 +3,7 @@ package com.github.butul0ve.spacexchecker
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.github.butul0ve.spacexchecker.utils.convertYoutubeUrlToVideoId
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener
@@ -25,7 +26,10 @@ class PlayerActivity: AppCompatActivity() {
         errorView = findViewById(R.id.error_layout)
 
         if (intent.hasExtra(VIDEO_EXTRA)) {
-            videoId = intent.getStringExtra(VIDEO_EXTRA)
+            val videoLink = intent.getStringExtra(VIDEO_EXTRA)
+            if (videoLink.isNotEmpty()) {
+                videoId = videoLink.convertYoutubeUrlToVideoId()
+            }
         }
 
         if (videoId.isNotEmpty()) {

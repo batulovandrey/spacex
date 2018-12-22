@@ -3,12 +3,12 @@ package com.github.butul0ve.spacexchecker.db
 import com.github.butul0ve.spacexchecker.db.dao.DragonDao
 import com.github.butul0ve.spacexchecker.db.model.Dragon
 import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.Maybe
 import javax.inject.Inject
 
 class DragonsRepository @Inject constructor(val dragonDao: DragonDao) {
 
-    fun getAllDragonsFromDb(): Flowable<List<Dragon>> {
+    fun getAllDragonsFromDb(): Maybe<List<Dragon>> {
         return dragonDao.getAll()
     }
 
