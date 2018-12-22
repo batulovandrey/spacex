@@ -19,5 +19,8 @@ interface UpcomingView: MvpView, LaunchesClickListener {
     fun hideTryAgainButton()
 
     @StateStrategyType(SkipStrategy::class)
-    override fun onItemClick(position: Int)
+    override fun onYoutubeButtonClick(position: Int)
+
+    @StateStrategyType(SkipStrategy::class)
+    fun openYoutube(link: String)
 }

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.github.butul0ve.spacexchecker.R
@@ -118,6 +117,12 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
             itemView.setOnClickListener(this)
         }
 
+        override fun onClick(view: View?) {
+            /*
+                onClick item not used yet
+             */
+        }
+
         fun bind(pastLaunch: Launch, dateTime: ZonedDateTime) {
             itemView.findViewById<TextView>(R.id.rocket_name_text_view).text = pastLaunch.rocket.name
             itemView.findViewById<TextView>(R.id.flight_number_text_view).text = pastLaunch.flightNumber.toString()
@@ -147,13 +152,9 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
                 youtubeButton.visibility = View.GONE
             } else {
                 youtubeButton.setOnClickListener {
-                    Toast.makeText(itemView.context, "here we go", Toast.LENGTH_LONG).show()
+                    listener.onYoutubeButtonClick(layoutPosition)
                 }
             }
-        }
-
-        override fun onClick(view: View?) {
-            listener.onItemClick(layoutPosition)
         }
     }
 
@@ -168,7 +169,9 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
         }
 
         override fun onClick(v: View?) {
-            listener.onItemClick(layoutPosition)
+            /*
+                onClick item not used yet
+             */
         }
 
         fun bind(upcomingLaunch: Launch, dateTime: ZonedDateTime) {
@@ -199,7 +202,7 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
                 youtubeButton.visibility = View.GONE
             } else {
                 youtubeButton.setOnClickListener {
-                    Toast.makeText(itemView.context, "here we go", Toast.LENGTH_LONG).show()
+                    listener.onYoutubeButtonClick(layoutPosition)
                 }
             }
         }

@@ -58,7 +58,7 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
         setupBottomNavigationView()
     }
 
-    override fun onItemClick(videoId: String) {
+    override fun showVideo(videoId: String) {
         val intent = Intent(this, PlayerActivity::class.java)
         intent.putExtra(VIDEO_EXTRA, videoId)
         startActivity(intent)

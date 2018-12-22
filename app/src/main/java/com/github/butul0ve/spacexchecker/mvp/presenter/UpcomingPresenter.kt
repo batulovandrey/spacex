@@ -48,6 +48,15 @@ class UpcomingPresenter @Inject constructor(override val interactor: UpcomingMvp
         }
     }
 
+    fun openYoutubePlayerActivity(position: Int) {
+        if (viewState != null) {
+            if (::adapter.isInitialized) {
+                val launch = adapter.getLaunchById(position)
+                launch.links.videoLink?.let { viewState.openYoutube(it) }
+            }
+        }
+    }
+
     private fun getObserver() : SingleObserver<List<Launch>> {
         return object : SingleObserver<List<Launch>> {
 
