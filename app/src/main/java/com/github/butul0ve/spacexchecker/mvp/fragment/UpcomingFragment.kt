@@ -3,12 +3,12 @@ package com.github.butul0ve.spacexchecker.mvp.fragment
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.github.butul0ve.spacexchecker.SpaceXApp
 import com.github.butul0ve.spacexchecker.adapter.LaunchesAdapter
+import com.github.butul0ve.spacexchecker.mvp.FragmentInteractor
 import com.github.butul0ve.spacexchecker.mvp.interactor.UpcomingMvpInteractor
 import com.github.butul0ve.spacexchecker.mvp.presenter.UpcomingPresenter
 import com.github.butul0ve.spacexchecker.mvp.view.UpcomingView
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class UpcomingFragment : BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefreshListener {
 
-    private var toast: Toast? = null
+    private lateinit var clickListener: FragmentInteractor
 
     @Inject
     lateinit var interactor: UpcomingMvpInteractor
@@ -31,6 +31,11 @@ class UpcomingFragment : BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefr
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         SpaceXApp.netComponent.inject(this)
+        try {
+            clickListener = activity as FragmentInteractor
+        } catch (ex: ClassCastException) {
+            throw ClassCastException("${activity.toString()} must implement FragmentInteractor")
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,11 +68,19 @@ class UpcomingFragment : BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefr
         tryAgainButton.visibility = View.GONE
     }
 
-    override fun onItemClick(position: Int) {
-        if (toast != null) {
-            toast?.cancel()
-        }
-        toast = Toast.makeText(activity, "soon", Toast.LENGTH_SHORT)
-        toast!!.show()
+    override fun onYoutubeButtonClick(position: Int) {
+        upcomingPresenter.openYoutubePlayerActivity(position)
+    }
+
+    override fun onRedditCampaingButtonClick(position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onRedditLaunchButtonClick(position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun openYoutube(link: String) {
+        clickListener.showVideo(link)
     }
 }

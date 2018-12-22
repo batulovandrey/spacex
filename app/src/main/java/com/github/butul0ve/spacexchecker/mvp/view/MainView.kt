@@ -1,6 +1,5 @@
 package com.github.butul0ve.spacexchecker.mvp.view
 
-import android.net.Uri
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
@@ -15,10 +14,10 @@ interface MainView : View, LaunchesClickListener {
     fun hideProgressBar()
 
     @StateStrategyType(SkipStrategy::class)
-    fun openYouTube(uri: Uri)
+    fun openYouTube(link: String)
 
     @StateStrategyType(SkipStrategy::class)
-    override fun onItemClick(position: Int)
+    override fun onYoutubeButtonClick(position: Int)
 
     fun setAdapter(adapter: LaunchesAdapter)
 

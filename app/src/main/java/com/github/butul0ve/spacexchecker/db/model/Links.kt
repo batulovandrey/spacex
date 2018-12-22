@@ -13,9 +13,9 @@ import com.google.gson.annotations.SerializedName
 data class Links(@PrimaryKey(autoGenerate = true)
                  var linkId: Long?,
 
-                 @SerializedName("mission_patch")
-                 @ColumnInfo(name = "mission_patch")
-                 var missionPath: String,
+                 @SerializedName("mission_patch_small")
+                 @ColumnInfo(name = "mission_patch_small")
+                 var missionPathSmall: String,
 
                  @SerializedName("article_link")
                  @ColumnInfo(name = "article_link")
@@ -23,4 +23,12 @@ data class Links(@PrimaryKey(autoGenerate = true)
 
                  @SerializedName("video_link")
                  @ColumnInfo(name = "video_link")
-                 var videoLink: String?)
+                 var videoLink: String?,
+
+                 @SerializedName("reddit_campaing")
+                 @ColumnInfo(name = "reddit_campaing")
+                 var redditCampaing: String?,
+
+                 @SerializedName("reddit_launch")
+                 @ColumnInfo(name = "reddit_launch")
+                 var redditLaunch: String?)

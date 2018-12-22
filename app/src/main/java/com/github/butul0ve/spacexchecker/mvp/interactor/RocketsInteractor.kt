@@ -4,7 +4,7 @@ import com.github.butul0ve.spacexchecker.db.RocketsRepository
 import com.github.butul0ve.spacexchecker.db.model.Rocket
 import com.github.butul0ve.spacexchecker.network.api.NetworkHelper
 import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class RocketsInteractor @Inject constructor(override val networkHelper: NetworkH
         return networkHelper.getRockets()
     }
 
-    override fun getRocketsFromDb(): Flowable<List<Rocket>> {
+    override fun getRocketsFromDb(): Maybe<List<Rocket>> {
         return repository.getAllRocketsFromDb()
     }
 

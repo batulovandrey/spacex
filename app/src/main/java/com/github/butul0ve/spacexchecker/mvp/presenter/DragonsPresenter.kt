@@ -5,6 +5,7 @@ import com.github.butul0ve.spacexchecker.adapter.DragonAdapter
 import com.github.butul0ve.spacexchecker.db.model.Dragon
 import com.github.butul0ve.spacexchecker.mvp.interactor.DragonsMvpInteractor
 import com.github.butul0ve.spacexchecker.mvp.view.DragonsView
+import io.reactivex.MaybeObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -20,31 +21,64 @@ class DragonsPresenter @Inject constructor(override val interactor: DragonsMvpIn
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        getData()
+        getDataFromDb()
     }
 
     fun getData() {
         if (viewState != null) {
-
-            disposable.add(interactor.getDragonsFromDb()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        dragonAdapter = DragonAdapter(it)
-                        viewState.setAdapter(dragonAdapter)
-                    })
-
-            viewState.showProgressBar()
-
             interactor.getDragonsFromServer()
                     .subscribeOn(Schedulers.io())
-                    .map {
-                        interactor.replaceDragons(it)
-                                .subscribe()
-                        it
-                    }
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(getObserver())
+        }
+    }
+
+    private fun getDataFromDb() {
+        interactor.getDragonsFromDb()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getDbObserver())
+    }
+
+    private fun getDbObserver(): MaybeObserver<List<Dragon>> {
+        return object : MaybeObserver<List<Dragon>> {
+
+            override fun onSuccess(t: List<Dragon>) {
+                if (viewState == null) {
+                    Timber.d("getDbObserver onSuccess view is not attached")
+                } else {
+                    dragonAdapter = if (t.isEmpty()) {
+                        DragonAdapter(ArrayList())
+                    } else {
+                        DragonAdapter(t)
+                    }
+                    viewState.setAdapter(dragonAdapter)
+                    Timber.d("getDbObserver onSuccess set adapter ${t.size}")
+                    getData()
+                }
+            }
+
+            override fun onComplete() {
+                Timber.d("getDbObserver onComplete")
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                disposable.add(d)
+            }
+
+            override fun onError(e: Throwable) {
+                Timber.d("getDbObserver onError")
+                Timber.e(e)
+
+                if (viewState == null) {
+                    Timber.d("getDbObserver onError view is not attached")
+                    return
+                }
+
+                dragonAdapter = DragonAdapter(ArrayList())
+                viewState.setAdapter(dragonAdapter)
+                getData()
+            }
         }
     }
 
@@ -54,10 +88,17 @@ class DragonsPresenter @Inject constructor(override val interactor: DragonsMvpIn
             override fun onSuccess(t: List<Dragon>) {
                 if (viewState == null) return
 
-                dragonAdapter = DragonAdapter(t)
-                viewState.setAdapter(dragonAdapter)
-                viewState.hideProgressBar()
-                viewState.hideButtonTryAgain()
+                disposable.add(interactor.replaceDragons(t)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+                            if (t.isNotEmpty()) {
+                                dragonAdapter.updateDragons(t)
+                                viewState.setAdapter(dragonAdapter)
+                            }
+                            viewState.hideProgressBar()
+                            viewState.hideButtonTryAgain()
+                        })
             }
 
             override fun onSubscribe(d: Disposable) {
@@ -69,7 +110,9 @@ class DragonsPresenter @Inject constructor(override val interactor: DragonsMvpIn
                 if (viewState == null) return
 
                 viewState.hideProgressBar()
-                viewState.showButtonTryAgain()
+                if (dragonAdapter.itemCount == 0) {
+                    viewState.showButtonTryAgain()
+                }
             }
         }
     }

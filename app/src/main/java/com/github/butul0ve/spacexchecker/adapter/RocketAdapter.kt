@@ -28,6 +28,13 @@ class RocketAdapter(private val rockets: List<Rocket>) : RecyclerView.Adapter<Ro
         holder.bind(rocket)
     }
 
+    fun updateRockets(rockets: List<Rocket>) {
+        this.rockets as ArrayList
+        this.rockets.clear()
+        this.rockets.addAll(rockets)
+        notifyDataSetChanged()
+    }
+
     class RocketViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(rocket: Rocket) {

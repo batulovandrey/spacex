@@ -27,4 +27,5 @@
     <string name="rockets">rockets</string>
     <string name="date_time_before_launch">%d days %s</string>
     <string name="youtube">video</string>
+    <string name="mission_name">mission name:</string>
 </resources>

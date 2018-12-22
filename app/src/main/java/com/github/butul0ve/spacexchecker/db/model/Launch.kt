@@ -20,6 +20,10 @@ data class Launch(@PrimaryKey(autoGenerate = true)
                   @ColumnInfo(name = "flight_number")
                   var flightNumber: Int,
 
+                  @SerializedName("mission_name")
+                  @ColumnInfo(name = "mission_name")
+                  var missionName: String?,
+
                   @SerializedName("rocket")
                   @ColumnInfo(name = "rocket")
                   @TypeConverters(RocketConverter::class)

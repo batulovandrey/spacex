@@ -6,5 +6,9 @@ package com.github.butul0ve.spacexchecker.adapter
 
 interface LaunchesClickListener {
 
-    fun onItemClick(position: Int)
+    fun onYoutubeButtonClick(position: Int)
+
+    fun onRedditCampaingButtonClick(position: Int)
+
+    fun onRedditLaunchButtonClick(position: Int)
 }

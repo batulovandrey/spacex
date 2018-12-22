@@ -7,15 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
 import com.github.butul0ve.spacexchecker.R
 import com.github.butul0ve.spacexchecker.db.model.Launch
+import com.squareup.picasso.Picasso
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
@@ -115,19 +113,24 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
     inner class PastLaunchesViewHolder(itemView: View, private val listener: LaunchesClickListener) :
             RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(view: View?) {
+            /*
+                onClick item not used yet
+             */
+        }
+
         fun bind(pastLaunch: Launch, dateTime: ZonedDateTime) {
             itemView.findViewById<TextView>(R.id.rocket_name_text_view).text = pastLaunch.rocket.name
             itemView.findViewById<TextView>(R.id.flight_number_text_view).text = pastLaunch.flightNumber.toString()
+            itemView.findViewById<TextView>(R.id.mission_name_text_view).text = pastLaunch.missionName
 
-            val options = RequestOptions()
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .dontAnimate()
-                    .dontTransform()
-
-            Glide.with(itemView.context).load(pastLaunch.links.missionPath)
-                    .apply(options)
-                    .into(itemView.findViewById(R.id.mission_patch_image_view))
+            Picasso.get()
+                    .load(pastLaunch.links.missionPathSmall)
+                    .into(itemView.findViewById<ImageView>(R.id.mission_patch_image_view))
 
             itemView.findViewById<TextView>(R.id.launch_date_text_view).text =
                     dateTime.format(DateTimeFormatter.ofPattern("dd MMMM y, HH:mm:ss"))
@@ -149,17 +152,9 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
                 youtubeButton.visibility = View.GONE
             } else {
                 youtubeButton.setOnClickListener {
-                    Toast.makeText(itemView.context, "here we go", Toast.LENGTH_LONG).show()
+                    listener.onYoutubeButtonClick(layoutPosition)
                 }
             }
-        }
-
-        init {
-            itemView.setOnClickListener(this)
-        }
-
-        override fun onClick(view: View?) {
-            listener.onItemClick(layoutPosition)
         }
     }
 
@@ -174,12 +169,19 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
         }
 
         override fun onClick(v: View?) {
-            listener.onItemClick(layoutPosition)
+            /*
+                onClick item not used yet
+             */
         }
 
         fun bind(upcomingLaunch: Launch, dateTime: ZonedDateTime) {
             itemView.findViewById<TextView>(R.id.rocket_name_text_view).text = upcomingLaunch.rocket.name
             itemView.findViewById<TextView>(R.id.flight_number_text_view).text = upcomingLaunch.flightNumber.toString()
+            itemView.findViewById<TextView>(R.id.mission_name_text_view).text = upcomingLaunch.missionName
+
+            Picasso.get()
+                    .load(upcomingLaunch.links.missionPathSmall)
+                    .into(itemView.findViewById<ImageView>(R.id.mission_patch_image_view))
 
             itemView.findViewById<TextView>(R.id.detail_text_view).text = upcomingLaunch.details
             launchDateTextView.text = dateTime.format(DateTimeFormatter.ofPattern("dd MMMM y, HH:mm:ss"))
@@ -200,7 +202,7 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
                 youtubeButton.visibility = View.GONE
             } else {
                 youtubeButton.setOnClickListener {
-                    Toast.makeText(itemView.context, "here we go", Toast.LENGTH_LONG).show()
+                    listener.onYoutubeButtonClick(layoutPosition)
                 }
             }
         }

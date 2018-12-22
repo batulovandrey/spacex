@@ -5,13 +5,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.github.butul0ve.spacexchecker.db.model.Rocket
-import io.reactivex.Flowable
+import io.reactivex.Maybe
 
 @Dao
 interface RocketDao {
 
     @Query("select * from rockets")
-    fun getAll(): Flowable<List<Rocket>>
+    fun getAll(): Maybe<List<Rocket>>
 
     @Query("delete from rockets")
     fun deleteAll()

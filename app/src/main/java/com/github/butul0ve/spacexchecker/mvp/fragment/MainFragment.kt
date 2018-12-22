@@ -2,7 +2,6 @@ package com.github.butul0ve.spacexchecker.mvp.fragment
 
 import android.content.Context
 import android.graphics.Typeface
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
@@ -16,6 +15,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.github.butul0ve.spacexchecker.R
 import com.github.butul0ve.spacexchecker.SpaceXApp
 import com.github.butul0ve.spacexchecker.adapter.LaunchesAdapter
+import com.github.butul0ve.spacexchecker.mvp.FragmentInteractor
 import com.github.butul0ve.spacexchecker.mvp.interactor.MainMvpInteractor
 import com.github.butul0ve.spacexchecker.mvp.presenter.MainPresenter
 import com.github.butul0ve.spacexchecker.mvp.view.MainView
@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var clickListener: OnItemClickListener
+    private lateinit var clickListener: FragmentInteractor
 
     @Inject
     lateinit var interactor: MainMvpInteractor
@@ -40,9 +40,9 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
         super.onAttach(context)
         SpaceXApp.netComponent.inject(this)
         try {
-            clickListener = activity as OnItemClickListener
+            clickListener = activity as FragmentInteractor
         } catch (ex: ClassCastException) {
-            throw ClassCastException("${activity.toString()} must implement OnItemClickListener")
+            throw ClassCastException("${activity.toString()} must implement FragmentInteractor")
         }
     }
 
@@ -63,8 +63,8 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
         swipeRefreshLayout.isRefreshing = false
     }
 
-    override fun openYouTube(uri: Uri) {
-        clickListener.onItemClick(uri.query.substringAfter("="))
+    override fun openYouTube(link: String) {
+        clickListener.showVideo(link)
     }
 
     override fun setAdapter(adapter: LaunchesAdapter) {
@@ -101,16 +101,19 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
         }
     }
 
-    override fun onItemClick(position: Int) {
-        mainPresenter.onItemClick(position)
+    override fun onYoutubeButtonClick(position: Int) {
+        mainPresenter.openYoutubePlayerActivity(position)
+    }
+
+    override fun onRedditCampaingButtonClick(position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onRedditLaunchButtonClick(position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onRefresh() {
         mainPresenter.getData()
-    }
-
-    interface OnItemClickListener {
-
-        fun onItemClick(videoId: String)
     }
 }

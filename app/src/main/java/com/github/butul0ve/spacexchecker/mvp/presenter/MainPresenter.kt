@@ -1,6 +1,5 @@
 package com.github.butul0ve.spacexchecker.mvp.presenter
 
-import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import com.github.butul0ve.spacexchecker.adapter.LaunchesAdapter
 import com.github.butul0ve.spacexchecker.db.model.Launch
@@ -23,12 +22,12 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
 
     private lateinit var adapter: LaunchesAdapter
 
-    fun onItemClick(position: Int) {
+    fun openYoutubePlayerActivity(position: Int) {
         if (viewState != null) {
             if (::adapter.isInitialized) {
                 val launch = adapter.getLaunchById(position)
-                val videoLink = Uri.parse(launch.links.videoLink)
-                viewState.openYouTube(videoLink)
+                launch.links.videoLink?.let {
+                    viewState.openYouTube(it) }
             }
         }
     }
@@ -106,13 +105,13 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
             override fun onComplete() {
                 Timber.d("getDbObserver onComplete")
 
-                adapter = LaunchesAdapter(ArrayList(), viewState)
-
                 if (viewState == null) {
                     Timber.d("getdbObserver onComplete view is not attached")
-                } else {
-                    viewState.setAdapter(adapter)
+                    return
                 }
+
+                adapter = LaunchesAdapter(ArrayList(), viewState)
+                viewState.setAdapter(adapter)
 
                 getData()
             }
