@@ -9,15 +9,27 @@ import com.github.butul0ve.spacexchecker.adapter.LaunchesClickListener
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface MainView : View, LaunchesClickListener {
 
-    fun showProgressBar()
+    @StateStrategyType(SkipStrategy::class)
+    override fun onYoutubeButtonClick(position: Int)
 
-    fun hideProgressBar()
+    @StateStrategyType(SkipStrategy::class)
+    override fun onRedditCampaignButtonClick(position: Int)
+
+    @StateStrategyType(SkipStrategy::class)
+    override fun onRedditLaunchButtonClick(position: Int)
 
     @StateStrategyType(SkipStrategy::class)
     fun openYouTube(link: String)
 
     @StateStrategyType(SkipStrategy::class)
-    override fun onYoutubeButtonClick(position: Int)
+    fun showNextLaunch(text: String)
+
+    @StateStrategyType(SkipStrategy::class)
+    fun openReddit(link: String)
+
+    fun showProgressBar()
+
+    fun hideProgressBar()
 
     fun setAdapter(adapter: LaunchesAdapter)
 
@@ -26,7 +38,4 @@ interface MainView : View, LaunchesClickListener {
     fun showButtonTryAgain()
 
     fun hideButtonTryAgain()
-
-    @StateStrategyType(SkipStrategy::class)
-    fun showNextLaunch(text: String)
 }

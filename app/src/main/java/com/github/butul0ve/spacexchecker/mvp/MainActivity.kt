@@ -1,6 +1,8 @@
 package com.github.butul0ve.spacexchecker.mvp
 
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
@@ -18,6 +20,9 @@ import com.github.butul0ve.spacexchecker.mvp.presenter.MainActivityPresenter
 import com.github.butul0ve.spacexchecker.mvp.view.MainActivityView
 import com.github.butul0ve.spacexchecker.ui.BaseFragment
 import com.github.butul0ve.spacexchecker.ui.MvpAppCompatActivity
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.common.GooglePlayServicesRepairableException
+import com.google.android.gms.security.ProviderInstaller
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import timber.log.Timber
 
@@ -34,6 +39,16 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (Build.VERSION.SDK_INT <= 19) {
+            try {
+                ProviderInstaller.installIfNeeded(this)
+            } catch (ex: GooglePlayServicesRepairableException) {
+                Timber.e(ex)
+                GoogleApiAvailability.getInstance()
+                        .showErrorNotification(this, ex.connectionStatusCode)
+            }
+        }
 
         placeHolderIV = findViewById(R.id.placeholder_iv)
         viewPager = findViewById(R.id.view_pager)
@@ -61,6 +76,12 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
     override fun showVideo(videoId: String) {
         val intent = Intent(this, PlayerActivity::class.java)
         intent.putExtra(VIDEO_EXTRA, videoId)
+        startActivity(intent)
+    }
+
+    override fun openReddit(link: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(link)
         startActivity(intent)
     }
 

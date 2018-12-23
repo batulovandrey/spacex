@@ -8,7 +8,7 @@ interface LaunchesClickListener {
 
     fun onYoutubeButtonClick(position: Int)
 
-    fun onRedditCampaingButtonClick(position: Int)
+    fun onRedditCampaignButtonClick(position: Int)
 
     fun onRedditLaunchButtonClick(position: Int)
 }

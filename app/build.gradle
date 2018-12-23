@@ -79,6 +79,9 @@ dependencies {
     // JSR-310 (time lib)
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
 
+    // google services
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.google.android.material:material:1.0.0-rc01'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'

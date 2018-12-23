@@ -17,7 +17,7 @@ class LinkConverter {
             append(" ")
             append(links.videoLink)
             append(" ")
-            append(links.redditCampaing)
+            append(links.redditCampaign)
             append(" ")
             append(links.redditLaunch)
         }

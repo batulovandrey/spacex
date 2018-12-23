@@ -14,4 +14,7 @@ interface MainActivityView : MvpView, FragmentInteractor {
 
     @StateStrategyType(SkipStrategy::class)
     override fun showVideo(videoId: String)
+
+    @StateStrategyType(SkipStrategy::class)
+    override fun openReddit(link: String)
 }

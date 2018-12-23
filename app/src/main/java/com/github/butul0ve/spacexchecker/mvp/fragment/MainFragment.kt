@@ -105,12 +105,16 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
         mainPresenter.openYoutubePlayerActivity(position)
     }
 
-    override fun onRedditCampaingButtonClick(position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onRedditCampaignButtonClick(position: Int) {
+        mainPresenter.openRedditCampaing(position)
     }
 
     override fun onRedditLaunchButtonClick(position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mainPresenter.openRedditLaunch(position)
+    }
+
+    override fun openReddit(link: String) {
+        clickListener.openReddit(link)
     }
 
     override fun onRefresh() {

@@ -155,6 +155,24 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
                     listener.onYoutubeButtonClick(layoutPosition)
                 }
             }
+
+            val redditCampaignButton = itemView.findViewById<ImageButton>(R.id.reddit_campaign_button)
+            if (pastLaunch.links.redditCampaign.isNullOrEmpty()) {
+                redditCampaignButton.visibility = View.GONE
+            } else {
+                redditCampaignButton.setOnClickListener {
+                    listener.onRedditCampaignButtonClick(layoutPosition)
+                }
+            }
+
+            val redditLaunchButton = itemView.findViewById<ImageButton>(R.id.reddit_launch_button)
+            if (pastLaunch.links.redditLaunch.isNullOrEmpty()) {
+                redditLaunchButton.visibility = View.GONE
+            } else {
+                redditLaunchButton.setOnClickListener {
+                    listener.onRedditLaunchButtonClick(layoutPosition)
+                }
+            }
         }
     }
 
@@ -203,6 +221,24 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
             } else {
                 youtubeButton.setOnClickListener {
                     listener.onYoutubeButtonClick(layoutPosition)
+                }
+            }
+
+            val redditCampaingButton = itemView.findViewById<ImageButton>(R.id.reddit_campaign_button)
+            if (upcomingLaunch.links.redditCampaign.isNullOrEmpty()) {
+                redditCampaingButton.visibility = View.GONE
+            } else {
+                redditCampaingButton.setOnClickListener {
+                    listener.onRedditCampaignButtonClick(layoutPosition)
+                }
+            }
+
+            val redditLaunchButton = itemView.findViewById<ImageButton>(R.id.reddit_launch_button)
+            if (upcomingLaunch.links.redditLaunch.isNullOrEmpty()) {
+                redditLaunchButton.visibility = View.GONE
+            } else {
+                redditLaunchButton.setOnClickListener {
+                    listener.onRedditLaunchButtonClick(layoutPosition)
                 }
             }
         }

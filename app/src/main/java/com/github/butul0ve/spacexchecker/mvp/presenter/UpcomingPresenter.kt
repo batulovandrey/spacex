@@ -130,4 +130,26 @@ class UpcomingPresenter @Inject constructor(override val interactor: UpcomingMvp
             }
         }
     }
+
+    fun onRedditCampaign(position: Int) {
+        if (viewState != null) {
+            if (::adapter.isInitialized) {
+                val launch = adapter.getLaunchById(position)
+                launch.links.redditCampaign?.let {
+                    viewState.openReddit(it)
+                }
+            }
+        }
+    }
+
+    fun onRedditLaunch(position: Int) {
+        if (viewState != null) {
+            if (::adapter.isInitialized) {
+                val launch = adapter.getLaunchById(position)
+                launch.links.redditLaunch?.let {
+                    viewState.openReddit(it)
+                }
+            }
+        }
+    }
 }
