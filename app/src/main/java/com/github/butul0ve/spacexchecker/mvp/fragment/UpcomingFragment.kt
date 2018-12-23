@@ -72,12 +72,16 @@ class UpcomingFragment : BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefr
         upcomingPresenter.openYoutubePlayerActivity(position)
     }
 
-    override fun onRedditCampaingButtonClick(position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onRedditCampaignButtonClick(position: Int) {
+        upcomingPresenter.onRedditCampaign(position)
     }
 
     override fun onRedditLaunchButtonClick(position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        upcomingPresenter.onRedditLaunch(position)
+    }
+
+    override fun openReddit(link: String) {
+        clickListener.openReddit(link)
     }
 
     override fun openYoutube(link: String) {

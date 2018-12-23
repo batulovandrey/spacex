@@ -22,6 +22,12 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
 
     private lateinit var adapter: LaunchesAdapter
 
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        getDataFromDb()
+        getNextLaunch()
+    }
+
     fun openYoutubePlayerActivity(position: Int) {
         if (viewState != null) {
             if (::adapter.isInitialized) {
@@ -32,10 +38,26 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
         }
     }
 
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-        getDataFromDb()
-        getNextLaunch()
+    fun openRedditCampaing(position: Int) {
+        if (viewState != null) {
+            if (::adapter.isInitialized) {
+                val launch = adapter.getLaunchById(position)
+                launch.links.redditCampaign?.let {
+                    viewState.openReddit(it)
+                }
+            }
+        }
+    }
+
+    fun openRedditLaunch(position: Int) {
+        if (viewState != null) {
+            if (::adapter.isInitialized) {
+                val launch = adapter.getLaunchById(position)
+                launch.links.redditLaunch?.let {
+                    viewState.openReddit(it)
+                }
+            }
+        }
     }
 
     fun getData() {

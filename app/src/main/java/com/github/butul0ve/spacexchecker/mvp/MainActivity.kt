@@ -1,6 +1,7 @@
 package com.github.butul0ve.spacexchecker.mvp
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
@@ -61,6 +62,12 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
     override fun showVideo(videoId: String) {
         val intent = Intent(this, PlayerActivity::class.java)
         intent.putExtra(VIDEO_EXTRA, videoId)
+        startActivity(intent)
+    }
+
+    override fun openReddit(link: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(link)
         startActivity(intent)
     }
 

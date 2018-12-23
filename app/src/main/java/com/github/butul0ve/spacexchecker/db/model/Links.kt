@@ -25,9 +25,9 @@ data class Links(@PrimaryKey(autoGenerate = true)
                  @ColumnInfo(name = "video_link")
                  var videoLink: String?,
 
-                 @SerializedName("reddit_campaing")
-                 @ColumnInfo(name = "reddit_campaing")
-                 var redditCampaing: String?,
+                 @SerializedName("reddit_campaign")
+                 @ColumnInfo(name = "reddit_campaign")
+                 var redditCampaign: String?,
 
                  @SerializedName("reddit_launch")
                  @ColumnInfo(name = "reddit_launch")

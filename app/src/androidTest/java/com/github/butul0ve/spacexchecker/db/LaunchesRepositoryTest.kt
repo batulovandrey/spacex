@@ -82,7 +82,7 @@ class LaunchesRepositoryTest {
                         "path",
                         "link",
                         "video",
-                        "redditCampaing",
+                        "redditCampaign",
                         "redditLaunch"),
                 "details",
                 true)
@@ -263,7 +263,7 @@ class LaunchesRepositoryTest {
                         "path",
                         "link",
                         "video",
-                        "redditCampaing",
+                        "redditCampaign",
                         "redditLaunch"),
                 "details",
                 null)
@@ -287,7 +287,7 @@ class LaunchesRepositoryTest {
                         "path2",
                         "link",
                         "video",
-                        "redditCampaing",
+                        "redditCampaign",
                         "redditLaunch"),
                 "details2",
                 true)
@@ -311,7 +311,7 @@ class LaunchesRepositoryTest {
                         "path3",
                         "link",
                         "video",
-                        "redditCampaing",
+                        "redditCampaign",
                         "redditLaunch"),
                 "details3",
                 false)
@@ -335,7 +335,7 @@ class LaunchesRepositoryTest {
                         "path",
                         "link",
                         "video",
-                        "redditCampaing",
+                        "redditCampaign",
                         "redditLaunch"),
                 "details4",
                 null)
