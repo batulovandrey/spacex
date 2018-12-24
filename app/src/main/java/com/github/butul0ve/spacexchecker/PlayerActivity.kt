@@ -2,20 +2,18 @@ package com.github.butul0ve.spacexchecker
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.github.butul0ve.spacexchecker.utils.convertYoutubeUrlToVideoId
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.PlayerConstants
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.utils.YouTubePlayerTracker
+import com.google.android.youtube.player.YouTubeBaseActivity
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayer
+import com.google.android.youtube.player.YouTubePlayerView
 
 const val VIDEO_EXTRA = "video_extra"
 
-class PlayerActivity: AppCompatActivity() {
+class PlayerActivity: YouTubeBaseActivity() {
 
     private var videoId = ""
     private lateinit var playerView: YouTubePlayerView
-    private lateinit var tracker: YouTubePlayerTracker
     private lateinit var errorView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,38 +32,20 @@ class PlayerActivity: AppCompatActivity() {
 
         if (videoId.isNotEmpty()) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-            initializePlayer()
+            playerView.initialize(BuildConfig.YOUTUBE_API_KEY, object: YouTubePlayer.OnInitializedListener {
+
+                override fun onInitializationSuccess(provider: YouTubePlayer.Provider?, player: YouTubePlayer?, wasRestored: Boolean) {
+                    player?.loadVideo(videoId)
+                }
+
+                override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
+                    showError()
+                    p1?.getErrorDialog(this@PlayerActivity, 0)?.show()
+                }
+            })
         } else {
             showError()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        playerView.release()
-    }
-
-    private fun initializePlayer() {
-        tracker = YouTubePlayerTracker()
-
-        playerView.enterFullScreen()
-        playerView.initialize({ youTubePlayer ->
-            youTubePlayer.addListener(object: AbstractYouTubePlayerListener() {
-
-                override fun onReady() {
-                    youTubePlayer.addListener(tracker)
-                    youTubePlayer.loadVideo(videoId, 0f)
-
-                }
-
-                override fun onError(error: PlayerConstants.PlayerError) {
-                    super.onError(error)
-                    showError()
-                }
-            })
-        }, true)
-
-        playerView.playerUIController.showFullscreenButton(false)
     }
 
     private fun showError() {

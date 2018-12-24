@@ -24,10 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PlayerActivity"
-            android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout">
-        </activity>
+        <activity
+            android:name=".PlayerActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout" />
 
     </application>
 

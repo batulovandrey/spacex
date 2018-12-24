@@ -28,6 +28,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'YOUTUBE_API_KEY', YOUTUBE_API_KEY
+    }
 }
 
 kotlin {
@@ -47,9 +50,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
-
-    // youtube player
-    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:8.0.1'
 
     // room
     implementation "android.arch.persistence.room:runtime:1.1.1"
