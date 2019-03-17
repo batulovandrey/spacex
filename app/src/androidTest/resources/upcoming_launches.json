@@ -1,0 +1,348 @@
+[
+  {
+    "flight_number": 77,
+    "mission_name": "ArabSat 6A",
+    "mission_id": [],
+    "launch_year": "2019",
+    "launch_date_unix": 1554676560,
+    "launch_date_utc": "2019-04-07T22:36:00.000Z",
+    "launch_date_local": "2019-04-07T18:36:00-04:00",
+    "is_tentative": false,
+    "tentative_max_precision": "hour",
+    "tbd": false,
+    "launch_window": null,
+    "rocket": {
+      "rocket_id": "falconheavy",
+      "rocket_name": "Falcon Heavy",
+      "rocket_type": "FT",
+      "first_stage": {
+        "cores": [
+          {
+            "core_serial": "B1057",
+            "flight": 1,
+            "block": 5,
+            "gridfins": true,
+            "legs": true,
+            "reused": false,
+            "land_success": null,
+            "landing_intent": true,
+            "landing_type": "ASDS",
+            "landing_vehicle": "OCISLY"
+          },
+          {
+            "core_serial": "B1055",
+            "flight": 1,
+            "block": 5,
+            "gridfins": true,
+            "legs": true,
+            "reused": false,
+            "land_success": null,
+            "landing_intent": true,
+            "landing_type": "RTLS",
+            "landing_vehicle": "LZ-1"
+          },
+          {
+            "core_serial": "B1056",
+            "flight": 1,
+            "block": 5,
+            "gridfins": true,
+            "legs": true,
+            "reused": false,
+            "land_success": null,
+            "landing_intent": true,
+            "landing_type": "RTLS",
+            "landing_vehicle": "LZ-2"
+          }
+        ]
+      },
+      "second_stage": {
+        "block": null,
+        "payloads": [
+          {
+            "payload_id": "ArabSat 6A",
+            "norad_id": [],
+            "reused": false,
+            "customers": [
+              "Arabsat"
+            ],
+            "nationality": "Saudi Arabia",
+            "manufacturer": "Lockheed Martin",
+            "payload_type": "Satellite",
+            "payload_mass_kg": 6000,
+            "payload_mass_lbs": 13227.74,
+            "orbit": "GTO",
+            "orbit_params": {
+              "reference_system": "geocentric",
+              "regime": "geostationary",
+              "longitude": 30.5,
+              "semi_major_axis_km": null,
+              "eccentricity": null,
+              "periapsis_km": null,
+              "apoapsis_km": null,
+              "inclination_deg": null,
+              "period_min": null,
+              "lifespan_years": 15,
+              "epoch": null,
+              "mean_motion": null,
+              "raan": null,
+              "arg_of_pericenter": null,
+              "mean_anomaly": null
+            }
+          }
+        ]
+      },
+      "fairings": {
+        "reused": false,
+        "recovery_attempt": null,
+        "recovered": null,
+        "ship": null
+      }
+    },
+    "ships": [],
+    "telemetry": {
+      "flight_club": null
+    },
+    "launch_site": {
+      "site_id": "ksc_lc_39a",
+      "site_name": "KSC LC 39A",
+      "site_name_long": "Kennedy Space Center Historic Launch Complex 39A"
+    },
+    "launch_success": null,
+    "links": {
+      "mission_patch": null,
+      "mission_patch_small": null,
+      "reddit_campaign": "https://www.reddit.com/r/spacex/comments/b0kscl/arabsat6a_launch_campaign_thread/",
+      "reddit_launch": null,
+      "reddit_recovery": null,
+      "reddit_media": null,
+      "presskit": null,
+      "article_link": null,
+      "wikipedia": null,
+      "video_link": null,
+      "youtube_id": null,
+      "flickr_images": []
+    },
+    "details": "SpaceX will launch Arabsat 6A to a geostationary transfer orbit from SLC-39A, KSC. The satellite is a geostationary telecommunications satellite built by Lockheed Martin for the Saudi Arabian company Arabsat. This will be the first operational flight of Falcon Heavy, and also the first Block 5 Falcon Heavy. All three cores will be new Block 5 cores. The side cores are expected to land at LZ-1 and LZ-2, and the center core is expected to land on OCISLY.",
+    "upcoming": true,
+    "static_fire_date_utc": null,
+    "static_fire_date_unix": null,
+    "timeline": null
+  },
+  {
+    "flight_number": 78,
+    "mission_name": "CRS-17",
+    "mission_id": [
+      "EE86F74"
+    ],
+    "launch_year": "2019",
+    "launch_date_unix": 1556187300,
+    "launch_date_utc": "2019-04-25T10:15:00.000Z",
+    "launch_date_local": "2019-04-25T06:15:00-04:00",
+    "is_tentative": false,
+    "tentative_max_precision": "hour",
+    "tbd": false,
+    "launch_window": null,
+    "rocket": {
+      "rocket_id": "falcon9",
+      "rocket_name": "Falcon 9",
+      "rocket_type": "FT",
+      "first_stage": {
+        "cores": [
+          {
+            "core_serial": null,
+            "flight": null,
+            "block": 5,
+            "gridfins": true,
+            "legs": true,
+            "reused": null,
+            "land_success": null,
+            "landing_intent": true,
+            "landing_type": "RTLS",
+            "landing_vehicle": "LZ-1"
+          }
+        ]
+      },
+      "second_stage": {
+        "block": null,
+        "payloads": [
+          {
+            "payload_id": "CRS-17",
+            "norad_id": [],
+            "cap_serial": null,
+            "reused": true,
+            "customers": [
+              "NASA (CRS)"
+            ],
+            "nationality": "United States",
+            "manufacturer": "SpaceX",
+            "payload_type": "Dragon 1.1",
+            "payload_mass_kg": null,
+            "payload_mass_lbs": null,
+            "orbit": "ISS",
+            "orbit_params": {
+              "reference_system": "geocentric",
+              "regime": "low-earth",
+              "longitude": null,
+              "semi_major_axis_km": null,
+              "eccentricity": null,
+              "periapsis_km": null,
+              "apoapsis_km": null,
+              "inclination_deg": null,
+              "period_min": null,
+              "lifespan_years": null,
+              "epoch": null,
+              "mean_motion": null,
+              "raan": null,
+              "arg_of_pericenter": null,
+              "mean_anomaly": null
+            },
+            "mass_returned_kg": null,
+            "mass_returned_lbs": null,
+            "flight_time_sec": null,
+            "cargo_manifest": null
+          }
+        ]
+      },
+      "fairings": {
+        "reused": false,
+        "recovery_attempt": null,
+        "recovered": null,
+        "ship": null
+      }
+    },
+    "ships": [],
+    "telemetry": {
+      "flight_club": null
+    },
+    "launch_site": {
+      "site_id": "ccafs_slc_40",
+      "site_name": "CCAFS SLC 40",
+      "site_name_long": "Cape Canaveral Air Force Station Space Launch Complex 40"
+    },
+    "launch_success": null,
+    "links": {
+      "mission_patch": null,
+      "mission_patch_small": null,
+      "reddit_campaign": null,
+      "reddit_launch": null,
+      "reddit_recovery": null,
+      "reddit_media": null,
+      "presskit": null,
+      "article_link": null,
+      "wikipedia": null,
+      "video_link": null,
+      "youtube_id": null,
+      "flickr_images": []
+    },
+    "details": null,
+    "upcoming": true,
+    "static_fire_date_utc": null,
+    "static_fire_date_unix": null,
+    "timeline": null
+  },
+  {
+    "flight_number": 79,
+    "mission_name": "RADARSAT C-1, C-2, C-3",
+    "mission_id": [],
+    "launch_year": "2019",
+    "launch_date_unix": 1557964800,
+    "launch_date_utc": "2019-05-16T00:00:00.000Z",
+    "launch_date_local": "2019-05-15T17:00:00-07:00",
+    "is_tentative": true,
+    "tentative_max_precision": "day",
+    "tbd": false,
+    "launch_window": null,
+    "rocket": {
+      "rocket_id": "falcon9",
+      "rocket_name": "Falcon 9",
+      "rocket_type": "FT",
+      "first_stage": {
+        "cores": [
+          {
+            "core_serial": null,
+            "flight": null,
+            "block": null,
+            "gridfins": null,
+            "legs": null,
+            "reused": true,
+            "land_success": null,
+            "landing_intent": null,
+            "landing_type": null,
+            "landing_vehicle": null
+          }
+        ]
+      },
+      "second_stage": {
+        "block": null,
+        "payloads": [
+          {
+            "payload_id": "RADARSAT C-1, C-2, C-3",
+            "norad_id": [],
+            "reused": false,
+            "customers": [
+              "CSA"
+            ],
+            "nationality": "Canada",
+            "manufacturer": "Maxar Technologies",
+            "payload_type": "Satellite",
+            "payload_mass_kg": 1425,
+            "payload_mass_lbs": 3141.59,
+            "orbit": "SSO",
+            "orbit_params": {
+              "reference_system": "geocentric",
+              "regime": "sun-synchronous",
+              "longitude": null,
+              "semi_major_axis_km": null,
+              "eccentricity": null,
+              "periapsis_km": null,
+              "apoapsis_km": null,
+              "inclination_deg": null,
+              "period_min": null,
+              "lifespan_years": null,
+              "epoch": null,
+              "mean_motion": null,
+              "raan": null,
+              "arg_of_pericenter": null,
+              "mean_anomaly": null
+            }
+          }
+        ]
+      },
+      "fairings": {
+        "reused": false,
+        "recovery_attempt": null,
+        "recovered": null,
+        "ship": null
+      }
+    },
+    "ships": [],
+    "telemetry": {
+      "flight_club": null
+    },
+    "launch_site": {
+      "site_id": "vafb_slc_4e",
+      "site_name": "VAFB SLC 4E",
+      "site_name_long": "Vandenberg Air Force Base Space Launch Complex 4E"
+    },
+    "launch_success": null,
+    "links": {
+      "mission_patch": null,
+      "mission_patch_small": null,
+      "reddit_campaign": null,
+      "reddit_launch": null,
+      "reddit_recovery": null,
+      "reddit_media": null,
+      "presskit": null,
+      "article_link": null,
+      "wikipedia": null,
+      "video_link": null,
+      "youtube_id": null,
+      "flickr_images": []
+    },
+    "details": null,
+    "upcoming": true,
+    "static_fire_date_utc": null,
+    "static_fire_date_unix": null,
+    "timeline": null
+  }
+]
