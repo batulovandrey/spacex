@@ -25,6 +25,7 @@ class NetworkHelperTest {
     fun init() {
         launch = Launch(1L,
                 1,
+                "missionName",
                 Rocket(null,
                         "1",
                         "rocket",
@@ -37,7 +38,12 @@ class NetworkHelperTest {
                         Diameter(2f, 3f),
                         Mass(1L, 3L)),
                 "launch date",
-                Links(1L, "path", "article", "video"),
+                Links(1L,
+                        "path",
+                        "article",
+                        "video",
+                        "redditCampaign",
+                        "reddiLaunch"),
                 "details",
                 true)
 
@@ -92,6 +98,7 @@ class NetworkHelperTest {
     private fun getSomeUpcomingLaunches(): List<Launch> {
         val upcomingLaunch1 = Launch(null,
                 1,
+                "missionName",
                 Rocket(null,
                         "1",
                         "rocket",
@@ -104,12 +111,18 @@ class NetworkHelperTest {
                         Diameter(2f, 3f),
                         Mass(1L, 3L)),
                 "10-10-2011",
-                Links(null, "path", "link", "video"),
+                Links(null,
+                        "path",
+                        "link",
+                        "video",
+                        "redditCampaign",
+                        "reddiLaunch"),
                 "details",
                 null)
 
         val upcomingLaunch2 = Launch(null,
                 4,
+                "missionName",
                 Rocket(null,
                         "4",
                         "rocket4",
@@ -122,7 +135,12 @@ class NetworkHelperTest {
                         Diameter(5f, 10f),
                         Mass(5L, 10L)),
                 "03-10-2011",
-                Links(null, "path", "link", "video"),
+                Links(null,
+                        "path",
+                        "link",
+                        "video",
+                        "redditCampaign",
+                        "reddiLaunch"),
                 "details4",
                 null)
 
@@ -156,6 +174,7 @@ class NetworkHelperTest {
     private fun getSomePastLaunches(): List<Launch> {
         val pastLaunch1 = Launch(null,
                 2,
+                "missionName",
                 Rocket(null,
                         "2",
                         "rocket2",
@@ -168,12 +187,18 @@ class NetworkHelperTest {
                         Diameter(5f, 10f),
                         Mass(2L, 5L)),
                 "10-11-2011",
-                Links(null, "path2", "link", "video"),
+                Links(null,
+                        "path2",
+                        "link",
+                        "video",
+                        "redditCampaign",
+                        "reddiLaunch"),
                 "details2",
                 true)
 
         val pastLaunch2 = Launch(null,
                 3,
+                "missionName",
                 Rocket(null,
                         "3",
                         "rocket3",
@@ -186,7 +211,12 @@ class NetworkHelperTest {
                         Diameter(50f, 120f),
                         Mass(5L, 10L)),
                 "10-11-2012",
-                Links(null, "path3", "link", "video"),
+                Links(null,
+                        "path3",
+                        "link",
+                        "video",
+                        "redditCampaign",
+                        "reddiLaunch"),
                 "details3",
                 false)
 
