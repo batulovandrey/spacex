@@ -1,5 +1,6 @@
 # SpaceX
 
+![Build Status](https://travis-ci.com/batulovandrey/spacex.svg?branch=master)
 ____________________________________________________
 
 ## About
