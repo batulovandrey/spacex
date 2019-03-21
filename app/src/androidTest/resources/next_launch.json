@@ -1,0 +1,129 @@
+{
+  "flight_number": 77,
+  "mission_name": "ArabSat 6A",
+  "mission_id": [],
+  "launch_year": "2019",
+  "launch_date_unix": 1554676560,
+  "launch_date_utc": "2019-04-07T22:36:00.000Z",
+  "launch_date_local": "2019-04-07T18:36:00-04:00",
+  "is_tentative": false,
+  "tentative_max_precision": "hour",
+  "tbd": false,
+  "launch_window": null,
+  "rocket": {
+    "rocket_id": "falconheavy",
+    "rocket_name": "Falcon Heavy",
+    "rocket_type": "FT",
+    "first_stage": {
+      "cores": [
+        {
+          "core_serial": "B1057",
+          "flight": 1,
+          "block": 5,
+          "gridfins": true,
+          "legs": true,
+          "reused": false,
+          "land_success": null,
+          "landing_intent": true,
+          "landing_type": "ASDS",
+          "landing_vehicle": "OCISLY"
+        },
+        {
+          "core_serial": "B1055",
+          "flight": 1,
+          "block": 5,
+          "gridfins": true,
+          "legs": true,
+          "reused": false,
+          "land_success": null,
+          "landing_intent": true,
+          "landing_type": "RTLS",
+          "landing_vehicle": "LZ-1"
+        },
+        {
+          "core_serial": "B1056",
+          "flight": 1,
+          "block": 5,
+          "gridfins": true,
+          "legs": true,
+          "reused": false,
+          "land_success": null,
+          "landing_intent": true,
+          "landing_type": "RTLS",
+          "landing_vehicle": "LZ-2"
+        }
+      ]
+    },
+    "second_stage": {
+      "block": null,
+      "payloads": [
+        {
+          "payload_id": "ArabSat 6A",
+          "norad_id": [],
+          "reused": false,
+          "customers": [
+            "Arabsat"
+          ],
+          "nationality": "Saudi Arabia",
+          "manufacturer": "Lockheed Martin",
+          "payload_type": "Satellite",
+          "payload_mass_kg": 6000,
+          "payload_mass_lbs": 13227.74,
+          "orbit": "GTO",
+          "orbit_params": {
+            "reference_system": "geocentric",
+            "regime": "geostationary",
+            "longitude": 30.5,
+            "semi_major_axis_km": null,
+            "eccentricity": null,
+            "periapsis_km": null,
+            "apoapsis_km": null,
+            "inclination_deg": null,
+            "period_min": null,
+            "lifespan_years": 15,
+            "epoch": null,
+            "mean_motion": null,
+            "raan": null,
+            "arg_of_pericenter": null,
+            "mean_anomaly": null
+          }
+        }
+      ]
+    },
+    "fairings": {
+      "reused": false,
+      "recovery_attempt": null,
+      "recovered": null,
+      "ship": null
+    }
+  },
+  "ships": [],
+  "telemetry": {
+    "flight_club": null
+  },
+  "launch_site": {
+    "site_id": "ksc_lc_39a",
+    "site_name": "KSC LC 39A",
+    "site_name_long": "Kennedy Space Center Historic Launch Complex 39A"
+  },
+  "launch_success": null,
+  "links": {
+    "mission_patch": null,
+    "mission_patch_small": null,
+    "reddit_campaign": "https://www.reddit.com/r/spacex/comments/b0kscl/arabsat6a_launch_campaign_thread/",
+    "reddit_launch": null,
+    "reddit_recovery": null,
+    "reddit_media": null,
+    "presskit": null,
+    "article_link": null,
+    "wikipedia": null,
+    "video_link": null,
+    "youtube_id": null,
+    "flickr_images": []
+  },
+  "details": "SpaceX will launch Arabsat 6A to a geostationary transfer orbit from SLC-39A, KSC. The satellite is a geostationary telecommunications satellite built by Lockheed Martin for the Saudi Arabian company Arabsat. This will be the first operational flight of Falcon Heavy, and also the first Block 5 Falcon Heavy. All three cores will be new Block 5 cores. The side cores are expected to land at LZ-1 and LZ-2, and the center core is expected to land on OCISLY.",
+  "upcoming": true,
+  "static_fire_date_utc": null,
+  "static_fire_date_unix": null,
+  "timeline": null
+}
