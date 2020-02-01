@@ -102,15 +102,15 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
         bottomNavigationView = findViewById(R.id.bottom_navigation_view)
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.upcoming_launches -> {
+                R.id.nav_tab1 -> {
                     presenter.openUpcomingFragment()
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.done_launches -> {
+                R.id.nav_tab2 -> {
                     presenter.openMainFragment()
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.dragons -> {
+                R.id.nav_tab3 -> {
                     presenter.openDragonsFragment()
                     return@setOnNavigationItemSelectedListener true
                 }
