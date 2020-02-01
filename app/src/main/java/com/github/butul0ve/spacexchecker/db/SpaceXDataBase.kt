@@ -21,7 +21,8 @@ import javax.inject.Inject
     Launch::class,
     Links::class,
     Rocket::class],
-        version = 1)
+        version = 2,
+        exportSchema = false)
 @TypeConverters(
         LinkConverter::class,
         ListConverter::class,
