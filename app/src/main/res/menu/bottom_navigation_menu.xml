@@ -2,23 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/upcoming_launches"
+        android:id="@+id/nav_tab1"
         android:icon="@drawable/ic_todo"
         android:title="@string/upcoming" />
 
     <item
-        android:id="@+id/done_launches"
+        android:id="@+id/nav_tab2"
         android:icon="@drawable/ic_done"
         android:title="@string/past" />
 
 
     <item
-        android:id="@+id/dragons"
+        android:id="@+id/nav_tab3"
         android:icon="@drawable/ic_dragon"
         android:title="@string/dragons" />
 
     <item
-        android:id="@+id/rockets"
+        android:id="@+id/nav_tab4"
         android:icon="@drawable/ic_rocket"
         android:title="@string/rockets" />
 

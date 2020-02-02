@@ -17,17 +17,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="lollipop">
-        <activity android:name=".mvp.MainActivity">
+        <activity
+            android:name=".PlayerActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout" />
+        <activity android:name=".mvp.MainActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".PlayerActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout" />
-
     </application>
 
 </manifest>

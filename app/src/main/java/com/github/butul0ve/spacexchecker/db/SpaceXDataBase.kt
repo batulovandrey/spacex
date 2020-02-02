@@ -21,7 +21,8 @@ import javax.inject.Inject
     Launch::class,
     Links::class,
     Rocket::class],
-        version = 1)
+        version = 1,
+        exportSchema = false)
 @TypeConverters(
         LinkConverter::class,
         ListConverter::class,
@@ -45,6 +46,8 @@ abstract class SpaceXDataBase : RoomDatabase() {
                 synchronized(SpaceXDataBase::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
                             SpaceXDataBase::class.java, "spacexapp.db")
+                            // TODO: remove later and migrate db to new version
+                            .fallbackToDestructiveMigration()
                             .build()
                 }
             }

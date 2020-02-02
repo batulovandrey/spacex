@@ -28,7 +28,7 @@ class UpcomingFragment : BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefr
     @ProvidePresenter
     fun providePresenter() = UpcomingPresenter(interactor)
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         SpaceXApp.netComponent.inject(this)
         try {

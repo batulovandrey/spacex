@@ -179,6 +179,10 @@ class MainInteractorTest {
         testObserver.dispose()
     }
 
+    /**
+     * Since the Completable is used to replace data in the db,
+     * the TestObserver is initialized twice
+     */
     @Test
     fun testReplacePastLaunches() {
         val reader = javaClass.classLoader
@@ -193,11 +197,11 @@ class MainInteractorTest {
                 .subscribeOn(Schedulers.io())
                 .test()
 
-        testInsertObserver.await()
+        testInsertObserver.awaitTerminalEvent()
 
         testInsertObserver.assertNoErrors()
 
-        val testObserver = mainInteractor.getPastLaunchesFromDb()
+        var testObserver = mainInteractor.getPastLaunchesFromDb()
                 .subscribeOn(Schedulers.io())
                 .test()
 
@@ -205,9 +209,14 @@ class MainInteractorTest {
                 .assertValue { it.size == pastLaunches.size }
 
         mainInteractor.replacePastLaunches(emptyList())
+                .subscribeOn(Schedulers.io())
+                .test()
 
+        testObserver = mainInteractor.getPastLaunchesFromDb()
+                .subscribeOn(Schedulers.io())
+                .test()
         testObserver.assertNoErrors()
-                .assertValue { it.isEmpty() }
+                .assertValue(emptyList())
 
         testObserver.dispose()
     }

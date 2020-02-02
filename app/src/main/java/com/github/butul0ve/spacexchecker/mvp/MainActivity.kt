@@ -4,41 +4,28 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.widget.ImageView
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
-import com.arellomobile.mvp.presenter.InjectPresenter
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.github.butul0ve.spacexchecker.PlayerActivity
 import com.github.butul0ve.spacexchecker.R
 import com.github.butul0ve.spacexchecker.VIDEO_EXTRA
-import com.github.butul0ve.spacexchecker.adapter.SpaceXPagerAdapter
-import com.github.butul0ve.spacexchecker.mvp.fragment.DragonsFragment
-import com.github.butul0ve.spacexchecker.mvp.fragment.MainFragment
-import com.github.butul0ve.spacexchecker.mvp.fragment.RocketsFragment
-import com.github.butul0ve.spacexchecker.mvp.fragment.UpcomingFragment
-import com.github.butul0ve.spacexchecker.mvp.presenter.MainActivityPresenter
-import com.github.butul0ve.spacexchecker.mvp.view.MainActivityView
-import com.github.butul0ve.spacexchecker.ui.BaseFragment
-import com.github.butul0ve.spacexchecker.ui.MvpAppCompatActivity
+import com.github.butul0ve.spacexchecker.databinding.ActivityMainBinding
+import com.github.butul0ve.spacexchecker.utils.setupWithNavController
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.security.ProviderInstaller
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import timber.log.Timber
 
-class MainActivity : MvpAppCompatActivity(), MainActivityView {
+class MainActivity: AppCompatActivity(), FragmentInteractor {
 
-    private lateinit var bottomNavigationView: BottomNavigationView
-    private lateinit var placeHolderIV: ImageView
-    private lateinit var viewPager: ViewPager
-    private lateinit var pagerAdapter: PagerAdapter
-
-    @InjectPresenter
-    lateinit var presenter: MainActivityPresenter
+    private var currentNavController: LiveData<NavController>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         if (Build.VERSION.SDK_INT <= 19) {
             try {
@@ -50,27 +37,42 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
             }
         }
 
-        placeHolderIV = findViewById(R.id.placeholder_iv)
-        viewPager = findViewById(R.id.view_pager)
-        pagerAdapter = SpaceXPagerAdapter(supportFragmentManager)
-        viewPager.adapter = pagerAdapter
-        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        val bind = DataBindingUtil
+                .setContentView<ActivityMainBinding>(
+                        this,
+                        R.layout.activity_main
+                )
 
-            override fun onPageScrollStateChanged(state: Int) {
-                Timber.d("onPageScrollStateChanged $state")
-            }
+        setupNavigate(bind)
+    }
 
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                Timber.d("onPageScrolled $position")
-            }
+    private fun setupNavigate(bind: ActivityMainBinding) {
+        val controller = bind.bottomNavigationView.setupWithNavController(
+                listOf(
+                        R.navigation.nav_tab1,
+                        R.navigation.nav_tab2,
+                        R.navigation.nav_tab3,
+                        R.navigation.nav_tab4
+                ),
+                supportFragmentManager,
+                R.id.nav_host_fragment,
+                Intent()
+        )
 
-            override fun onPageSelected(position: Int) {
-                Timber.d("onPageSelected $position")
-                setCheckedItemOfBottomNavigationView(position)
-            }
+        controller.observe(this, Observer { navController ->
+            setupActionBarWithNavController(navController)
         })
 
-        setupBottomNavigationView()
+        currentNavController = controller
+    }
+
+
+    override fun onNavigateUp(): Boolean {
+        return currentNavController?.value?.navigateUp() ?: false
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return currentNavController?.value?.navigateUp() ?: false
     }
 
     override fun showVideo(videoId: String) {
@@ -83,48 +85,5 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(link)
         startActivity(intent)
-    }
-
-    override fun showFragment(fragment: BaseFragment) {
-        viewPager.currentItem = when(fragment) {
-            is UpcomingFragment -> 0
-            is MainFragment -> 1
-            is DragonsFragment -> 2
-            is RocketsFragment -> 3
-            else -> 1
-        }
-    }
-
-    /**
-     * BottomNavigationView setup
-     */
-    private fun setupBottomNavigationView() {
-        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
-        bottomNavigationView.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.upcoming_launches -> {
-                    presenter.openUpcomingFragment()
-                    return@setOnNavigationItemSelectedListener true
-                }
-                R.id.done_launches -> {
-                    presenter.openMainFragment()
-                    return@setOnNavigationItemSelectedListener true
-                }
-                R.id.dragons -> {
-                    presenter.openDragonsFragment()
-                    return@setOnNavigationItemSelectedListener true
-                }
-                else -> {
-                    presenter.openRocketsFragment()
-                    return@setOnNavigationItemSelectedListener false
-                }
-            }
-        }
-    }
-
-    private fun setCheckedItemOfBottomNavigationView(position: Int) {
-        val menu = bottomNavigationView.menu
-        val menuItem = menu.getItem(position)
-        menuItem.isChecked = true
     }
 }

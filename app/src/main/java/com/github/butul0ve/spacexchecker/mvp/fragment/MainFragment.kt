@@ -36,7 +36,7 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
     @ProvidePresenter
     fun provideMainPresenter() = MainPresenter(interactor)
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         SpaceXApp.netComponent.inject(this)
         try {
@@ -98,6 +98,8 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
                 tv.gravity = Gravity.CENTER_HORIZONTAL
             }
             snack.show()
+
+            snack.setAction("Ok") { snack.dismiss() }
         }
     }
 

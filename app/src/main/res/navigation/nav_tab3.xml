@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_tab3"
+    app:startDestination="@id/dragonsFragment2">
+
+    <fragment
+        android:id="@+id/dragonsFragment2"
+        android:name="com.github.butul0ve.spacexchecker.mvp.fragment.DragonsFragment"
+        android:label="DragonsFragment" />
+</navigation>

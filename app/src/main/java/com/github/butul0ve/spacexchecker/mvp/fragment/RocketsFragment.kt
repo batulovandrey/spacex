@@ -25,7 +25,7 @@ class RocketsFragment: BaseFragment(), RocketsView, SwipeRefreshLayout.OnRefresh
     @ProvidePresenter
     fun providePresenter() = RocketsPresenter(intercator)
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         SpaceXApp.netComponent.inject(this)
     }
