@@ -1,5 +1,6 @@
 package com.github.butul0ve.spacexchecker.mvp
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -84,6 +85,10 @@ class MainActivity: AppCompatActivity(), FragmentInteractor {
     override fun openReddit(link: String) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(link)
-        startActivity(intent)
+        try {
+            startActivity(intent)
+        } catch (ex: ActivityNotFoundException) {
+            Timber.e(ex)
+        }
     }
 }
