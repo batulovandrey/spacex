@@ -8,6 +8,7 @@ import com.github.butul0ve.spacexchecker.R
 import com.github.butul0ve.spacexchecker.adapter.viewholder.PastLaunchesViewHolder
 import com.github.butul0ve.spacexchecker.adapter.viewholder.UpcomingLaunchesViewHolder
 import com.github.butul0ve.spacexchecker.db.model.Launch
+import com.squareup.picasso.Picasso
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
@@ -20,8 +21,11 @@ import java.util.*
  * Created by butul0ve on 20.01.18.
  */
 
-class LaunchesAdapter(private val launches: List<Launch>, private val clickListener: LaunchesClickListener) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class LaunchesAdapter(
+        private val launches: List<Launch>,
+        private val clickListener: LaunchesClickListener,
+        private val picasso: Picasso
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.launch_item, null, false)
@@ -42,7 +46,7 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
         when (holder.itemViewType) {
             ViewTypes.UPCOMING_LAUNCHES -> {
                 holder as UpcomingLaunchesViewHolder
-                holder.bind(launch, zonedDateTime)
+                holder.bind(launch, zonedDateTime, picasso)
 
                 val tempDateTime = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault())
 
@@ -78,7 +82,7 @@ class LaunchesAdapter(private val launches: List<Launch>, private val clickListe
 
             ViewTypes.PAST_LAUNCHES -> {
                 holder as PastLaunchesViewHolder
-                holder.bind(launch, zonedDateTime)
+                holder.bind(launch, zonedDateTime, picasso)
             }
         }
     }

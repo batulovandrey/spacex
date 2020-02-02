@@ -21,6 +21,7 @@ import com.github.butul0ve.spacexchecker.mvp.presenter.MainPresenter
 import com.github.butul0ve.spacexchecker.mvp.view.MainView
 import com.github.butul0ve.spacexchecker.ui.BaseFragment
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
 class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListener {
@@ -30,11 +31,14 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
     @Inject
     lateinit var interactor: MainMvpInteractor
 
+    @Inject
+    lateinit var picasso: Picasso
+
     @InjectPresenter
     lateinit var mainPresenter: MainPresenter
 
     @ProvidePresenter
-    fun provideMainPresenter() = MainPresenter(interactor)
+    fun provideMainPresenter() = MainPresenter(interactor, picasso)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

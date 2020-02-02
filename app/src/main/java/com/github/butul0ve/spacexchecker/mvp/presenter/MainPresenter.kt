@@ -5,6 +5,7 @@ import com.github.butul0ve.spacexchecker.adapter.LaunchesAdapter
 import com.github.butul0ve.spacexchecker.db.model.Launch
 import com.github.butul0ve.spacexchecker.mvp.interactor.MainMvpInteractor
 import com.github.butul0ve.spacexchecker.mvp.view.MainView
+import com.squareup.picasso.Picasso
 import io.reactivex.MaybeObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,7 +18,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @InjectViewState
-class MainPresenter @Inject constructor(override val interactor: MainMvpInteractor) :
+class MainPresenter @Inject constructor(override val interactor: MainMvpInteractor,
+                                        val picasso: Picasso) :
         BasePresenter<MainView>(interactor) {
 
     private lateinit var adapter: LaunchesAdapter
@@ -113,11 +115,7 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
                 if (viewState == null) {
                     Timber.d("getdbObserver onSuccess view is not attached")
                 } else {
-                    adapter = if (t.isEmpty()) {
-                        LaunchesAdapter(ArrayList(), viewState)
-                    } else {
-                        LaunchesAdapter(t.reversed(), viewState)
-                    }
+                    adapter = LaunchesAdapter(t.reversed(), viewState, picasso)
                     viewState.setAdapter(adapter)
                     Timber.d("getdbObserver onSucccess set adapter ${t.size}")
                     getData()
@@ -132,7 +130,7 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
                     return
                 }
 
-                adapter = LaunchesAdapter(ArrayList(), viewState)
+                adapter = LaunchesAdapter(ArrayList(), viewState, picasso)
                 viewState.setAdapter(adapter)
 
                 getData()
@@ -146,7 +144,7 @@ class MainPresenter @Inject constructor(override val interactor: MainMvpInteract
                 Timber.d("getDbObserver onError")
                 Timber.e(e)
 
-                adapter = LaunchesAdapter(ArrayList(), viewState)
+                adapter = LaunchesAdapter(ArrayList(), viewState, picasso)
 
                 if (viewState == null) {
                     Timber.d("dbObserver onError view is not attached")

@@ -32,13 +32,14 @@ class UpcomingLaunchesViewHolder(itemView: View, private val listener: LaunchesC
          */
     }
 
-    fun bind(upcomingLaunch: Launch, dateTime: ZonedDateTime) {
+    fun bind(upcomingLaunch: Launch,
+             dateTime: ZonedDateTime,
+             picasso: Picasso) {
         itemView.findViewById<TextView>(R.id.rocket_name_text_view).text = upcomingLaunch.rocket.name
         itemView.findViewById<TextView>(R.id.flight_number_text_view).text = upcomingLaunch.flightNumber.toString()
         itemView.findViewById<TextView>(R.id.mission_name_text_view).text = upcomingLaunch.missionName
 
-        Picasso.get()
-                .load(upcomingLaunch.links.missionPathSmall)
+        picasso.load(upcomingLaunch.links.missionPathSmall)
                 .into(itemView.findViewById<ImageView>(R.id.mission_patch_image_view))
 
         itemView.findViewById<TextView>(R.id.detail_text_view).text = upcomingLaunch.details

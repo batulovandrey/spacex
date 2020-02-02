@@ -5,6 +5,7 @@ import com.github.butul0ve.spacexchecker.adapter.DragonAdapter
 import com.github.butul0ve.spacexchecker.db.model.Dragon
 import com.github.butul0ve.spacexchecker.mvp.interactor.DragonsMvpInteractor
 import com.github.butul0ve.spacexchecker.mvp.view.DragonsView
+import com.squareup.picasso.Picasso
 import io.reactivex.MaybeObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,7 +15,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @InjectViewState
-class DragonsPresenter @Inject constructor(override val interactor: DragonsMvpInteractor) :
+class DragonsPresenter @Inject constructor(override val interactor: DragonsMvpInteractor,
+                                           val picasso: Picasso) :
         BasePresenter<DragonsView>(interactor) {
 
     private lateinit var dragonAdapter: DragonAdapter
@@ -47,11 +49,7 @@ class DragonsPresenter @Inject constructor(override val interactor: DragonsMvpIn
                 if (viewState == null) {
                     Timber.d("getDbObserver onSuccess view is not attached")
                 } else {
-                    dragonAdapter = if (t.isEmpty()) {
-                        DragonAdapter(ArrayList())
-                    } else {
-                        DragonAdapter(t)
-                    }
+                    dragonAdapter = DragonAdapter(t, picasso)
                     viewState.setAdapter(dragonAdapter)
                     Timber.d("getDbObserver onSuccess set adapter ${t.size}")
                     getData()
@@ -75,7 +73,7 @@ class DragonsPresenter @Inject constructor(override val interactor: DragonsMvpIn
                     return
                 }
 
-                dragonAdapter = DragonAdapter(ArrayList())
+                dragonAdapter = DragonAdapter(ArrayList(), picasso)
                 viewState.setAdapter(dragonAdapter)
                 getData()
             }

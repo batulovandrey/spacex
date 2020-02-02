@@ -4,6 +4,8 @@ import android.content.Context
 import com.github.butul0ve.spacexchecker.network.OkHttpClientWithCache
 import com.github.butul0ve.spacexchecker.network.api.NetworkHelper
 import com.github.butul0ve.spacexchecker.network.api.ServerApi
+import com.squareup.picasso.LruCache
+import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -13,6 +15,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
 class NetModule(private val url: String) {
+
+    companion object {
+
+        private const val CACHE_SIZE = 1024 * 1024 * 10
+    }
 
     @Provides
     fun provideOkHttpClientWithCache(context: Context): OkHttpClient {
@@ -38,4 +45,10 @@ class NetModule(private val url: String) {
     fun provideNetworkHelper(serverApi: ServerApi): NetworkHelper {
         return NetworkHelper(serverApi)
     }
+
+    @Provides
+    fun providePicasso(context: Context) =
+            Picasso.Builder(context)
+                    .memoryCache(LruCache(CACHE_SIZE))
+                    .build()
 }

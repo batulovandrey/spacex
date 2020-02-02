@@ -5,6 +5,7 @@ import com.github.butul0ve.spacexchecker.adapter.LaunchesAdapter
 import com.github.butul0ve.spacexchecker.db.model.Launch
 import com.github.butul0ve.spacexchecker.mvp.interactor.UpcomingMvpInteractor
 import com.github.butul0ve.spacexchecker.mvp.view.UpcomingView
+import com.squareup.picasso.Picasso
 import io.reactivex.MaybeObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,7 +15,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @InjectViewState
-class UpcomingPresenter @Inject constructor(override val interactor: UpcomingMvpInteractor) :
+class UpcomingPresenter @Inject constructor(override val interactor: UpcomingMvpInteractor,
+                                            val picasso: Picasso) :
         BasePresenter<UpcomingView>(interactor) {
 
     private lateinit var adapter: LaunchesAdapter
@@ -56,11 +58,7 @@ class UpcomingPresenter @Inject constructor(override val interactor: UpcomingMvp
                 if (viewState == null) {
                     Timber.d("getDbObserver onSuccess view is not attached")
                 } else {
-                    adapter = if (t.isEmpty()) {
-                        LaunchesAdapter(ArrayList(), viewState)
-                    } else {
-                        LaunchesAdapter(t, viewState)
-                    }
+                    adapter = LaunchesAdapter(t, viewState, picasso)
                     viewState.setAdapter(adapter)
                     Timber.d("getDbObserver onSuccess set adapter ${t.size}")
                     getData()
@@ -84,7 +82,7 @@ class UpcomingPresenter @Inject constructor(override val interactor: UpcomingMvp
                     return
                 }
 
-                adapter = LaunchesAdapter(ArrayList(), viewState)
+                adapter = LaunchesAdapter(ArrayList(), viewState, picasso)
                 viewState.setAdapter(adapter)
                 getData()
             }

@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso
 
 class DragonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(dragon: Dragon) {
+    fun bind(dragon: Dragon, picasso: Picasso) {
         itemView.findViewById<TextView>(R.id.dragon_name_text_view).text = dragon.name
         itemView.findViewById<TextView>(R.id.dragon_type_text_view).text = dragon.type
         itemView.findViewById<TextView>(R.id.dragon_active_text_view).text = dragon.isActive.toString()
@@ -38,8 +38,7 @@ class DragonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT)
 
-                Picasso.get()
-                        .load(it)
+                picasso.load(it)
                         .into(iv)
 
                 tableLayout.addView(iv)
