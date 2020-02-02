@@ -28,7 +28,7 @@ class LaunchesAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.launch_item, null, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.launch_item, parent, false)
         return when (viewType) {
             ViewTypes.PAST_LAUNCHES -> PastLaunchesViewHolder(view, clickListener)
             else -> UpcomingLaunchesViewHolder(view, clickListener)
@@ -46,7 +46,7 @@ class LaunchesAdapter(
         when (holder.itemViewType) {
             ViewTypes.UPCOMING_LAUNCHES -> {
                 holder as UpcomingLaunchesViewHolder
-                holder.bind(launch, zonedDateTime, picasso)
+                holder.bind(launch, zonedDateTime, picasso, position == launches.size - 1)
 
                 val tempDateTime = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault())
 
