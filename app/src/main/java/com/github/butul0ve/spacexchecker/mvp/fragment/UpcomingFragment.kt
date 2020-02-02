@@ -13,6 +13,7 @@ import com.github.butul0ve.spacexchecker.mvp.interactor.UpcomingMvpInteractor
 import com.github.butul0ve.spacexchecker.mvp.presenter.UpcomingPresenter
 import com.github.butul0ve.spacexchecker.mvp.view.UpcomingView
 import com.github.butul0ve.spacexchecker.ui.BaseFragment
+import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
 class UpcomingFragment : BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefreshListener {
@@ -22,11 +23,14 @@ class UpcomingFragment : BaseFragment(), UpcomingView, SwipeRefreshLayout.OnRefr
     @Inject
     lateinit var interactor: UpcomingMvpInteractor
 
+    @Inject
+    lateinit var picasso: Picasso
+
     @InjectPresenter
     lateinit var upcomingPresenter: UpcomingPresenter
 
     @ProvidePresenter
-    fun providePresenter() = UpcomingPresenter(interactor)
+    fun providePresenter() = UpcomingPresenter(interactor, picasso)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

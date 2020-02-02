@@ -28,13 +28,12 @@ class PastLaunchesViewHolder(itemView: View, private val listener: LaunchesClick
          */
     }
 
-    fun bind(pastLaunch: Launch, dateTime: ZonedDateTime) {
+    fun bind(pastLaunch: Launch, dateTime: ZonedDateTime, picasso: Picasso) {
         itemView.findViewById<TextView>(R.id.rocket_name_text_view).text = pastLaunch.rocket.name
         itemView.findViewById<TextView>(R.id.flight_number_text_view).text = pastLaunch.flightNumber.toString()
         itemView.findViewById<TextView>(R.id.mission_name_text_view).text = pastLaunch.missionName
 
-        Picasso.get()
-                .load(pastLaunch.links.missionPathSmall)
+        picasso.load(pastLaunch.links.missionPathSmall)
                 .into(itemView.findViewById<ImageView>(R.id.mission_patch_image_view))
 
         itemView.findViewById<TextView>(R.id.launch_date_text_view).text =

@@ -12,6 +12,7 @@ import com.github.butul0ve.spacexchecker.mvp.interactor.DragonsMvpInteractor
 import com.github.butul0ve.spacexchecker.mvp.presenter.DragonsPresenter
 import com.github.butul0ve.spacexchecker.mvp.view.DragonsView
 import com.github.butul0ve.spacexchecker.ui.BaseFragment
+import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
 class DragonsFragment : BaseFragment(), DragonsView, SwipeRefreshLayout.OnRefreshListener {
@@ -19,11 +20,14 @@ class DragonsFragment : BaseFragment(), DragonsView, SwipeRefreshLayout.OnRefres
     @Inject
     lateinit var interactor: DragonsMvpInteractor
 
+    @Inject
+    lateinit var picasso: Picasso
+
     @InjectPresenter
     lateinit var dragonsPresenter: DragonsPresenter
 
     @ProvidePresenter
-    fun providePresenter() = DragonsPresenter(interactor)
+    fun providePresenter() = DragonsPresenter(interactor, picasso)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

@@ -32,13 +32,18 @@ class UpcomingLaunchesViewHolder(itemView: View, private val listener: LaunchesC
          */
     }
 
-    fun bind(upcomingLaunch: Launch, dateTime: ZonedDateTime) {
+    fun bind(upcomingLaunch: Launch,
+             dateTime: ZonedDateTime,
+             picasso: Picasso,
+             isLastItem: Boolean = false) {
         itemView.findViewById<TextView>(R.id.rocket_name_text_view).text = upcomingLaunch.rocket.name
         itemView.findViewById<TextView>(R.id.flight_number_text_view).text = upcomingLaunch.flightNumber.toString()
         itemView.findViewById<TextView>(R.id.mission_name_text_view).text = upcomingLaunch.missionName
+        itemView.findViewById<View>(R.id.bottom_view).visibility = if (isLastItem) View.VISIBLE else View.GONE
 
-        Picasso.get()
-                .load(upcomingLaunch.links.missionPathSmall)
+        picasso.load(upcomingLaunch.links.missionPathSmall)
+                .resize(300, 300)
+                .centerCrop()
                 .into(itemView.findViewById<ImageView>(R.id.mission_patch_image_view))
 
         itemView.findViewById<TextView>(R.id.detail_text_view).text = upcomingLaunch.details
@@ -48,6 +53,7 @@ class UpcomingLaunchesViewHolder(itemView: View, private val listener: LaunchesC
         if (upcomingLaunch.links.articleLink.isNullOrEmpty()) {
             articleButton.visibility = View.GONE
         } else {
+            articleButton.visibility = View.VISIBLE
             articleButton.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(upcomingLaunch.links.articleLink)
@@ -59,6 +65,7 @@ class UpcomingLaunchesViewHolder(itemView: View, private val listener: LaunchesC
         if (upcomingLaunch.links.videoLink.isNullOrEmpty()) {
             youtubeButton.visibility = View.GONE
         } else {
+            youtubeButton.visibility = View.VISIBLE
             youtubeButton.setOnClickListener {
                 listener.onYoutubeButtonClick(layoutPosition)
             }
@@ -68,6 +75,7 @@ class UpcomingLaunchesViewHolder(itemView: View, private val listener: LaunchesC
         if (upcomingLaunch.links.redditCampaign.isNullOrEmpty()) {
             redditCampaingButton.visibility = View.GONE
         } else {
+            redditCampaingButton.visibility = View.VISIBLE
             redditCampaingButton.setOnClickListener {
                 listener.onRedditCampaignButtonClick(layoutPosition)
             }
@@ -77,6 +85,7 @@ class UpcomingLaunchesViewHolder(itemView: View, private val listener: LaunchesC
         if (upcomingLaunch.links.redditLaunch.isNullOrEmpty()) {
             redditLaunchButton.visibility = View.GONE
         } else {
+            redditLaunchButton.visibility = View.VISIBLE
             redditLaunchButton.setOnClickListener {
                 listener.onRedditLaunchButtonClick(layoutPosition)
             }
