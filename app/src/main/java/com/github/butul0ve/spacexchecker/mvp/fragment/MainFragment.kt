@@ -98,6 +98,8 @@ class MainFragment : BaseFragment(), MainView, SwipeRefreshLayout.OnRefreshListe
                 tv.gravity = Gravity.CENTER_HORIZONTAL
             }
             snack.show()
+
+            snack.setAction("Ok") { snack.dismiss() }
         }
     }
 
